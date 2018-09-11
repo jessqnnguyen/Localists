@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import { AppProvider } from './AppContext';
+import {Route} from 'react-router-dom';
+
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -17,6 +19,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 
+
+// TODO: turn these into components separated into different js files rather than one big return
 class App extends Component {
   state = {
     openLogin: false,
