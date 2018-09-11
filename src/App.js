@@ -11,29 +11,35 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 class App extends Component {
   state = {
     openLogin: false,
     openSignUp: false,
+    value: 0,
   };
 
   render() {
     return (
       <div style={{flexGrow: 1}}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton style={{marginLeft: -12, marginRight: 20}} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" color="inherit" style={{flexGrow: 1}}>
-              Localist
-            </Typography>
-            <Button color="inherit" onClick={() => this.setState({ openLogin: true })}>Login</Button>
-          </Toolbar>
-        </AppBar>
+        <Paper style={{flexGrow: 1}}>
+          <Tabs
+            value={this.state.value}
+            onChange={(event, value) => {value < 2 && this.setState({ value })}}
+            indicatorColor="primary"
+            textColor="primary"
+            centered
+          >
+            <Tab label="Home" />
+            <Tab label="Discover" />
+            <Tab label="Login" onClick={() => this.setState({openLogin: true})}/>
+            <Tab label="Sign Up" onClick={() => this.setState({openSignUp: true})} />
+          </Tabs>
+        </Paper>
         <Dialog
           open={this.state.openLogin}
           onClose={() => this.setState({ openLogin: false })}
@@ -52,9 +58,6 @@ class App extends Component {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.setState({ openLogin: false, openSignUp: true })} color="primary">
-              Don't have an account? Sign up
-            </Button>
             <Button onClick={() => this.setState({ openLogin: false })} color="primary">
               Cancel
             </Button>
