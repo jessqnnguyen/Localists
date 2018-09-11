@@ -15,12 +15,20 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Grid from '@material-ui/core/Grid';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 class App extends Component {
   state = {
     openLogin: false,
     openSignUp: false,
-    value: 0,
+    tabIndex: 0,
   };
 
   render() {
@@ -28,8 +36,8 @@ class App extends Component {
       <div style={{flexGrow: 1}}>
         <Paper style={{flexGrow: 1}}>
           <Tabs
-            value={this.state.value}
-            onChange={(event, value) => {value < 2 && this.setState({ value })}}
+            value={this.state.tabIndex}
+            onChange={(event, tabIndex) => {tabIndex < 2 && this.setState({ tabIndex })}}
             indicatorColor="primary"
             textColor="primary"
             centered
@@ -40,6 +48,36 @@ class App extends Component {
             <Tab label="Sign Up" onClick={() => this.setState({openSignUp: true})} />
           </Tabs>
         </Paper>
+        <Grid container style={{flexGrow: 1}} spacing={16}>
+          <Grid item xs={12}>
+            <Grid container justify="center" spacing={16}>
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => (
+                <Grid key={value} item>
+                  <Card style={{maxWidth: 345}}>
+                    <CardMedia
+                      style={{height: 0, paddingTop: '56.25%'}}
+                      image="https://www.incimages.com/uploaded_files/image/970x450/getty_855098134_353411.jpg"
+                      title="Blah"
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="headline" component="h2">
+                        Blah
+                      </Typography>
+                      <Typography component="p">
+                        Some text
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small" color="primary">
+                        View List
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+        </Grid>
         <Dialog
           open={this.state.openLogin}
           onClose={() => this.setState({ openLogin: false })}
