@@ -48,6 +48,7 @@ class App extends Component {
             <Tab label="Sign Up" onClick={() => this.setState({openSignUp: true})} />
           </Tabs>
         </Paper>
+        <br/>
         <Grid container style={{flexGrow: 1}} spacing={16}>
           <Grid item xs={12}>
             <Grid container justify="center" spacing={16}>
