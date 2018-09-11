@@ -1,6 +1,5 @@
 import React from 'react';
 import firebase from 'firebase/app';
-import { AsyncStorage } from 'react-native'
 
 const AppContext = React.createContext();
 export class AppProvider extends React.Component {
