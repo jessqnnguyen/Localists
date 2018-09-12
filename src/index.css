@@ -1,5 +1,18 @@
 body {
-  margin: 0;
   padding: 0;
   font-family: sans-serif;
+  height: 100%;
+  margin: 0;
+  background-image: url('./static/home.PNG');
+  background-size:100%;
 }
+
+.container {
+  background-color: grey;
+  margin: 30px;
+  padding: 30px;
+  /* display: flex;
+  flex-direction: column;
+  align-content: center; */
+}
+
