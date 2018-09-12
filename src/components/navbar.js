@@ -64,9 +64,16 @@ class NavBar extends Component {
 
 
 function LogInOrOut(props) {
-  
+
   if (JSON.parse(sessionStorage.loggedIn) === true) {
-    return <Button onClick={() => firebase.auth().signOut()}> Log Out </Button>;
+    return (
+      <section>
+        <IconButton>
+          <AccountCircle />
+        </IconButton>
+        <Button onClick={() => firebase.auth().signOut()}> Log Out </Button>
+      </section>
+    );
   }
   return (
     <section>
