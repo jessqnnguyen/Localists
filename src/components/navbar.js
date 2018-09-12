@@ -12,10 +12,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import SignUpForm from './signUpForm';
+import LoginForm from './loginForm';
 
 class NavBar extends Component {
+  
   constructor(props) {
     super(props);
+
+    this.signUpForm = React.createRef();
+    this.loginForm = React.createRef();
 
     this.state = {
       openLogin: false,
@@ -24,7 +30,7 @@ class NavBar extends Component {
     };
   }
 
-  render() {
+  render = () => {
     return (
       <div> 
         <Paper style={{flexGrow: 1}}>
@@ -37,70 +43,17 @@ class NavBar extends Component {
           >
             <Tab label="Home" component={Link} to={routes.HOME} />
             <Tab label="Discover" component={Link} to={routes.DISCOVER} />
-            <Tab label="Login" onClick={() => this.setState({openLogin: true})} />
-            <Tab label="Sign Up" onClick={() => this.setState({openSignUp: true})} />
+            <Tab label="Login" onClick={() => this.loginForm.current.open()} />
+            <Tab label="Sign Up" onClick={() => this.signUpForm.current.open()} />
           </Tabs>
         </Paper>
         
         <br/>
 
-        <Dialog
-          open={this.state.openLogin}
-          onClose={() => this.setState({ openLogin: false })}
-          aria-labelledby="form-dialog-title" 
-        >
-          <DialogTitle id="form-dialog-title">Login</DialogTitle>
-          <DialogContent>
-            <TextField
-              label="Email Address"
-              type="email"
-              fullWidth
-            />
-            <TextField
-              label="Password"
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => this.setState({ openLogin: false })} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={() => this.setState({ openLogin: false })} color="primary">
-              Login
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <LoginForm ref={this.loginForm}/>
 
-        <Dialog
-          open={this.state.openSignUp}
-          onClose={() => this.setState({ openSignUp: false })}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
-          <DialogContent>
-            <TextField
-              label="Name"
-              fullWidth
-            />
-            <TextField
-              label="Email Address"
-              type="email"
-              fullWidth
-            />
-            <TextField
-              label="Password"
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => this.setState({ openSignUp: false })} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={() => this.setState({ openSignUp: false })} color="primary">
-              Sign Up
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <SignUpForm ref={this.signUpForm} />
+        
       </div>
     );
   }
