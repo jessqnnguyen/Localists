@@ -20,7 +20,7 @@ firebase.firestore().settings({timestampsInSnapshots: true});
 ReactDOM.render(
 	<BrowserRouter>
 		<App />
-	</BrowserRouter>, 
+	</BrowserRouter>,
 	document.getElementById('root')
 );
 registerServiceWorker();
