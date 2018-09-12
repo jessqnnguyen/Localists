@@ -48,12 +48,7 @@ class NavBar extends Component {
           </Tabs>
         </Paper>
         
-        <br/>
-
-        <LoginForm ref={this.loginForm}/>
-
-        <SignUpForm ref={this.signUpForm} />
-        
+        <br/>    
       </div>
     );
   }
