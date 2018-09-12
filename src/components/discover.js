@@ -17,11 +17,9 @@ function Discover(props) {
         </Grid>
       </Grid>
 
-      <Grid item xs={12}>
-        <Grid container justify="center">
-          <SearchForm />
-        </Grid>
-      </Grid>
+      <SearchForm />
+
+      
     </div>
   );
 }
