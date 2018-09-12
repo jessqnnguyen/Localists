@@ -17,6 +17,23 @@ firebase.initializeApp({
 });
 firebase.firestore().settings({timestampsInSnapshots: true});
 
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    if(!JSON.parse(sessionStorage.loggedIn)) {
+      sessionStorage.loggedIn = true;
+      window.location.reload();
+    }
+  }
+  else{
+    if(JSON.parse(sessionStorage.loggedIn)) {
+      sessionStorage.loggedIn = false;
+      window.location.reload();
+    }
+  }
+});
+
 ReactDOM.render(
 	<BrowserRouter>
 		<App />

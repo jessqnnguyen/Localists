@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import Home from './components/home';
 import Discover from './components/discover';
 import NavBar from './components/navbar';
+import LoginForm from './components/loginForm';
 
 
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
         <NavBar/>
         <Route exact path={routes.HOME} component={Home}></Route>
         <Route exact path={routes.DISCOVER} component={Discover}></Route>
+        <Route exact path={routes.LOGIN} component={LoginForm}></Route>
       </div>
     );
   }

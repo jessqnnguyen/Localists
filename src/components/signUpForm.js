@@ -1,17 +1,16 @@
-import '../index.css';
-
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 // route-related
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import * as routes from '../constants/routes';
 // material-ui components
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
 import firebase from 'firebase/app';
-import { Grid } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
+
+
 require('firebase/auth')
 
 
@@ -33,17 +32,17 @@ class SignUpForm extends Component {
     }
 
     signUp = () => {
-        console.log(this.state);
-
+        
         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(function (something) {
-                console.log(something);
+            .then(() => {
+                firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then(() => window.location.reload());
             })
             .catch(function (error) {
-                // Handle Errors here.
+                
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                
+
                 alert(errorMessage);
             });
     }
@@ -58,8 +57,6 @@ class SignUpForm extends Component {
     }
 
     render() {
-
-
         return (
             <Paper className="container">
 
@@ -69,9 +66,9 @@ class SignUpForm extends Component {
                 <Typography variant="subheading" gutterBottom>
                     Create and share a list of your favourite places today!
                 </Typography>
-                <br/>
+                <br />
                 <Divider />
-                <br/>
+                <br />
                 <TextField
                     name="name"
                     label="Name"
@@ -95,8 +92,8 @@ class SignUpForm extends Component {
                     value={this.state.password}
                     onChange={this.handleInputChange}
                 />
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <Button className="button" onClick={() => this.signUp()} color="primary" fullWidth>
                     Sign Up
                 </Button>
