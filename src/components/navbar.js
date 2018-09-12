@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import * as routes from '../constants/routes';
 // material-ui components
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,6 +11,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -56,6 +58,12 @@ class NavBar extends Component {
               <Tab label="Home" component={Link} to={routes.HOME} />
               <Tab label="Discover" component={Link} to={routes.DISCOVER} />
             </Tabs>
+  
+            {/* TODO: logged in = Icon + Logout + Sign Up; otherwise = Login + Sign Up */}
+            <IconButton>  
+              <AccountCircle />
+            </IconButton>
+            <Button> Logout </Button>
             <Button onClick={() => this.loginForm.current.open()}> Login </Button>
             <Button onClick={() => this.signUpForm.current.open()}> Sign Up </Button>
 
