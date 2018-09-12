@@ -12,9 +12,7 @@ import Discover from './components/discover';
 import NavBar from './components/navbar';
 
 
-// TODO: turn these into components separated into different js files rather than one big return
 class App extends Component {
-
   render() {
     return (
       <div style={{flexGrow: 1}}>

@@ -44,24 +44,24 @@ class NavBar extends Component {
           style={{flexGrow: 1}}
           color="default"
         >
-          <Toolbar>
-            <img style={{width: 120}} src="http://res.cloudinary.com/noctisvirtus/image/upload/v1536746811/logo.jpg" />
+          <Toolbar disableGutters="true">
+            <img style={{width: 120, padding: 10}} src="http://res.cloudinary.com/noctisvirtus/image/upload/v1536746811/logo.jpg" />
             <Tabs
               value={this.state.tabIndex}
               onChange={(event, tabIndex) => {tabIndex < 2 && this.setState({ tabIndex })}}
               indicatorColor="primary"
               textColor="primary"
-              centered
               style={{flexGrow: 1}}
             >
               <Tab label="Home" component={Link} to={routes.HOME} />
               <Tab label="Discover" component={Link} to={routes.DISCOVER} />
-              <Tab label="Login" onClick={() => this.loginForm.current.open()} />
-              <Tab label="Sign Up" onClick={() => this.signUpForm.current.open()} />
             </Tabs>
+            <Button onClick={() => this.loginForm.current.open()}> Login </Button>
+            <Button onClick={() => this.signUpForm.current.open()}> Sign Up </Button>
+
           </Toolbar>
-        </AppBar>      
-        <br/>    
+        </AppBar>
+        <br/>
       </div>
     );
   }
