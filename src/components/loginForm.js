@@ -58,7 +58,7 @@ class LoginForm extends Component {
                     <Grid container justify="center" spacing={16}>
                         <Paper className="container">
                             <Typography variant="display3" gutterBottom>
-                                Welcome to Localists
+                                Log In
                 </Typography>
                             <br />
                             <Divider />

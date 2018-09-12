@@ -77,7 +77,7 @@ function LogInOrOut(props) {
   }
   return (
     <section>
-      <Button component={Link} to={routes.LOGIN}> Login </Button>
+      <Button component={Link} to={routes.LOGIN}> Log In </Button>
       <Button component={Link} to={routes.HOME}> Sign Up </Button>
     </section>
   );
