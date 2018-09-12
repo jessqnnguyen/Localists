@@ -5,10 +5,7 @@ import * as routes from '../constants/routes';
 // material-ui components
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Paper from '@material-ui/core/Paper';
 import firebase from 'firebase/app';
 
 class LoginForm extends Component {
@@ -54,40 +51,27 @@ class LoginForm extends Component {
 
     render() {
         return(
-            <Dialog
-            open={this.state.open}
-            onClose={() => this.setState({ open: false })}
-            aria-labelledby="form-dialog-title" 
-            >
-            <DialogTitle id="form-dialog-title">Login</DialogTitle>
-            <DialogContent>
-            <TextField
-                name="email"
-                label="Email Address"
-                type="email"
-                fullWidth
-                value={this.state.email} 
-                onChange={this.handleInputChange}
+            <Paper>
+                <TextField
+                    name="email"
+                    label="Email Address"
+                    type="email"
+                    fullWidth
+                    value={this.state.email} 
+                    onChange={this.handleInputChange}
                 />
                 <TextField
-                name="password"
-                label="Password"
-                type="password"
-                fullWidth
-                value={this.state.password} 
-                onChange={this.handleInputChange}
+                    name="password"
+                    label="Password"
+                    type="password"
+                    fullWidth
+                    value={this.state.password} 
+                    onChange={this.handleInputChange}
                 />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => this.setState({ open: false })} color="primary">
-                Cancel
-                </Button>
-                <Button onClick={() => this.login()} color="primary">
-                Login
-                </Button>
-            </DialogActions>
-            </Dialog>
-        );
+                <Button onClick={() => this.setState({ open: false })} color="primary">Cancel</Button>
+                <Button onClick={() => this.login()} color="primary">Login</Button>
+            </Paper>
+         );
     }
 }
 

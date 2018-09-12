@@ -60,13 +60,8 @@ class NavBar extends Component {
               <Tab label="Sign Up" onClick={() => this.signUpForm.current.open()} />
             </Tabs>
           </Toolbar>
-        </AppBar>
-        
-        <br/>
-
-        <LoginForm ref={this.loginForm} />
-        <SignUpForm ref={this.signUpForm} />
-        
+        </AppBar>      
+        <br/>    
       </div>
     );
   }
