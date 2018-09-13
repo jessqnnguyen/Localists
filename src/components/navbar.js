@@ -6,13 +6,7 @@ import * as routes from '../constants/routes';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -40,8 +34,12 @@ class NavBar extends Component {
           style={{ flexGrow: 1 }}
           color="default"
         >
-          <Toolbar disableGutters="true">
-            <img style={{ width: 120, padding: 10 }} src="http://res.cloudinary.com/noctisvirtus/image/upload/v1536746811/logo.jpg" />
+          <Toolbar disableGutters={true}>
+            <img 
+              style={{ width: 120, padding: 10 }} 
+              src="http://res.cloudinary.com/noctisvirtus/image/upload/v1536746811/logo.jpg" 
+              alt="logo"
+            />
             <Tabs
               value={this.state.tabIndex}
               onChange={(event, tabIndex) => { tabIndex < 2 && this.setState({ tabIndex }) }}

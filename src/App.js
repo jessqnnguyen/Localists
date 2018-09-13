@@ -4,8 +4,6 @@ import { AppProvider } from './AppContext';
 // route-related
 import {Route} from 'react-router-dom';
 import * as routes from './constants/routes';
-// material-ui components
-import Button from '@material-ui/core/Button';
 // our components
 import Home from './components/home';
 import Discover from './components/discover';
