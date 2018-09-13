@@ -34,6 +34,8 @@ firebase.auth().onAuthStateChanged(function(user) {
   }
 });
 
+sessionStorage.loggedIn = sessionStorage.loggedIn || false;
+
 ReactDOM.render(
 	<BrowserRouter>
 		<App />
