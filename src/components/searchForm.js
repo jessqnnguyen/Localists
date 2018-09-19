@@ -68,7 +68,8 @@ class SearchForm extends Component {
   render() {
     const {classes} = this.props;
     return (
-      <div style={{padding: 20}}>
+      <div style={{ padding: 10 }}>
+        {/* search form */}
         <Grid item xs={12}>
           <Grid container justify="center">
             <TextField
@@ -82,7 +83,7 @@ class SearchForm extends Component {
             <Button onClick={() => {this.updateResults(this.state.input)}}> Search </Button>
           </Grid>
         </Grid>
-
+        {/* search results */}
         <Grid item xs={12}>
           <Grid container justify="center" spacing={16}>
             {this.state.results === null && <p> Loading results... </p>}
