@@ -66,9 +66,11 @@ function LogInOrOut(props) {
   if (JSON.parse(sessionStorage.loggedIn) === true) {
     return (
       <section>
-        <IconButton>
-          <AccountCircle />
-        </IconButton>
+        <Link to={routes.PROFILE}>
+          <IconButton>
+            <AccountCircle />
+          </IconButton>
+        </Link>
         <Button onClick={() => firebase.auth().signOut()}> Log Out </Button>
       </section>
     );
