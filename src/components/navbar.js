@@ -62,11 +62,12 @@ class NavBar extends Component {
 
 
 function LogInOrOut(props) {
-
+  // TODO: replace "/default" with the id of currently logged in user (if we can get id from firebase)
+  // otherwise, we should define a username field for every user
   if (JSON.parse(sessionStorage.loggedIn) === true) {
     return (
       <section>
-        <Link to={routes.PROFILE}>
+        <Link to={routes.PROFILE+"/"+"default"}>
           <IconButton>
             <AccountCircle />
           </IconButton>
