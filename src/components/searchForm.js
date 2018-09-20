@@ -68,7 +68,7 @@ class SearchForm extends Component {
   render() {
     const {classes} = this.props;
     return (
-      <div style={{ padding: 10 }}>
+      <div>
         {/* search form */}
         <Grid item xs={12}>
           <Grid container justify="center">
