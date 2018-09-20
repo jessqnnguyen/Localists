@@ -24,7 +24,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     if(!JSON.parse(sessionStorage.loggedIn)) {
       sessionStorage.loggedIn = true;
-      window.location.reload();
+      // window.location.reload();
     }
   }
   else{

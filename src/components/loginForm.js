@@ -29,6 +29,7 @@ class LoginForm extends Component {
 
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(() => {
+                window.location.reload();
                 this.props.history.push(routes.HOME);
             })
             .catch(function (error) {

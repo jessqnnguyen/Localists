@@ -31,17 +31,18 @@ class SignUpForm extends Component {
 
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(() => {
+                
+                var user = firebase.auth().currentUser;
 
-                // var user = firebase.auth().currentUser;
-
-                // firebase.database().ref(`users/${user.uid}`).set({
-                //     name: name,
-                //     email: btoa(email)
-                // });
-
-                firebase.auth().signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    window.location.reload()
+                var db = firebase.database();
+                db.ref('users/' + user.uid).set({
+                    name: name,
+                    email: email
+                }).then(() => {
+                    firebase.auth().signInWithEmailAndPassword(email, password)
+                    .then(() => {
+                        window.location.reload()
+                    });
                 });
             })
             .catch(function (error) {
