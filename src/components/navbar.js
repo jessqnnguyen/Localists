@@ -12,7 +12,7 @@ import Tab from '@material-ui/core/Tab';
 import Toolbar from '@material-ui/core/Toolbar';
 import firebase from 'firebase/app';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import './navbar.css';
+import '../styles/navbar.css';
 require('firebase/auth')
 
 

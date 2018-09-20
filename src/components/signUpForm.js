@@ -9,7 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import firebase from 'firebase/app';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-import './signUpForm.css'
+import '../styles/signUpForm.css'
 
 
 require('firebase/auth')
