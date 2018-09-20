@@ -14,10 +14,7 @@ function Discover(props) {
           </Typography>
         </Grid>
       </Grid>
-
       <SearchForm />
-
-      
     </div>
   );
 }
