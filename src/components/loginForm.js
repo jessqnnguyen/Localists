@@ -10,7 +10,7 @@ import firebase from 'firebase/app';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import './loginFormStyles.css';
+import '../styles/loginForm.css';
 
 
 class LoginForm extends Component {
