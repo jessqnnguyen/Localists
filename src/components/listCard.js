@@ -17,16 +17,16 @@ function ListCard(props) {
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="headline" component="h2">
-            {props.listDetails.title}
+            {props.list.title}
           </Typography>
           <Typography component="p">
-            by <Link to={routes.PROFILE+"/"+props.listDetails.owner}> {props.listDetails.owner} </Link>
+            by <Link to={routes.PROFILE+"/"+props.list.owner}> {props.list.owner} </Link>
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Button size="small" color="secondary">
-          View list ({props.listDetails.length} items)
+          View list ({props.list.length} items)
         </Button>
       </CardActions>
     </Card>

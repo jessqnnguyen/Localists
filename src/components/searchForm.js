@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import ListCard from './listCard.js';
+import ListCardContainer from './listCardContainer.js';
 
 const styles = theme => ({
   textField: {
@@ -55,6 +55,14 @@ class SearchForm extends Component {
   }
 
   render() {
+    // <Grid container justify="center" spacing={16}>
+    //   {this.state.results && this.state.results.map (result => (
+    //       <Grid item key={result.id} xs={12}>
+    //         <ListCard listDetails={result} />
+    //       </Grid>
+    //     ))
+    //   }
+    // </Grid>
     const {classes} = this.props;
     return (
       <div>
@@ -74,15 +82,8 @@ class SearchForm extends Component {
         </Grid>
         {/* search results */}
         <Grid item xs={12}>
-          <Grid container justify="center" spacing={16}>
-            {this.state.results === null && <p> Loading results... </p>}
-            {this.state.results && this.state.results.map (result => (
-                <Grid key={result.id} xs={12} item>
-                  <ListCard listDetails={result} />
-                </Grid>
-              ))
-            }
-          </Grid>
+          {this.state.results === null && <p> Loading results... </p>}
+          {this.state.results && <ListCardContainer lists={this.state.results} />}
         </Grid>
       </div>
     );

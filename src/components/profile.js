@@ -17,6 +17,26 @@ const styles = theme => ({
 class Profile extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      ownedLists: [],
+      followedLists: [],
+    }
+  }
+
+  async componentDidMount() {
+    // TODO: like searchForm.js, this is where the firebase call will go - same placeholder list as searchForm.js for now
+
+    const placeholder = [
+      {id: "0", title: "Animal cafes to check out in Tokyo", length: "10", owner: "userA"},
+      {id: "1", title: "Great brunch cafes in the city", length: "7", owner: "userB"},
+      {id: "2", title: "Best cafes in Paris", length: "3", owner: "userC"}
+    ];
+
+    this.setState({
+      ownedLists: placeholder,
+      followedLists: placeholder,
+    });
   }
 
   render() {
@@ -42,6 +62,7 @@ class Profile extends Component {
               <Typography variant="headline" component="h3">
                 {userId}'s lists
               </Typography>
+              
             </Paper>
           </Grid>
           <Grid item xs={6}>
