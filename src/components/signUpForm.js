@@ -21,15 +21,10 @@ class SignUpForm extends Component {
         super(props);
 
         this.state = {
-            open: false,
             email: "",
             name: "",
             password: ""
         }
-    }
-
-    open = () => {
-        this.setState(() => this.setState({ open: true }));
     }
 
     signUp = () => {
@@ -91,7 +86,5 @@ class SignUpForm extends Component {
         );
     }
 }
-
-
 
 export default SignUpForm;

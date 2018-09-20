@@ -19,14 +19,9 @@ class LoginForm extends Component {
         super(props);
 
         this.state = {
-            open: false,
             email: "",
             password: ""
         }
-    }
-
-    open = () => {
-        this.setState(() => this.setState({ open: true }));
     }
 
     login = () => {
