@@ -15,7 +15,7 @@ import Profile from './components/profile';
 class App extends Component {
   render() {
     return (
-      <div style={{flexGrow: 1}}>
+      <div className="page">
         <NavBar/>
         <Route exact path={routes.HOME} component={Home}></Route>
         <Route exact path={routes.DISCOVER} component={Discover}></Route>

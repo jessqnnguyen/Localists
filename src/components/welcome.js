@@ -19,7 +19,7 @@ class Welcome extends Component {
     render() {
         return (
             <Paper className="container">
-                <Typography variant="display3" gutterBottom>
+                <Typography variant="display4" gutterBottom>
                     Helloooo
                 </Typography>
             </Paper>

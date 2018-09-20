@@ -3,13 +3,13 @@ body {
   font-family: sans-serif;
   height: 100%;
   margin: 0;
-  background-image: url('http://res.cloudinary.com/noctisvirtus/image/upload/o_15/v1536760771/home.png');
+  /* background-image: url('http://res.cloudinary.com/noctisvirtus/image/upload/o_15/v1536760771/home.png'); */
   background-size: 100%;
-
+  background-color: #FAFAFA;
 }
 
 .container {
-  background-color: grey;
+  /* background-color: grey; */
   margin: 30px;
   padding: 30px;
   /* display: flex;
