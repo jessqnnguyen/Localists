@@ -66,14 +66,16 @@ function LogInOrOut(props) {
   // otherwise, we should define a username field for every user
   if (JSON.parse(sessionStorage.loggedIn) === true) {
     return (
-      <section>
-        <Link to={routes.PROFILE+"/"+"default"}>
+      <div className="loginSection">
+        <section>
+          <Link to={routes.PROFILE+"/"+"default"}>
           <IconButton>
             <AccountCircle />
           </IconButton>
-        </Link>
-        <Button onClick={() => firebase.auth().signOut()}> Log Out </Button>
-      </section>
+          <Button onClick={() => firebase.auth().signOut()}> Log Out </Button>
+          </Link>
+        </section>
+      </div>
     );
   }
   return (
