@@ -10,6 +10,7 @@ import firebase from 'firebase/app';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import './loginFormStyles.css';
 
 
 class LoginForm extends Component {
@@ -53,39 +54,25 @@ class LoginForm extends Component {
 
     render() {
         return (
-            <Grid container style={{ flexGrow: 1 }} spacing={16}>
-                <Grid item xs={12}>
-                    <Grid container justify="center" spacing={16}>
-                        <Paper className="container">
-                            <Typography variant="display3" gutterBottom>
-                                Log In
-                </Typography>
-                            <br />
-                            <Divider />
-                            <br />
-                            <TextField
-                                name="email"
-                                label="Email Address"
-                                type="email"
-                                fullWidth
-                                value={this.state.email}
-                                onChange={this.handleInputChange}
+            <div className="loginForm">
+                <div className="loginBox">
+                    <Paper className="container">
+                        <Typography variant="display3" gutterBottom>Log In</Typography>
+                        <Divider />
+                        <div className="emailField">
+                            <TextField name="email" label="Email Address" type="email" 
+                                fullWidth value={this.state.email} onChange={this.handleInputChange}
                             />
-                            <TextField
-                                name="password"
-                                label="Password"
-                                type="password"
-                                fullWidth
-                                value={this.state.password}
-                                onChange={this.handleInputChange}
+                        </div>
+                        <div className="passwordField">
+                            <TextField className="passwordField" name="password" label="Password" type="password" fullWidth
+                                    value={this.state.password} onChange={this.handleInputChange}
                             />
-                            <br/>
-                            <br/>
-                            <Button className="button" onClick={() => this.login()} color="primary" fullWidth>Login</Button>
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </Grid>
+                        </div>
+                        <Button className="button" onClick={() => this.login()} color="primary" fullWidth>Login</Button>
+                    </Paper>
+                </div>
+            </div>
 
         );
     }
