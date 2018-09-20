@@ -6,6 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter} from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+require('firebase/database');
 
 firebase.initializeApp({
   apiKey: "AIzaSyCSXmPP3cRZbnSN_DZ_hcCfQKrkBP2uUB4",

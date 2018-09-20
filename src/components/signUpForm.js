@@ -27,12 +27,22 @@ class SignUpForm extends Component {
         }
     }
 
-    signUp = () => {
-        
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    signUp = (email, password, name) => {
+
+        firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(() => {
-                firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-                .then(() => window.location.reload());
+
+                // var user = firebase.auth().currentUser;
+
+                // firebase.database().ref(`users/${user.uid}`).set({
+                //     name: name,
+                //     email: btoa(email)
+                // });
+
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.reload()
+                });
             })
             .catch(function (error) {
                 
@@ -78,7 +88,7 @@ class SignUpForm extends Component {
                             value={this.state.password} onChange={this.handleInputChange}
                         />
                     </div>
-                    <Button className="button" onClick={() => this.signUp()} color="primary" fullWidth>
+                    <Button className="button" onClick={() => this.signUp(this.state.email, this.state.password, this.state.name)} color="primary" fullWidth>
                         Sign Up
                     </Button>
                 </Paper>
