@@ -55,14 +55,6 @@ class SearchForm extends Component {
   }
 
   render() {
-    // <Grid container justify="center" spacing={16}>
-    //   {this.state.results && this.state.results.map (result => (
-    //       <Grid item key={result.id} xs={12}>
-    //         <ListCard listDetails={result} />
-    //       </Grid>
-    //     ))
-    //   }
-    // </Grid>
     const {classes} = this.props;
     return (
       <div>

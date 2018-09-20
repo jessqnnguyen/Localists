@@ -3,13 +3,15 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
-import ListCard from './listCard.js';
+import ListCardContainer from './listCardContainer.js';
 
 const styles = theme => ({
   paper: {
     ...theme.mixins.gutters(),
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
+  },
+  heading: {
     textAlign: 'center',
   },
 });
@@ -52,22 +54,22 @@ class Profile extends Component {
         <Grid container spacing={16}>
           <Grid item xs={12}>
             <Paper className={classes.paper} elevation={1}>
-              <Typography variant="headline" component="h3">
+              <Typography className={classes.heading} variant="headline" component="h3">
                 PLACEHOLDER: you're on {userId}'s profile page
               </Typography>
             </Paper>
           </Grid>
           <Grid item xs={6}>
             <Paper className={classes.paper} elevation={1}>
-              <Typography variant="headline" component="h3">
+              <Typography className={classes.heading} variant="headline" component="h3">
                 {userId}'s lists
               </Typography>
-              
+              <ListCardContainer lists={this.state.ownedLists} />
             </Paper>
           </Grid>
           <Grid item xs={6}>
             <Paper className={classes.paper} elevation={1}>
-              <Typography variant="headline" component="h3">
+              <Typography className={classes.heading} variant="headline" component="h3">
                 Following
               </Typography>
             </Paper>
