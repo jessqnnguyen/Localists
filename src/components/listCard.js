@@ -16,7 +16,7 @@ function ListCard(props) {
     <Card className="card">
       <CardActionArea>
         <CardContent>
-          <Typography gutterBottom variant="headline" component="h2">
+          <Typography gutterBottom variant="headline" component="h2" className="card-title">
             {props.list.title}
           </Typography>
           <Typography component="p">
