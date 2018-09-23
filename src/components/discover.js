@@ -7,13 +7,13 @@ import '../styles/discover.css';
 // for now, discover is a functional component
 function Discover(props) {
   return (
-    <Grid container id="discover" justify="center" spacing={16}>
-      <Grid item xs={12}>
+    <Grid container id="discover" direction="column" justify="center" alignItems="center" spacing={16}>
+      <Grid item>
         <Typography variant="display4" align="center">
           Discover
         </Typography>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item>
         <SearchForm />
       </Grid>
     </Grid>

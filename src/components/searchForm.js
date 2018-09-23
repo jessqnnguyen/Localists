@@ -57,10 +57,10 @@ class SearchForm extends Component {
   render() {
     const {classes} = this.props;
     return (
-      <Grid container justify="center" spacing={16}>
+      <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
         {/* search form */}
-        <Grid item xs={12}>
-          <Grid container justify="center">
+        <Grid item>
+          <Grid container justify="space-evenly">
             <TextField
               placeholder="Search users and places"
               type="search"
@@ -73,7 +73,7 @@ class SearchForm extends Component {
           </Grid>
         </Grid>
         {/* search results */}
-        <Grid item xs={4}>
+        <Grid item>
           {this.state.results === null && <p> Loading results... </p>}
           {this.state.results && <ListCardContainer lists={this.state.results} />}
         </Grid>
