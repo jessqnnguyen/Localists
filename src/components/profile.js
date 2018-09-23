@@ -11,9 +11,6 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
   },
-  heading: {
-    textAlign: 'center',
-  },
 });
 
 class Profile extends Component {
@@ -53,14 +50,14 @@ class Profile extends Component {
       <Grid container justify="center" spacing={16}>
         <Grid item xs={12}>
           <Paper className={classes.paper} elevation={1}>
-            <Typography className={classes.heading} variant="headline" component="h3">
+            <Typography variant="headline" align="center" component="h3">
               PLACEHOLDER: you&#39;re on {userId}&#39;s profile page
             </Typography>
           </Paper>
         </Grid>
         <Grid item xs={4}>
           <Paper className={classes.paper} elevation={1}>
-            <Typography className={classes.heading} variant="headline" component="h3">
+            <Typography variant="headline" align="center" component="h3">
               {userId}&#39;s lists
             </Typography>
             <ListCardContainer lists={this.state.ownedLists} />
@@ -68,7 +65,7 @@ class Profile extends Component {
         </Grid>
         <Grid item xs={4}>
           <Paper className={classes.paper} elevation={1}>
-            <Typography className={classes.heading} variant="headline" component="h3">
+            <Typography variant="headline" align="center" component="h3">
               Following
             </Typography>
             <ListCardContainer lists={this.state.followedLists} />
