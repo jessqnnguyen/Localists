@@ -5,7 +5,12 @@ import ListCard from './listCard.js';
 
 function ListCardContainer(props) {
   return (
-    <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
+    <Grid container 
+      direction="column"
+      justify="center"
+      alignItems="center"
+      spacing={16}
+    >
       {props.lists.map (list => (
         <Grid item key={list.id}>
           <ListCard list={list} />
