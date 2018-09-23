@@ -57,7 +57,12 @@ class SearchForm extends Component {
   render() {
     const {classes} = this.props;
     return (
-      <Grid container direction="column" justify="center" alignItems="center" spacing={16}>
+      <Grid container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        spacing={16}
+      >
         {/* search form */}
         <Grid item>
           <Grid container justify="space-evenly">
