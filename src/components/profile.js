@@ -50,33 +50,31 @@ class Profile extends Component {
     console.log("userId of current profile page: " + userId);
     
     return (
-      <div>
-        <Grid container justify="center" spacing={32}>
-          <Grid item xs={12}>
-            <Paper className={classes.paper} elevation={1}>
-              <Typography className={classes.heading} variant="headline" component="h3">
-                PLACEHOLDER: you're on {userId}'s profile page
-              </Typography>
-            </Paper>
-          </Grid>
-          <Grid item xs={4}>
-            <Paper className={classes.paper} elevation={1}>
-              <Typography className={classes.heading} variant="headline" component="h3">
-                {userId}'s lists
-              </Typography>
-              <ListCardContainer lists={this.state.ownedLists} />
-            </Paper>
-          </Grid>
-          <Grid item xs={4}>
-            <Paper className={classes.paper} elevation={1}>
-              <Typography className={classes.heading} variant="headline" component="h3">
-                Following
-              </Typography>
-              <ListCardContainer lists={this.state.followedLists} />
-            </Paper>
-          </Grid>
+      <Grid container justify="center" spacing={16}>
+        <Grid item xs={12}>
+          <Paper className={classes.paper} elevation={1}>
+            <Typography className={classes.heading} variant="headline" component="h3">
+              PLACEHOLDER: you're on {userId}'s profile page
+            </Typography>
+          </Paper>
         </Grid>
-      </div>
+        <Grid item xs={4}>
+          <Paper className={classes.paper} elevation={1}>
+            <Typography className={classes.heading} variant="headline" component="h3">
+              {userId}'s lists
+            </Typography>
+            <ListCardContainer lists={this.state.ownedLists} />
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper className={classes.paper} elevation={1}>
+            <Typography className={classes.heading} variant="headline" component="h3">
+              Following
+            </Typography>
+            <ListCardContainer lists={this.state.followedLists} />
+          </Paper>
+        </Grid>
+      </Grid>
     );
   }
 }
