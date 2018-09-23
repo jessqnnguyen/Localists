@@ -51,7 +51,7 @@ class Profile extends Component {
     
     return (
       <div>
-        <Grid container spacing={16}>
+        <Grid container justify="center" spacing={32}>
           <Grid item xs={12}>
             <Paper className={classes.paper} elevation={1}>
               <Typography className={classes.heading} variant="headline" component="h3">
@@ -59,7 +59,7 @@ class Profile extends Component {
               </Typography>
             </Paper>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Paper className={classes.paper} elevation={1}>
               <Typography className={classes.heading} variant="headline" component="h3">
                 {userId}'s lists
@@ -67,11 +67,12 @@ class Profile extends Component {
               <ListCardContainer lists={this.state.ownedLists} />
             </Paper>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Paper className={classes.paper} elevation={1}>
               <Typography className={classes.heading} variant="headline" component="h3">
                 Following
               </Typography>
+              <ListCardContainer lists={this.state.followedLists} />
             </Paper>
           </Grid>
         </Grid>

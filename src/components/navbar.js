@@ -50,14 +50,13 @@ export default class NavBar extends Component {
       <MuiThemeProvider theme={theme}>
         <div className="navBar">
           <AppBar position="sticky" color="primary">
-            <Toolbar disableGutters="true">
+            <Toolbar disableGutters={true}>
               <img src="http://res.cloudinary.com/noctisvirtus/image/upload/v1536746811/logo.jpg"/>
               <Tabs className="tabs"
                 value={this.state.tabIndex}
                 onChange={(event, tabIndex) => { tabIndex < 2 && this.setState({ tabIndex }) }}
                 textColor="secondary"
               >
-
                 <Tab label="Home" component={Link} to={routes.HOME} />
                 <Tab label="Discover" component={Link} to={routes.DISCOVER} />
               </Tabs>
