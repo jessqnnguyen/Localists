@@ -46,7 +46,7 @@ class SearchForm extends Component {
     const results = [
       {id: "0", title: "Animal cafes to check out in Tokyo", length: "10", owner: "userA"},
       {id: "1", title: "Great brunch cafes in the city", length: "7", owner: "userB"},
-      {id: "2", title: "Best cafes in Paris", length: "3", owner: "userC"}
+      {id: "2", title: "Best cafes in Paris", length: "3", owner: "userC"},
     ];
 
     this.setState({

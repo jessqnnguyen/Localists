@@ -47,7 +47,8 @@ class Profile extends Component {
     console.log("userId of current profile page: " + userId);
     
     return (
-      <Grid container justify="center" spacing={16}>
+      <Grid container justify="space-evenly" spacing={16}>
+        {/* profile details */}
         <Grid item xs={12}>
           <Paper className={classes.paper} elevation={1}>
             <Typography variant="headline" align="center" component="h3">
@@ -55,21 +56,45 @@ class Profile extends Component {
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={4}>
-          <Paper className={classes.paper} elevation={1}>
-            <Typography variant="headline" align="center" component="h3">
-              {userId}&#39;s lists
-            </Typography>
-            <ListCardContainer lists={this.state.ownedLists} />
-          </Paper>
+        {/* owned lists */}
+        <Grid item xs={6}>
+            <Grid container 
+              direction="column" 
+              justify="space-evenly" 
+              alignItems="center" 
+              spacing={8}
+            >
+              <Paper className={classes.paper} elevation={1}>
+                <Grid item>
+                  <Typography variant="headline" align="center" component="h3">
+                    {userId}&#39;s lists
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <ListCardContainer lists={this.state.ownedLists} />
+                </Grid>
+              </Paper>
+            </Grid>
         </Grid>
-        <Grid item xs={4}>
-          <Paper className={classes.paper} elevation={1}>
-            <Typography variant="headline" align="center" component="h3">
-              Following
-            </Typography>
-            <ListCardContainer lists={this.state.followedLists} />
-          </Paper>
+        {/* followed lists */}
+        <Grid item xs={6}>
+            <Grid container 
+              direction="column" 
+              justify="space-evenly" 
+              alignItems="center" 
+              spacing={8}
+            >
+              <Paper className={classes.paper} elevation={1}>
+                <Grid item>
+                  <Typography variant="headline" align="center" component="h3">
+                    Following
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <ListCardContainer lists={this.state.followedLists} />
+                </Grid>
+              </Paper>
+            </Grid>
         </Grid>
       </Grid>
     );
