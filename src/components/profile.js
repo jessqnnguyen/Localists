@@ -54,14 +54,14 @@ class Profile extends Component {
         <Grid item xs={12}>
           <Paper className={classes.paper} elevation={1}>
             <Typography className={classes.heading} variant="headline" component="h3">
-              PLACEHOLDER: you're on {userId}'s profile page
+              PLACEHOLDER: you&#39;re on {userId}&#39;s profile page
             </Typography>
           </Paper>
         </Grid>
         <Grid item xs={4}>
           <Paper className={classes.paper} elevation={1}>
             <Typography className={classes.heading} variant="headline" component="h3">
-              {userId}'s lists
+              {userId}&#39;s lists
             </Typography>
             <ListCardContainer lists={this.state.ownedLists} />
           </Paper>
