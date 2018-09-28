@@ -39,9 +39,9 @@ class SearchForm extends Component {
     });
   }
 
-  updateResults(input) {
+  updateResults() {
     // TODO: firebase call goes here, probably... placeholder results for now
-    console.log("You searched for: " + input);
+    console.log("You searched for: " + this.state.input);
     
     const results = [
       {id: "0", title: "Animal cafes to check out in Tokyo", length: "10", owner: "userA"},
@@ -74,7 +74,7 @@ class SearchForm extends Component {
               value={this.state.input}
               onChange={(event) => {this.updateInput(event.target.value)}}
             />
-            <Button onClick={() => {this.updateResults(this.state.input)}}> Search </Button>
+            <Button onClick={() => {this.updateResults()}}> Search </Button>
           </Grid>
         </Grid>
         {/* search results */}
