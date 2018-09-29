@@ -23,7 +23,7 @@ class App extends Component {
           <Route exact path={routes.DISCOVER} component={Discover}></Route>
           <Route exact path={routes.LOGIN} component={LoginForm}></Route>
           <Route exact path={routes.MANAGELISTS} component={ManageLists}></Route>
-          <Route exact path={routes.PROFILE + "/:userId"} component={Profile}></Route>
+          <Route exact path={routes.PROFILE + "/:userId"} component={props => <Profile {...props} />}></Route>
         </div>
       </div>
     );
