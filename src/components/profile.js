@@ -33,7 +33,9 @@ class Profile extends Component {
     const userId = params.userId;
     console.log("userId of current profile page: " + userId);
 
+    // TODO: like searchForm.js, this is where the firebase calls will go - find the user details and the user's lists
     const placeholderUserDetails = {
+      userId: userId,
       firstName: "Robert",
       lastName: "Ma",
       profileImage: "https://res.cloudinary.com/noctisvirtus/image/upload/q_auto/v1537694776/wholesome_man.jpg", 
