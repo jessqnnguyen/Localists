@@ -59,6 +59,7 @@ export default class NavBar extends Component {
               >
                 <Tab label="Home" component={Link} to={routes.HOME} />
                 <Tab label="Discover" component={Link} to={routes.DISCOVER} />
+                <Tab label="My Lists" component={Link} to={routes.MANAGELISTS} />
               </Tabs>
               <LogInOrOut />
             </Toolbar>
