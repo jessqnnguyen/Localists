@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import '../styles/signUpForm.css'
 import ListCard from './listCard';
+import ListCardContainer from './listCardContainer.js';
 
 
 require('firebase/auth')
@@ -24,15 +25,20 @@ class ManageLists extends Component {
         this.state = {
             lists: [
                 {
-                    "title":"this is a title",
-                    "create_date":"28/05/2018",
-                    "locales":["A", "B", "C", "D", "asdf", "asdfasdf", "dsfsdfs", "asd"]
-        },
-        {
-            "title":"this is another title",
-            "create_date":"22/05/2018",
-            "locales":["A", "B", "C", "D", "asdf"]
-}],
+                    id:"1",
+                    title:"this is a title",
+                    create_date:"28/05/2018",
+                    length: "8",
+                    owner: "userC",
+                    locales:["A", "B", "C", "D", "asdf", "asdfasdf", "dsfsdfs", "asd"]},
+                {
+                    id:"1",
+                    title:"this is a title",
+                    create_date:"29/05/2018",
+                    length: "7",
+                    owner: "userC",
+                    locales:["A", "B", "C", "D", "asdf", "asdfasdf", "dsfsdfs"]
+                }],
             _lists_count: "2"
         }
     }
@@ -88,6 +94,7 @@ class ManageLists extends Component {
                 <Paper className="container">
                     <Typography variant="display3" value={this.state.title} gutterBottom>
                     </Typography>
+                    {this.state.lists && <ListCardContainer lists={this.state.lists} />}
                     {this.createTable()}
                     <Divider />
                     <div className="nameField">
