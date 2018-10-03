@@ -1,0 +1,59 @@
+.dashboard {
+    display: flex;
+    align-self: flex-start;
+    padding-left: 100px;
+    padding-top: 80px;
+}
+
+.lists {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    width: 500px;
+}
+
+.listsHeading {
+    padding-bottom: 30px;
+}
+
+.followingLists {
+    display: flex;
+    margin-left: 175px;
+    flex-direction: column;
+    width: 500px;
+}
+
+.listProfileIcon {
+    max-width: 120px;
+}
+
+img {
+    max-width: 120px;
+}
+
+.listItem {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.listLeft { 
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.listRight {
+    display:flex;
+    flex-direction: column;
+}
+
+.listOwnerName {
+    margin-top: 10px;
+}
+
+.registerLogin {
+    display: flex;
+    flex-direction: row;
+    
+}

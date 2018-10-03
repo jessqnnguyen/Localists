@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './app2';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import registerServiceWorker from './registerServiceWorker';
-import {BrowserRouter} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 require('firebase/database');
@@ -40,7 +42,8 @@ sessionStorage.loggedIn = sessionStorage.loggedIn || false;
 ReactDOM.render(
 	<BrowserRouter>
 		<App />
-	</BrowserRouter>,
+  </BrowserRouter>
+  ,
 	document.getElementById('root')
 );
 registerServiceWorker();
