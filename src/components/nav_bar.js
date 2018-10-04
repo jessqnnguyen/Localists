@@ -53,7 +53,7 @@ export default class NavBar extends Component {
                   </Nav>
                   <Nav className="ml-auto" navbar>
                       <NavItem>
-                          <NavLink href="/components/">My profile</NavLink>
+                          <NavLink><Link to={routes.HOME}>My profile</Link></NavLink>
                       </NavItem>
                       <NavItem>
                           <NavLink onClick={() => firebase.auth().signOut()}>Logout</NavLink>
