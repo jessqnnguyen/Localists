@@ -54,12 +54,12 @@ export default class Dashboard extends Component {
     createFollowingListElement(title, index, owner) {
         if (index == 0) {
             return (
-                <ListGroupItem active>
+                <ListGroupItem>
                     <div class="listItem">
                         <div class="listLeft">
                             <ListGroupItemHeading>{title}</ListGroupItemHeading>
                             <ListGroupItemText>
-                                <a class="text-white" href="#">View</a>
+                                <a class="text-primary" href="#">View</a>
                             </ListGroupItemText>
                         </div>
                         <div class="listRight">
@@ -111,10 +111,10 @@ export default class Dashboard extends Component {
 
     createListElement(title, index) {
         if (index == 0) {
-            return (<ListGroupItem active>
+            return (<ListGroupItem>
                 <ListGroupItemHeading>{title}</ListGroupItemHeading>
                 <ListGroupItemText>
-                    <a class="text-white" href="#">View</a>
+                    <a class="text-primary" href="#">View</a>
                 </ListGroupItemText>
             </ListGroupItem>
             );
