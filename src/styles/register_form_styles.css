@@ -1,0 +1,29 @@
+.registerForm {
+    display: flex;
+    padding-top: 60px;
+    width: 240px;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form {
+    padding-top:50px;
+}
+
+#nameField {
+    padding-top: 10px;
+}
+
+#registerEmailField {
+    padding-top: 10px;
+}
+
+#passwordField {
+    padding-top: 10px;
+}
+
+.registerButton {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}

@@ -1,0 +1,8 @@
+.discoverPage {
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    justify-content: center;
+    margin-top: 200px;
+}
+

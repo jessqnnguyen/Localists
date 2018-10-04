@@ -1,0 +1,12 @@
+.navBar {
+    display: flex;
+    flex-direction: row;
+}
+
+.logoLeft {
+    display: flex;
+}
+
+.navBarRight {
+    display: flex;
+}
