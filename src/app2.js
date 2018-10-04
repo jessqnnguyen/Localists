@@ -4,6 +4,7 @@ import LoginForm from './components/login_form';
 import Dashboard from './components/dashboard';
 import RegisterForm from './components/register_form';
 import DiscoverPage from './components/discover_page';
+import CreateListForm from './components/create_list_form';
 // Route related
 import {Switch, Route} from 'react-router-dom';
 import * as routes from './constants/routes';
@@ -31,6 +32,7 @@ export default class App extends Component {
                 <Route exact path={routes.LOGIN} component={LoginForm}></Route>
                 <Route exact path={routes.REGISTER} component={RegisterForm}></Route>
                 <Route exact path={routes.DISCOVER} component={DiscoverPage}></Route>
+                <Route exact path={routes.CREATELIST} component={CreateListForm}></Route>
             </Switch>
             </div>
         </div>

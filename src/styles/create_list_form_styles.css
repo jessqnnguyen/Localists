@@ -1,0 +1,26 @@
+.createListForm {
+    display: flex;
+    flex-direction: column;
+    margin-top: 60px;
+    align-self: flex-start;
+    margin-left: 60px;
+}
+
+.addPlaceButton {
+    margin-top: 40px;
+}
+
+.placeGroupHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.createListHeading {
+    display: flex; 
+    margin-bottom: 30px;
+}
+
+.saveChangesButton {
+    margin-top: 30px;
+}

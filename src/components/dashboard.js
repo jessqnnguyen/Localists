@@ -12,15 +12,24 @@ import {
     ListGroupItemText
 } from 'reactstrap';
 import '../styles/dashboard_styles.css';
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
 import LoginForm from './login_form';
 import RegisterForm from './register_form';
 require('firebase/auth')
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
 
     constructor(props) {
         super(props);
+        this.routeChange = this.routeChange.bind(this);
+    }
+
+    routeChange () {
+        window.location.reload();
+        this.props.history.push(routes.CREATELIST);
+        
     }
 
     createListsTable = () => {
@@ -136,7 +145,11 @@ export default class Dashboard extends Component {
                     <div class="lists">
                         <div class="listsHeader">
                             <div class="listHeading"><h1>Your lists</h1></div>
-                            <div class="addListButton"><Button color="primary" size="lg">Create new list</Button></div>
+                            <div class="addListButton">
+                                <Button outline color="primary" size="lg" onClick={() => this.routeChange()}>
+                                    Create new list
+                                </Button>
+                            </div>
                         </div>
                             <ListGroup>
                                 {this.createListsTable()}
@@ -157,3 +170,5 @@ export default class Dashboard extends Component {
         }
     }
 }
+
+export default withRouter(Dashboard);
