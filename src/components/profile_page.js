@@ -81,6 +81,7 @@ class ProfilePage extends Component {
                             <div class="listOwnerName">
                                 <ListGroupItemText>Jessica Nguyen</ListGroupItemText>
                             </div>
+                            <Button color="success" onClick={() => this.routeChange()}>Edit profile</Button>
                         </div>
                     </div>
                 </ListGroupItem>
