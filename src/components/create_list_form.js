@@ -47,10 +47,6 @@ class CreateListForm extends Component {
         
     }
 
-    register = () => {
-        this.routeChange("register");
-    }
-
     handleInputChange = (event) => {
         const target = event.target;
         const name = target.name;

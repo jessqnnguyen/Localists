@@ -1,0 +1,9 @@
+.listPage {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.listHeader {
+    margin-top: 50px;
+}
