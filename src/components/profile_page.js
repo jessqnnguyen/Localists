@@ -109,7 +109,7 @@ class ProfilePage extends Component {
       return (
           <div class="listPage">
             {this.createProfileHeader()}
-            <div class="lists">
+            <div class="profileLists">
                 <ListGroup>
                     {this.createListsTable()}
                 </ListGroup>

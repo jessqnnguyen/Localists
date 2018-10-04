@@ -100,9 +100,12 @@ class Dashboard extends Component {
         return(
             <ListGroupItem>
                 <ListGroupItemHeading>{title}</ListGroupItemHeading>
-                <ListGroupItemText>
-                    <a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a>
-                </ListGroupItemText>
+                <div class="dashboardListFooter">
+                    <ListGroupItemText>
+                        <a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a>
+                    </ListGroupItemText>
+                    <Button color="success" onClick={() => this.routeChange()}>Edit list</Button>
+                </div>
             </ListGroupItem>
         );
     }
