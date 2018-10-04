@@ -63,3 +63,7 @@ img {
     flex-direction: row;
     
 }
+
+.followingListsHeader {
+    margin-bottom: 25px;
+}

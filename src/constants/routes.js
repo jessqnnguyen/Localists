@@ -7,3 +7,4 @@ export const REGISTER = '/register';
 export const PROFILE = '/profile';
 export const MANAGELISTS = '/managelists';
 export const CREATELIST = '/createList'
+export const LISTPAGE = '/listPage';

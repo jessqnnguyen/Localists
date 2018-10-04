@@ -18,11 +18,13 @@ import firebase from 'firebase/app';
 import '../styles/create_list_form_styles.css';
 require('firebase/auth')
 
+// Just for reference. JS doesn't handle types.
 export class List {
     title; // Title of the list - string.
     places; // List of places - Place[].
 }
 
+// Just for reference. JS doesn't handle types.
 export class Place {
     name; // Name of place - string.
     address; // Address of place - string.

@@ -40,7 +40,7 @@ class Dashboard extends Component {
         ];
         let listElements = [];
         for (let i=0; i < tempList.length; i++) {
-            listElements.push(this.createListElement(tempList[i].title, i));
+            listElements.push(this.createListElement(tempList[i].title));
         }
         return listElements;
     }
@@ -55,51 +55,29 @@ class Dashboard extends Component {
         for (let i=0; i < tempList.length; i++) {
             const title = tempList[i].title;
             const owner = tempList[i].owner;
-            listElements.push(this.createFollowingListElement(title, i, owner));
+            listElements.push(this.createFollowingListElement(title, owner));
         }
         return listElements;
     }
 
-    createFollowingListElement(title, index, owner) {
-        if (index == 0) {
-            return (
-                <ListGroupItem>
-                    <div class="listItem">
-                        <div class="listLeft">
-                            <ListGroupItemHeading>{title}</ListGroupItemHeading>
-                            <ListGroupItemText>
-                                <a class="text-primary" href="#">View</a>
-                            </ListGroupItemText>
-                        </div>
-                        <div class="listRight">
-                            {this.createProfileIcon(owner)}
-                            <div class="listOwnerName">
-                                <ListGroupItemText>{owner}</ListGroupItemText>
-                            </div>
-                        </div>
-                    </div>
-                </ListGroupItem>
-            
-            );
-        } else {
-            return(
-            <ListGroupItem>
-                <div class="listItem">
-                    <div class="listLeft">
-                        <ListGroupItemHeading>{title}</ListGroupItemHeading>
-                        <ListGroupItemText>
-                            <a class="text-primary" href="#">View</a>
-                        </ListGroupItemText>
-                    </div>
-                    <div class="listRight">
-                        {this.createProfileIcon(owner)}
-                        <div class="listOwnerName">
-                                <ListGroupItemText>{owner}</ListGroupItemText>
-                        </div>
+    createFollowingListElement(title, owner) {
+        return(<ListGroupItem>
+            <div class="listItem">
+                <div class="listLeft">
+                    <ListGroupItemHeading>{title}</ListGroupItemHeading>
+                    <ListGroupItemText>
+                        <a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a>
+                    </ListGroupItemText>
+                </div>
+                <div class="listRight">
+                    {this.createProfileIcon(owner)}
+                    <div class="listOwnerName">
+                            <ListGroupItemText>{owner}</ListGroupItemText>
                     </div>
                 </div>
-            </ListGroupItem>);
-        }
+            </div>
+        </ListGroupItem>
+        );
     }
 
     createProfileIcon(owner) {
@@ -118,24 +96,15 @@ class Dashboard extends Component {
         }
     }
 
-    createListElement(title, index) {
-        if (index == 0) {
-            return (<ListGroupItem>
-                <ListGroupItemHeading>{title}</ListGroupItemHeading>
-                <ListGroupItemText>
-                    <a class="text-primary" href="#">View</a>
-                </ListGroupItemText>
-            </ListGroupItem>
-            );
-        } else {
-            return(
+    createListElement(title) {
+        return(
             <ListGroupItem>
                 <ListGroupItemHeading>{title}</ListGroupItemHeading>
                 <ListGroupItemText>
-                    <a class="text-primary" href="#">View</a>
+                    <a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a>
                 </ListGroupItemText>
-            </ListGroupItem>);
-        }
+            </ListGroupItem>
+        );
     }
 
     render() {
@@ -156,7 +125,9 @@ class Dashboard extends Component {
                             </ListGroup>
                     </div>
                     <div class="followingLists">
-                        <div class="listsHeading"><h1>Following</h1></div>  
+                        <div class="followingListsHeader">
+                            <div class="listsHeading"><h1>Following</h1></div> 
+                        </div> 
                         <ListGroup>
                             {this.createFollowingListsTable()}
                         </ListGroup>
