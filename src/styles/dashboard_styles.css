@@ -12,8 +12,14 @@
     width: 500px;
 }
 
-.listsHeading {
+.listsHeader {
+    display: flex;
+    justify-content: space-between;
     padding-bottom: 30px;
+}
+
+.addListButton {
+    display: flex;
 }
 
 .followingLists {

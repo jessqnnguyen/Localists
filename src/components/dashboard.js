@@ -134,7 +134,10 @@ export default class Dashboard extends Component {
             return (
                 <div class="dashboard">
                     <div class="lists">
-                        <div class="listsHeading"><h1>Your lists</h1></div>
+                        <div class="listsHeader">
+                            <div class="listHeading"><h1>Your lists</h1></div>
+                            <div class="addListButton"><Button color="primary" size="lg">Create new list</Button></div>
+                        </div>
                             <ListGroup>
                                 {this.createListsTable()}
                             </ListGroup>

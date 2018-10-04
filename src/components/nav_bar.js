@@ -11,6 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import * as routes from '../constants/routes';
 import firebase from 'firebase/app';
+import '../styles/nav_bar_styles.css';
 require('firebase/auth')
 
 export default class NavBar extends Component {
@@ -37,28 +38,30 @@ export default class NavBar extends Component {
       if (JSON.parse(sessionStorage.loggedIn) === true) {
         return (
           <div name="navBar">
-          <Navbar color="light" light expand="md">
-            <NavbarBrand href="/">Localists</NavbarBrand>
-            <NavbarToggler onClick={this.toggle} />
-            <Collapse isOpen={this.state.isOpen} navbar>
-              <Nav className="mr-auto" navbar>
-                <NavItem>
-                  <NavLink><Link to={routes.HOME}>Home</Link></NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink><Link to={routes.HOME}>Discover</Link></NavLink>
-                </NavItem>
-              </Nav>
-              <Nav className="ml-auto" navbar>
-                  <NavItem>
-                      <NavLink href="/components/">My profile</NavLink>
-                  </NavItem>
-                  <NavItem>
-                      <NavLink onClick={() => firebase.auth().signOut()}>Logout</NavLink>
-                  </NavItem>
-              </Nav>
-            </Collapse>
-          </Navbar>
+              <Navbar color="light" light expand="md">
+                <NavbarBrand href="/">Localists</NavbarBrand>
+                {/* <NavbarBrand href="/"><img src="https://puu.sh/BFnVJ/ad76812c7b.png"/></NavbarBrand> */}
+                <NavbarToggler onClick={this.toggle} />
+                <Collapse isOpen={this.state.isOpen} navbar>
+                  <Nav className="mr-auto" navbar>
+                    <NavItem>
+                      <NavLink><Link to={routes.HOME}>Home</Link></NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink><Link to={routes.DISCOVER}>Discover</Link></NavLink>
+                    </NavItem>
+                  </Nav>
+                  <Nav className="ml-auto" navbar>
+                      <NavItem>
+                          <NavLink href="/components/">My profile</NavLink>
+                      </NavItem>
+                      <NavItem>
+                          <NavLink onClick={() => firebase.auth().signOut()}>Logout</NavLink>
+                      </NavItem>
+                  </Nav>
+                </Collapse>
+              </Navbar>
+            {/* </div> */}
         </div>
         );
       } else {

@@ -3,6 +3,7 @@ import NavBar from './components/nav_bar';
 import LoginForm from './components/login_form';
 import Dashboard from './components/dashboard';
 import RegisterForm from './components/register_form';
+import DiscoverPage from './components/discover_page';
 // Route related
 import {Switch, Route} from 'react-router-dom';
 import * as routes from './constants/routes';
@@ -29,6 +30,7 @@ export default class App extends Component {
                 <Route exact  path={routes.HOME} component={Dashboard}></Route>
                 <Route exact path={routes.LOGIN} component={LoginForm}></Route>
                 <Route exact path={routes.REGISTER} component={RegisterForm}></Route>
+                <Route exact path={routes.DISCOVER} component={DiscoverPage}></Route>
             </Switch>
             </div>
         </div>
