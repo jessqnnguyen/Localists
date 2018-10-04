@@ -76,7 +76,7 @@ export default class NavBar extends Component {
                   <NavLink><Link to={routes.HOME}>Home</Link></NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink><Link to={routes.HOME}>Discover</Link></NavLink>
+                  <NavLink><Link to={routes.DISCOVER}>Discover</Link></NavLink>
                 </NavItem>
               </Nav>
               <Nav className="ml-auto" navbar>
