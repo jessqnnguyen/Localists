@@ -34,6 +34,7 @@ class ProfilePage extends Component {
             lists: [
                 { title: "Fav brunch places" }, 
                 { title: "Best cafes in Paris" },
+                { title: "Animal cafes to checkout in Tokyo" },
             ],
         };
         this.routeChange = this.routeChange.bind(this);
@@ -110,6 +111,9 @@ class ProfilePage extends Component {
           <div class="listPage">
             {this.createProfileHeader()}
             <div class="profileLists">
+                <div class="profileListsHeading">
+                    <h1 class="display-4">My lists</h1>
+                </div>
                 <ListGroup>
                     {this.createListsTable()}
                 </ListGroup>

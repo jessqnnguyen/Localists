@@ -6,4 +6,12 @@
 .profileLists {
     margin-top: 40px;
     width: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profileListsHeading {
+    display: flex;
+    align-self: center;
+    margin-bottom: 30px;
 }
