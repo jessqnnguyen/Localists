@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as routes from '../constants/routes';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import {
     Form,
     FormGroup,
@@ -11,11 +11,12 @@ import {
 } from 'reactstrap';
 import { Route } from 'react-router-dom';
 import Dashboard from './dashboard';
+import { Link } from 'react-router-dom';
 import firebase from 'firebase/app';
 import '../styles/login_form_styles.css';
 require('firebase/auth')
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
 
     constructor(props) {
         super(props);
@@ -23,6 +24,13 @@ export default class LoginForm extends Component {
             email: "",
             password: ""
         }
+        this.routeChange = this.routeChange.bind(this);
+    }
+
+    routeChange () {
+        window.location.reload();
+        this.props.history.push(routes.HOME);
+        
     }
 
     login = () => {
@@ -30,14 +38,17 @@ export default class LoginForm extends Component {
 
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(() => {
-                window.location.reload();
-                this.props.history.push(routes.HOME);
+                this.routeChange();
             })
             .catch(function (error) {
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 alert(error.message);
             });
+    }
+
+    register = () => {
+        this.routeChange("register");
     }
 
     handleInputChange = (event) => {
@@ -76,3 +87,5 @@ export default class LoginForm extends Component {
       );
     }
 }
+
+export default withRouter(LoginForm);

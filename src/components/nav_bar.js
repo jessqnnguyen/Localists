@@ -16,7 +16,7 @@ require('firebase/auth')
 export default class NavBar extends Component {
     constructor(props) {
         super(props);
-    
+        this.routeChange = this.routeChange.bind(this);
         this.toggle = this.toggle.bind(this);
         this.state = {
           isOpen: false
@@ -43,10 +43,10 @@ export default class NavBar extends Component {
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="mr-auto" navbar>
                 <NavItem>
-                <NavLink href=""><a component={Link} to={routes.HOME}>Home</a></NavLink>
+                  <NavLink><Link to={routes.HOME}>Home</Link></NavLink>
                 </NavItem>
                 <NavItem>
-                <NavLink href=""><a component={Link} to={routes.HOME}>Discover</a></NavLink>
+                  <NavLink><Link to={routes.HOME}>Discover</Link></NavLink>
                 </NavItem>
               </Nav>
               <Nav className="ml-auto" navbar>
@@ -70,15 +70,15 @@ export default class NavBar extends Component {
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="mr-auto" navbar>
                 <NavItem>
-                  <NavLink href=""><a component={Link} to={routes.HOME}>Home</a></NavLink>
+                  <NavLink><Link to={routes.HOME}>Home</Link></NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href=""><a component={Link} to={routes.HOME}>Discover</a></NavLink>
+                  <NavLink><Link to={routes.HOME}>Discover</Link></NavLink>
                 </NavItem>
               </Nav>
               <Nav className="ml-auto" navbar>
                   <NavItem>
-                      <NavLink href=""><a component={Link} to={routes.LOGIN}>Login</a></NavLink>
+                     <Link to={routes.LOGIN}>Login</Link>
                   </NavItem>
               </Nav>
             </Collapse>
