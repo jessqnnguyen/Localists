@@ -1,0 +1,9 @@
+.profileHeader {
+    display: flex;
+    justify-content: center;
+}
+
+.profileLists {
+    margin-top: 40px;
+    width: 400px;
+}
