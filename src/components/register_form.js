@@ -78,7 +78,7 @@ export default class RegisterForm extends Component {
                     <Input type="password" name="password" id="examplePassword" placeholder="password" value={this.state.password} onChange={this.handleInputChange}/>
                 </FormGroup>
                 <div class="registerButton">
-                    <Button color="primary" onClick={this.register(this.state.email, this.state.password, this.state.name)}>Submit</Button>
+                    <Button color="primary" onClick={() => this.register(this.state.email, this.state.password, this.state.name)}>Submit</Button>
                 </div>
             </Form>
         </div>
