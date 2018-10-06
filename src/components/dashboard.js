@@ -17,6 +17,7 @@ import { withRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
 import LoginForm from './login_form';
 import RegisterForm from './register_form';
+import ListIcon from './list.svg';
 require('firebase/auth')
 
 class Dashboard extends Component {
@@ -99,12 +100,14 @@ class Dashboard extends Component {
     createListElement(title) {
         return(
             <ListGroupItem>
-                <ListGroupItemHeading>{title}</ListGroupItemHeading>
-                <div class="dashboardListFooter">
-                    <ListGroupItemText>
-                        <a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a>
-                    </ListGroupItemText>
-                    <Button color="success" onClick={() => this.routeChange()}>Edit list</Button>
+                <div class="listElement">
+                    <ListGroupItemHeading id="dashboardListTitle">{title}</ListGroupItemHeading>
+                    <div class="dashboardListFooter">
+                        <ListGroupItemText id="dashboardListViewLink">
+                            <a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a>
+                        </ListGroupItemText>
+                        <Button color="success" onClick={() => this.routeChange()}>Edit list</Button>
+                    </div>
                 </div>
             </ListGroupItem>
         );
@@ -116,7 +119,10 @@ class Dashboard extends Component {
                 <div class="dashboard">
                     <div class="lists">
                         <div class="listsHeader">
-                            <div class="listHeading"><h1>Your lists</h1></div>
+                            <div class="listHeaderHeading">
+                                <img id="listsHeaderIcon" src={ListIcon}/>
+                                <h1>Your lists</h1>
+                            </div>
                             <div class="addListButton">
                                 <Button outline color="primary" size="lg" onClick={() => this.routeChange()}>
                                     Create new list
@@ -129,7 +135,8 @@ class Dashboard extends Component {
                     </div>
                     <div class="followingLists">
                         <div class="followingListsHeader">
-                            <div class="listsHeading"><h1>Following</h1></div> 
+                            <img id="listsHeaderIcon" src={ListIcon}/>
+                            <div class="followinglistsHeading"><h1>Lists you're following</h1></div> 
                         </div> 
                         <ListGroup>
                             {this.createFollowingListsTable()}
