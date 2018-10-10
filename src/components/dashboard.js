@@ -35,9 +35,9 @@ class Dashboard extends Component {
 
   createListsTable = () => {
     const tempList = [
-        {id: "0", title: "Animal cafes to check out in Tokyo", length: "10"},
-        {id: "1", title: "Great brunch cafes in the city", length: "7"},
-        {id: "2", title: "Best cafes in Paris", length: "3"}
+      {id: "0", title: "Animal cafes to check out in Tokyo", length: "10"},
+      {id: "1", title: "Great brunch cafes in the city", length: "7"},
+      {id: "2", title: "Best cafes in Paris", length: "3"}
     ];
     let listElements = [];
     for (let i=0; i < tempList.length; i++) {
