@@ -16,10 +16,13 @@
     display: flex;
     justify-content: space-between;
     padding-bottom: 30px;
+    position: relative;
 }
 
 .addListButton {
     display: flex;
+    position: absolute;
+    right: 0px;
 }
 
 .followingLists {
@@ -65,6 +68,7 @@ img {
 }
 
 .followingListsHeader {
+    display: flex;
     margin-bottom: 25px;
 }
 
@@ -72,4 +76,15 @@ img {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+#listsHeaderIcon {
+    height: 30px;
+    display: flex;
+    align-self: center;
+    margin-right: 20px;
+}
+
+.listHeaderHeading {
+    display: flex;
 }
