@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './app2';
+import App from './app';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import registerServiceWorker from './registerServiceWorker';
@@ -40,8 +39,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 sessionStorage.loggedIn = sessionStorage.loggedIn || false;
 
 ReactDOM.render(
-	<BrowserRouter>
-      <App />
+  <BrowserRouter>
+    <App />
   </BrowserRouter>
   ,
 	document.getElementById('root')
