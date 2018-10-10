@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './app.css';
 import NavBar from './components/nav_bar';
 import LoginForm from './components/login_form';
 import Dashboard from './components/dashboard';
