@@ -41,7 +41,7 @@ sessionStorage.loggedIn = sessionStorage.loggedIn || false;
 
 ReactDOM.render(
 	<BrowserRouter>
-      <App />
+    <App />
   </BrowserRouter>
   ,
 	document.getElementById('root')
