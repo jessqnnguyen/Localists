@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import * as routes from '../constants/routes';
 import { withRouter } from 'react-router-dom';
+import classnames from 'classnames';
 import {
   Form,
   FormGroup,
   Label,
+  Nav,
+  Row,
+  Card,CardBody,CardSubtitle,CardText,CardTitle,CardLink,
+  NavItem,
+  NavLink,
   Input,
   Button,
+  TabContent,
+  TabPane,
   Alert,
   InputGroup,
   InputGroupAddon
@@ -24,6 +32,11 @@ class DiscoverPage extends Component {
   constructor(props) {
     super(props);
     this.routeChange = this.routeChange.bind(this);
+
+    this.state = {
+      query: "",
+      results: []
+    };
   }
 
   routeChange () {
@@ -44,6 +57,82 @@ class DiscoverPage extends Component {
     }));
   }
 
+  search = () => {
+    const query = this.state.query;
+
+    const db = firebase.database();
+    db.ref('users').on('value', snapshot => {
+
+      var results = [];
+
+      snapshot.forEach(function(childSnapshot) {
+        const user = childSnapshot.val();
+        if(user.name.includes(query) || user.email == (query))
+          results.push(user);
+      });
+      console.log(results);
+
+      this.setState(() => ({
+        results: results
+      }));
+    });
+  }
+
+  toggle(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      });
+    }
+  }
+
+  userItem (user) {
+    return (
+      <Card class="card">
+        <CardBody>
+          <CardTitle>{user.name}</CardTitle>
+          <CardSubtitle>{user.email}</CardSubtitle>
+          <CardText>Some info about the user?</CardText>
+          <CardLink href="#">Follow</CardLink>
+          <CardLink href="#">View</CardLink>
+        </CardBody>
+      </Card>
+    );
+  }
+
+  resultTabs() {
+    return (
+      <div>
+        <Nav tabs>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === '1' })}
+                onClick={() => { this.toggle('1'); }}
+              >
+                Lists
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === '2' })}
+                onClick={() => { this.toggle('2'); }}
+              >
+                Users
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <TabContent activeTab={this.state.activeTab}>
+            <TabPane tabId="1">
+              <h4>Lists</h4>
+            </TabPane>
+            <TabPane tabId="2">
+              {this.state.results.map(r => this.userItem(r))}
+            </TabPane>
+          </TabContent>
+        </div>
+    );
+  }
+
   render() {
     return (
       <div class="discoverPage">
@@ -52,14 +141,17 @@ class DiscoverPage extends Component {
           <div class="searchBar">
             <div class="searchInput">
               <FormGroup>
-                <Input type="email" name="email" id="exampleEmail" placeholder="Search users and places" />
+                <InputGroup>
+                  <Input name="query" id="exampleEmail" placeholder="Search users and places" onChange={this.handleInputChange}/>
+                  <InputGroupAddon addonType="append"><Button outline color="primary" onClick={() => this.search()}>Search</Button></InputGroupAddon>
+                </InputGroup>
               </FormGroup>
-            </div>
-            <div class="searchButton">
-              <Button outline color="primary">Search</Button>
             </div>
           </div>
         </Form>
+        {this.state.results.length > 0 &&
+          this.resultTabs()
+        }
       </div>
     );
   }
