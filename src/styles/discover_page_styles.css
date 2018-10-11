@@ -3,6 +3,9 @@
     flex-direction: column;
     width: 800px;
     justify-content: center;
-    margin-top: 200px;
+    margin-top: 60px;
 }
 
+.card {
+    margin: 20px;
+}
