@@ -35,6 +35,8 @@ class DiscoverPage extends Component {
 
     this.state = {
       query: "",
+      /* Whether the user has clicked the search button yet */
+      hasClickedSearch: false, 
       results: []
     };
   }
@@ -59,7 +61,7 @@ class DiscoverPage extends Component {
 
   search = () => {
     const query = this.state.query;
-
+    this.state.hasClickedSearch = true;
     const db = firebase.database();
     db.ref('users').on('value', snapshot => {
 
@@ -70,7 +72,7 @@ class DiscoverPage extends Component {
         if(user.name.includes(query) || user.email == (query))
           results.push(user);
       });
-      console.log(results);
+      console.log("results = " + results);
 
       this.setState(() => ({
         results: results
@@ -100,30 +102,28 @@ class DiscoverPage extends Component {
     );
   }
 
-  resultTabs() {
+  renderResultTabs() {
+    this.state.hasClickedSearch = false;
     return (
-      <div>
+      <div class="searchResults">
         <Nav tabs>
             <NavItem>
-              <NavLink
-                className={classnames({ active: this.state.activeTab === '1' })}
-                onClick={() => { this.toggle('1'); }}
-              >
+              <NavLink className={classnames({ active: this.state.activeTab === '1' })}
+                onClick={() => { this.toggle('1'); }}>
                 Lists
               </NavLink>
             </NavItem>
             <NavItem>
               <NavLink
                 className={classnames({ active: this.state.activeTab === '2' })}
-                onClick={() => { this.toggle('2'); }}
-              >
+                onClick={() => { this.toggle('2'); }}>
                 Users
               </NavLink>
             </NavItem>
           </Nav>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
-              <h4>Lists</h4>
+              {/* TODO: Fill this in with search results from the List table. */}
             </TabPane>
             <TabPane tabId="2">
               {this.state.results.map(r => this.userItem(r))}
@@ -132,8 +132,15 @@ class DiscoverPage extends Component {
         </div>
     );
   }
+  
+  renderNoResultsFound() {
+    this.state.hasClickedSearch = false;
+    return <Alert color="danger">No results found!</Alert>
+  }
 
   render() {
+    const { results, query, hasClickedSearch } = this.state;
+    console.log("query: " + query);
     return (
       <div class="discoverPage">
         <h1 class="display-4">Discover</h1>
@@ -149,9 +156,8 @@ class DiscoverPage extends Component {
             </div>
           </div>
         </Form>
-        {this.state.results.length > 0 &&
-          this.resultTabs()
-        }
+        {results.length > 0 && this.renderResultTabs()}
+        {results.length == 0 && hasClickedSearch && this.renderNoResultsFound()}
       </div>
     );
   }
