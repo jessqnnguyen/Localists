@@ -20,14 +20,31 @@ require('firebase/auth')
 
 // Just for reference. JS doesn't handle types.
 export class List {
-  title; // Title of the list - string.
-  places; // List of places - Place[].
+  constructor (title="", places=[]) {
+     // Title of the list - string.
+    this.title = title;
+     // List of places - Place[].
+    this.places = places;
+  }
+
+  save() {
+    console.log(list, title, places);
+    // function writeUserData(userId, name, email, imageUrl) {
+    //   firebase.database().ref('users/' + userId).set({
+    //     username: name,
+    //     email: email,
+    //     profile_picture : imageUrl
+    //   });
+    // }
+  }
 }
 
 // Just for reference. JS doesn't handle types.
 export class Place {
-  name; // Name of place - string.
-  address; // Address of place - string.
+  constructor (name, address) {
+    this.name = name;
+    this.address = address;
+  }
 }
 
 
@@ -36,6 +53,7 @@ class CreateListForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      list: new List(),
       title: 'Fav brunch places',
       places: [{name: "Four Ate Five", address: "485 Crown St, Surry Hills, Sydney"}],
     };
@@ -89,6 +107,7 @@ class CreateListForm extends Component {
     const title = list.title;
     const places = list.places;
     // TODO: Add firebase functions here.
+    list.save();
   }
 
   render() {
