@@ -15,7 +15,7 @@ import { Route } from 'react-router-dom';
 import Dashboard from './dashboard';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase/app';
-import DatabaseUtils from './database_utils';
+import { isUserLoggedIn, getUserLists } from './database_utils';
 import '../styles/create_list_form_styles.css';
 require('firebase/auth')
 
@@ -30,8 +30,8 @@ export class List {
 
   // not tested yet
   load(id) {
-    if (id !== "" && DatabaseUtils.isUserLoggedIn()) {
-        var userLists = DatabaseUtils.getUserLists();    
+    if (id !== "" && isUserLoggedIn()) {
+        var userLists = getUserLists();    
         userLists.child(this.id).once("value", function (snapshot) {
             if (snapshot.exists()) {
                 this.id = snapshot.val.id;
@@ -47,8 +47,8 @@ export class List {
   }
 
   save() {
-    if (DatabaseUtils.isUserLoggedIn()) {
-      var userLists = DatabaseUtils.getUserLists();
+    if (isUserLoggedIn()) {
+      var userLists = getUserLists();
       // If the list has already been loaded i.e. if the list id is non-empty   
       if (this.id !== "") {
         userLists.child(this.id).once("value", function(snapshot) {
