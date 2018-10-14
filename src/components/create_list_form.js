@@ -26,10 +26,6 @@ export class List {
     this.title = title;
      // List of places - Place[].
     this.places = places;
-
-    
-    
-    
   }
 
   // not tested yet
@@ -43,19 +39,13 @@ export class List {
         this.ref = this.database.ref("lists/" + this.user.uid);
         this.ref.child(this.id).once("value", function (snapshot) {
           if (snapshot.exists()) {
-
             this.id = snapshot.val.id;
             this.title = snapshot.val.title;
             this.places = snapshot.val.places;
           }
-          this.ref.child(this.id).set({
-            title: this.title,
-            places: this.places
-          });
         });
       }
     }
-
   }
 
   save() {

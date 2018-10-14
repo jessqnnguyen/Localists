@@ -18,14 +18,48 @@ import firebase from 'firebase/app';
 import LoginForm from './login_form';
 import RegisterForm from './register_form';
 import ListIcon from './list.svg';
+import List from './create_list_form';
 require('firebase/auth')
-
 
 class Dashboard extends Component {
 
   constructor(props) {
     super(props);
     this.routeChange = this.routeChange.bind(this);
+    this.state = {
+      lists:[],
+      followedLists:[]
+    }
+
+    console.log(this.state.lists);
+    const user = firebase.auth().currentUser;
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        var foundLists = [];
+        const database = firebase.database();
+        
+        if (user) {
+          console.log(user.uid)
+          const ref = database.ref("lists/" + user.uid);
+          ref.once("value", (snapshot) => {
+            var l = [];
+            if (snapshot.exists()) {
+              snapshot.forEach((listSnapshot) => {
+                l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
+                // l.push(new List(listSnapshot.key, listSnapshot.val().title, listSnapshot.val().places));
+              });
+              // list = ;
+              // console.log(foundLists); 
+              this.setState({ lists: l });
+              console.log(this.state.lists, l);
+            }
+          });
+        }
+      } else {
+        // No user is signed in.
+        // foundLists = [];
+      }
+    });
   }
 
   routeChange () {
@@ -35,14 +69,22 @@ class Dashboard extends Component {
 
   createListsTable = () => {
     const tempList = [
-      {id: "0", title: "Animal cafes to check out in Tokyo", length: "10"},
-      {id: "1", title: "Great brunch cafes in the city", length: "7"},
-      {id: "2", title: "Best cafes in Paris", length: "3"}
+      {id: "0", title: "Fav ramen places in Sydney", length: "10", owner: "Jessica Nguyen"},
+      {id: "1", title: "Good jazz bars", length: "7", owner: "Nick Balnaves"},
+      {id: "2", title: "Best camping grounds", length: "3", owner: "Nick Balnaves"}
     ];
+    // loadUserLists(this.state.lists);
+
+    console.log(this.state.lists);
     let listElements = [];
-    for (let i=0; i < tempList.length; i++) {
-      listElements.push(this.createListElement(tempList[i].title));
+    for (let i=0; i < this.state.lists.length; i++) {
+      console.log(this.state.lists[i].title);
+
+      listElements.push(this.createListElement(this.state.lists[i].title));
     }
+    // for (let i=0; i < tempList.length; i++) {
+    //   listElements.push(this.createListElement(tempList[i].title));
+    // }
     return listElements;
   }
 
@@ -131,8 +173,8 @@ class Dashboard extends Component {
               </div>
             </div>
             <ListGroup>
-              {this.createListsTable()}
-            </ListGroup>
+            {this.createListsTable()}
+                    </ListGroup>
           </div>
           <div class="followingLists">
             <div class="followingListsHeader">
