@@ -20,22 +20,64 @@ require('firebase/auth')
 
 // Just for reference. JS doesn't handle types.
 export class List {
-  constructor (title="", places=[]) {
+  constructor (id="", title="", places=[]) {
+    this.id = id;
      // Title of the list - string.
     this.title = title;
      // List of places - Place[].
     this.places = places;
+
+    this.user = firebase.auth().currentUser;
+    this.database = firebase.database();
+    if (this.user) {
+      this.ref = this.database.ref("lists/"+this.user.uid);
+    }
+    
+  }
+
+  // not tested yet
+  load(id) {
+    if (id === "") {
+      return
+    } else {
+      this.ref.child(this.id).once("value", function (snapshot) {
+        if (snapshot.exists()) {
+
+          this.id = snapshot.val.id;
+          this.title = snapshot.val.title;
+          this.places = snapshot.val.places;
+        }
+        this.ref.child(this.id).set({
+          title: this.title,
+          places: this.places
+        });
+      });
+    }
   }
 
   save() {
-    console.log(list, title, places);
-    // function writeUserData(userId, name, email, imageUrl) {
-    //   firebase.database().ref('users/' + userId).set({
-    //     username: name,
-    //     email: email,
-    //     profile_picture : imageUrl
-    //   });
-    // }
+    // console.log(user, this.title, this.places);
+    if (this.user) {
+      if (this.id !== "") {
+        this.ref.child(this.id).once("value", function (snapshot) {
+          if (!snapshot.exists()) {
+            this.id = this.ref.push().key;
+          }
+          this.ref.child(this.id).set({
+            title: this.title,
+            places: this.places
+          });
+        });
+      } else {
+        this.id = this.ref.push().key;
+        this.ref.child(this.id).set({
+          title: this.title,
+          places: this.places
+        });
+      }
+    } else {
+      // No user is signed in.
+    }
   }
 }
 
@@ -104,10 +146,10 @@ class CreateListForm extends Component {
   saveList() {
     // Stuff to send to the database.
     const list = this.state.list;
-    const title = list.title;
-    const places = list.places;
+
+    var nList = new List("", this.state.title, this.state.places)
     // TODO: Add firebase functions here.
-    list.save();
+    nList.save();
   }
 
   render() {
