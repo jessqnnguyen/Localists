@@ -37,7 +37,8 @@ class DiscoverPage extends Component {
       query: "",
       /* Whether the user has clicked the search button yet */
       hasClickedSearch: false, 
-      results: []
+      listResults: [],
+      userResults: [],
     };
   }
 
@@ -63,21 +64,44 @@ class DiscoverPage extends Component {
     const query = this.state.query;
     this.state.hasClickedSearch = true;
     const db = firebase.database();
-    db.ref('users').on('value', snapshot => {
+    // TODO: add results for Lists as well
+    var listResults = [];
+    var userResults = [];
 
-      var results = [];
-
+    // populate list search
+    db.ref('lists').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
-        const user = childSnapshot.val();
-        if(user.name.includes(query) || user.email == (query))
-          results.push(user);
+        childSnapshot.forEach(function(childSnapshot) {
+          const list = childSnapshot.val();
+          for (let place of list.places) {
+            // UNTESTED: add list if one of its places has an address that contains the query
+            console.log("place address: " + place.address + "\nplace name: " + place.name);
+            if (place.address.includes(query) || place.address== (query)) {
+              listResults.push(list);
+              break;
+            }
+          }
+        });
       });
-      console.log("results = " + results);
-
       this.setState(() => ({
-        results: results
+        listResults: listResults,
       }));
     });
+    console.log("listResults = " + JSON.stringify(listResults));
+
+    // populate user search
+    db.ref('users').on('value', snapshot => {
+      snapshot.forEach(function(childSnapshot) {
+        const user = childSnapshot.val();
+        if (user.name.includes(query) || user.email == (query)) {
+          userResults.push(user);
+        }
+      });
+      this.setState(() => ({
+        userResults: userResults,
+      }));
+    });
+    console.log("userResults = " + JSON.stringify(userResults));
   }
 
   toggle(tab) {
@@ -88,7 +112,7 @@ class DiscoverPage extends Component {
     }
   }
 
-  userItem (user) {
+  userItem(user) {
     return (
       <Card class="card">
         <CardBody>
@@ -96,6 +120,18 @@ class DiscoverPage extends Component {
           <CardSubtitle>{user.email}</CardSubtitle>
           <CardText>Some info about the user?</CardText>
           <CardLink href="#">Follow</CardLink>
+          <CardLink href="#">View</CardLink>
+        </CardBody>
+      </Card>
+    );
+  }
+
+  listItem(list) {
+    return (
+      <Card class="card">
+        <CardBody>
+          <CardTitle>{list.title}</CardTitle>
+          <CardSubtitle>insert subtitle?</CardSubtitle>
           <CardLink href="#">View</CardLink>
         </CardBody>
       </Card>
@@ -124,9 +160,10 @@ class DiscoverPage extends Component {
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
               {/* TODO: Fill this in with search results from the List table. */}
+              {this.state.listResults.map(r => this.listItem(r))}
             </TabPane>
             <TabPane tabId="2">
-              {this.state.results.map(r => this.userItem(r))}
+              {this.state.userResults.map(r => this.userItem(r))}
             </TabPane>
           </TabContent>
         </div>
@@ -139,7 +176,7 @@ class DiscoverPage extends Component {
   }
 
   render() {
-    const { results, query, hasClickedSearch } = this.state;
+    const { userResults, listResults, query, hasClickedSearch } = this.state;
     console.log("query: " + query);
     return (
       <div class="discoverPage">
@@ -156,8 +193,8 @@ class DiscoverPage extends Component {
             </div>
           </div>
         </Form>
-        {results.length > 0 && this.renderResultTabs()}
-        {results.length == 0 && hasClickedSearch && this.renderNoResultsFound()}
+        {userResults.length > 0 && listResults.length > 0 && this.renderResultTabs()}
+        {userResults.length == 0 && listResults.length > 0 && hasClickedSearch && this.renderNoResultsFound()}
       </div>
     );
   }
