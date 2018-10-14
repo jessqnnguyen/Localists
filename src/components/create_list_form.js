@@ -71,6 +71,17 @@ export class List {
       }
     }
   }
+
+  setListTitle(listId) {
+      if (isUserLoggedIn()) {
+          var userLists = getUserLists();
+          userLists.child(listId).once("value", function(snapshot) {
+            if (snapshot.exists()) {
+                snapshot.val();
+            }
+           });
+      }
+  }
 }
 
 // Just for reference. JS doesn't handle types.
@@ -90,6 +101,7 @@ class CreateListForm extends Component {
       list: new List(),
       title: 'Fav brunch places',
       places: [{name: "Four Ate Five", address: "485 Crown St, Surry Hills, Sydney"}],
+      listId: props.match.params.listID,
     };
     this.routeChange = this.routeChange.bind(this);
   }
