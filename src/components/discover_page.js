@@ -73,13 +73,12 @@ class DiscoverPage extends Component {
       snapshot.forEach(function(childSnapshot) {
         childSnapshot.forEach(function(childSnapshot) {
           const list = childSnapshot.val();
-          console.log("list tite: " + list.title);
           for (let place of list.places) {
             // UNTESTED: add list if one of its places has an address that contains the query
             console.log("place address: " + place.address + "\nplace name: " + place.name);
-            // TEMP: should store all list fields as lower case upon list creation
             const address = place.address.toLowerCase();
             if (address.includes(query) || address == (query)) {
+              console.log("added list: title = " + list.title);
               listResults.push(list);
               break;
             }
@@ -96,7 +95,6 @@ class DiscoverPage extends Component {
     db.ref('users').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
         const user = childSnapshot.val();
-        // TEMP: should store all user name fields as lower case upon list creation
         const name = user.name.toLowerCase();
         if (name.includes(query) || name == (query)) {
           userResults.push(user);
