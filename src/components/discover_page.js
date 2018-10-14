@@ -69,6 +69,13 @@ class DiscoverPage extends Component {
     var userResults = [];
 
     // populate list search
+    // "lists" collection structure:
+    // user id
+    //  - list id
+    //    - "title"
+    //    - "places": array
+    //      - "address"
+    //      - "name"
     db.ref('lists').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
         childSnapshot.forEach(function(childSnapshot) {
@@ -92,6 +99,10 @@ class DiscoverPage extends Component {
     console.log("listResults = " + JSON.stringify(listResults));
 
     // populate user search
+    // users collection structure
+    // user id:
+    //  - "email"
+    //  - "name"
     db.ref('users').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
         const user = childSnapshot.val();
