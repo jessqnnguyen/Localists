@@ -31,14 +31,14 @@ export class List {
   // not tested yet
   load(id) {
     if (id !== "" && DatabaseUtils.isUserLoggedIn()) {
-        var userDatabase = DatabaseUtils.getUserDatabase();    
-        userDatabase.child(this.id).once("value", function (snapshot) {
+        var userLists = DatabaseUtils.getUserLists();    
+        userLists.child(this.id).once("value", function (snapshot) {
             if (snapshot.exists()) {
                 this.id = snapshot.val.id;
                 this.title = snapshot.val.title;
                 this.places = snapshot.val.places;
             }
-            userDatabase.child(this.id).set({
+            userLists.child(this.id).set({
                 title: this.title,
                 places: this.places,
             });
@@ -48,10 +48,10 @@ export class List {
 
   save() {
     if (DatabaseUtils.isUserLoggedIn()) {
-      var userDatabase = DatabaseUtils.getUserDatabase();
+      var userLists = DatabaseUtils.getUserLists();
       // If the list has already been loaded i.e. if the list id is non-empty   
       if (this.id !== "") {
-        userDatabase.child(this.id).once("value", function(snapshot) {
+        userLists.child(this.id).once("value", function(snapshot) {
           if (!snapshot.exists()) {
             this.id = this.ref.push().key;
           }
@@ -63,8 +63,8 @@ export class List {
       } else { 
         // The list is new so set the list id to the id returned
         // by the database push.
-        this.id = userDatabase.push().key;
-        userDatabase.child(this.id).set({
+        this.id = userLists.push().key;
+        userLists.child(this.id).set({
           title: this.title,
           places: this.places,
         });
