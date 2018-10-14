@@ -18,71 +18,72 @@ import firebase from 'firebase/app';
 import '../styles/create_list_form_styles.css';
 require('firebase/auth')
 
-// Just for reference. JS doesn't handle types.
 export class List {
-  constructor (id="", title="", places=[]) {
-    this.id = id;
+  constructor (title, places) {
+    this.id = "";
      // Title of the list - string.
     this.title = title;
      // List of places - Place[].
     this.places = places;
+  }
 
-    
-    
-    
+  isUserLoggedIn() {
+      return firebase.auth().currentUser ? true : false;
+  }
+
+  getUserDatabase() {
+    var user = firebase.auth().currentUser;
+    var database = firebase.database();
+    if (user) {
+        return database.ref("lists/" + user.uid);
+    } else {
+        // This function should only be called if the user is logged in,
+        // throw error if it is called without this condition.
+        throw Error("getUserDatabase() failed - user not logged in");
+    }
   }
 
   // not tested yet
   load(id) {
-    this.user = firebase.auth().currentUser;
-    this.database = firebase.database();
-    if (id === "") {
-      return
-    } else {
-      if (this.user) {
-        this.ref = this.database.ref("lists/" + this.user.uid);
-        this.ref.child(this.id).once("value", function (snapshot) {
-          if (snapshot.exists()) {
-
-            this.id = snapshot.val.id;
-            this.title = snapshot.val.title;
-            this.places = snapshot.val.places;
-          }
-          this.ref.child(this.id).set({
-            title: this.title,
-            places: this.places
-          });
+    if (id !== "" && this.isUserLoggedIn()) {
+        var userDatabase = this.getUserDatabase();    
+        userDatabase.child(this.id).once("value", function (snapshot) {
+            if (snapshot.exists()) {
+                this.id = snapshot.val.id;
+                this.title = snapshot.val.title;
+                this.places = snapshot.val.places;
+            }
+            userDatabase.child(this.id).set({
+                title: this.title,
+                places: this.places,
+            });
         });
-      }
     }
-
   }
 
   save() {
-    // console.log(user, this.title, this.places);
-    this.user = firebase.auth().currentUser;
-    this.database = firebase.database();
-    if (this.user) {
-      this.ref = this.database.ref("lists/"+this.user.uid);
+    if (this.isUserLoggedIn()) {
+      var userDatabase = this.getUserDatabase();
+      // If the list has already been loaded i.e. if the list id is non-empty   
       if (this.id !== "") {
-        this.ref.child(this.id).once("value", function (snapshot) {
+        userDatabase.child(this.id).once("value", function(snapshot) {
           if (!snapshot.exists()) {
             this.id = this.ref.push().key;
           }
           this.ref.child(this.id).set({
             title: this.title,
-            places: this.places
+            places: this.places,
           });
         });
-      } else {
-        this.id = this.ref.push().key;
-        this.ref.child(this.id).set({
+      } else { 
+        // The list is new so set the list id to the id returned
+        // by the database push.
+        this.id = userDatabase.push().key;
+        userDatabase.child(this.id).set({
           title: this.title,
-          places: this.places
+          places: this.places,
         });
       }
-    } else {
-      // No user is signed in.
     }
   }
 }
@@ -151,11 +152,9 @@ class CreateListForm extends Component {
   // TODO(chris): Save this list to the firebase database.
   saveList() {
     // Stuff to send to the database.
-    const list = this.state.list;
-
-    var nList = new List("", this.state.title, this.state.places)
-    // TODO: Add firebase functions here.
-    nList.save();
+    const { title, places } = this.state;
+    var list = new List(title, places);
+    list.save();
   }
 
   render() {
