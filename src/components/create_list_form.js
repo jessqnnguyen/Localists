@@ -27,37 +27,43 @@ export class List {
      // List of places - Place[].
     this.places = places;
 
-    this.user = firebase.auth().currentUser;
-    this.database = firebase.database();
-    if (this.user) {
-      this.ref = this.database.ref("lists/"+this.user.uid);
-    }
+    
+    
     
   }
 
   // not tested yet
   load(id) {
+    this.user = firebase.auth().currentUser;
+    this.database = firebase.database();
     if (id === "") {
       return
     } else {
-      this.ref.child(this.id).once("value", function (snapshot) {
-        if (snapshot.exists()) {
+      if (this.user) {
+        this.ref = this.database.ref("lists/" + this.user.uid);
+        this.ref.child(this.id).once("value", function (snapshot) {
+          if (snapshot.exists()) {
 
-          this.id = snapshot.val.id;
-          this.title = snapshot.val.title;
-          this.places = snapshot.val.places;
-        }
-        this.ref.child(this.id).set({
-          title: this.title,
-          places: this.places
+            this.id = snapshot.val.id;
+            this.title = snapshot.val.title;
+            this.places = snapshot.val.places;
+          }
+          this.ref.child(this.id).set({
+            title: this.title,
+            places: this.places
+          });
         });
-      });
+      }
     }
+
   }
 
   save() {
     // console.log(user, this.title, this.places);
+    this.user = firebase.auth().currentUser;
+    this.database = firebase.database();
     if (this.user) {
+      this.ref = this.database.ref("lists/"+this.user.uid);
       if (this.id !== "") {
         this.ref.child(this.id).once("value", function (snapshot) {
           if (!snapshot.exists()) {
