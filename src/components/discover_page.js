@@ -61,7 +61,7 @@ class DiscoverPage extends Component {
   }
 
   search = () => {
-    const query = this.state.query;
+    const query = this.state.query.toLowerCase();
     this.state.hasClickedSearch = true;
     const db = firebase.database();
     // TODO: add results for Lists as well
@@ -73,10 +73,13 @@ class DiscoverPage extends Component {
       snapshot.forEach(function(childSnapshot) {
         childSnapshot.forEach(function(childSnapshot) {
           const list = childSnapshot.val();
+          console.log("list tite: " + list.title);
           for (let place of list.places) {
             // UNTESTED: add list if one of its places has an address that contains the query
             console.log("place address: " + place.address + "\nplace name: " + place.name);
-            if (place.address.includes(query) || place.address== (query)) {
+            // TEMP: should store all list fields as lower case upon list creation
+            const address = place.address.toLowerCase();
+            if (address.includes(query) || address == (query)) {
               listResults.push(list);
               break;
             }
@@ -93,7 +96,9 @@ class DiscoverPage extends Component {
     db.ref('users').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
         const user = childSnapshot.val();
-        if (user.name.includes(query) || user.email == (query)) {
+        // TEMP: should store all user name fields as lower case upon list creation
+        const name = user.name.toLowerCase();
+        if (name.includes(query) || name == (query)) {
           userResults.push(user);
         }
       });
@@ -139,7 +144,8 @@ class DiscoverPage extends Component {
   }
 
   renderResultTabs() {
-    this.state.hasClickedSearch = false;
+    console.log("called renderResultTabs");
+    const { listResults, userResults } = this.state;
     return (
       <div class="searchResults">
         <Nav tabs>
@@ -159,11 +165,12 @@ class DiscoverPage extends Component {
           </Nav>
           <TabContent activeTab={this.state.activeTab}>
             <TabPane tabId="1">
-              {/* TODO: Fill this in with search results from the List table. */}
-              {this.state.listResults.map(r => this.listItem(r))}
+              {listResults.length > 0 && listResults.map(r => this.listItem(r))}
+              {listResults.length == 0 && this.renderNoResultsFound()}
             </TabPane>
             <TabPane tabId="2">
-              {this.state.userResults.map(r => this.userItem(r))}
+              {userResults.length > 0 && userResults.map(r => this.userItem(r))}
+              {userResults.length == 0 && this.renderNoResultsFound()}
             </TabPane>
           </TabContent>
         </div>
@@ -171,13 +178,13 @@ class DiscoverPage extends Component {
   }
   
   renderNoResultsFound() {
-    this.state.hasClickedSearch = false;
     return <Alert color="danger">No results found!</Alert>
   }
 
   render() {
-    const { userResults, listResults, query, hasClickedSearch } = this.state;
+    const { query, hasClickedSearch } = this.state;
     console.log("query: " + query);
+    console.log("hasClickedSearch: " + hasClickedSearch);
     return (
       <div class="discoverPage">
         <h1 class="display-4">Discover</h1>
@@ -193,8 +200,7 @@ class DiscoverPage extends Component {
             </div>
           </div>
         </Form>
-        {userResults.length > 0 && listResults.length > 0 && this.renderResultTabs()}
-        {userResults.length == 0 && listResults.length > 0 && hasClickedSearch && this.renderNoResultsFound()}
+        {hasClickedSearch && this.renderResultTabs()}
       </div>
     );
   }
