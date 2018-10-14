@@ -15,6 +15,7 @@ import { Route } from 'react-router-dom';
 import Dashboard from './dashboard';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase/app';
+import DatabaseUtils from './database_utils';
 import '../styles/create_list_form_styles.css';
 require('firebase/auth')
 
@@ -27,26 +28,10 @@ export class List {
     this.places = places;
   }
 
-  isUserLoggedIn() {
-      return firebase.auth().currentUser ? true : false;
-  }
-
-  getUserDatabase() {
-    var user = firebase.auth().currentUser;
-    var database = firebase.database();
-    if (user) {
-        return database.ref("lists/" + user.uid);
-    } else {
-        // This function should only be called if the user is logged in,
-        // throw error if it is called without this condition.
-        throw Error("getUserDatabase() failed - user not logged in");
-    }
-  }
-
   // not tested yet
   load(id) {
-    if (id !== "" && this.isUserLoggedIn()) {
-        var userDatabase = this.getUserDatabase();    
+    if (id !== "" && DatabaseUtils.isUserLoggedIn()) {
+        var userDatabase = DatabaseUtils.getUserDatabase();    
         userDatabase.child(this.id).once("value", function (snapshot) {
             if (snapshot.exists()) {
                 this.id = snapshot.val.id;
@@ -62,8 +47,8 @@ export class List {
   }
 
   save() {
-    if (this.isUserLoggedIn()) {
-      var userDatabase = this.getUserDatabase();
+    if (DatabaseUtils.isUserLoggedIn()) {
+      var userDatabase = DatabaseUtils.getUserDatabase();
       // If the list has already been loaded i.e. if the list id is non-empty   
       if (this.id !== "") {
         userDatabase.child(this.id).once("value", function(snapshot) {

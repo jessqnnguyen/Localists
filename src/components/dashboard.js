@@ -18,6 +18,7 @@ import firebase from 'firebase/app';
 import LoginForm from './login_form';
 import RegisterForm from './register_form';
 import ListIcon from './list.svg';
+import DatabaseUtils from './database_utils';
 require('firebase/auth')
 
 
