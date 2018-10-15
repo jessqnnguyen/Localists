@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as routes from '../constants/routes';
 import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
 import {
   Form,
   FormGroup,
@@ -11,14 +10,15 @@ import {
   NavLink,
   Input,
   Button,
-  TabContent,
-  TabPane,
   Alert,
   InputGroup,
+  TabContent,
+  TabPane,
   InputGroupAddon
 } from 'reactstrap';
 import firebase from 'firebase/app';
 import '../styles/discover_page_styles.css';
+import classnames from 'classnames';
 require('firebase/auth')
 
 
@@ -59,7 +59,6 @@ class DiscoverPage extends Component {
     const query = this.state.query.toLowerCase();
     this.state.hasClickedSearch = true;
     const db = firebase.database();
-    // TODO: add results for Lists as well
     var listResults = [];
     var userResults = [];
 
@@ -195,12 +194,12 @@ class DiscoverPage extends Component {
         <Form>
           <div class="searchBar">
             <div class="searchInput">
-              <FormGroup>
-                <InputGroup>
-                  <Input name="query" id="exampleEmail" placeholder="Search users and places" onChange={this.handleInputChange}/>
-                  <InputGroupAddon addonType="append"><Button outline color="primary" onClick={() => this.search()}>Search</Button></InputGroupAddon>
-                </InputGroup>
-              </FormGroup>
+              <InputGroup>
+                 <Input name="query" id="exampleEmail" placeholder="Search users and places" onChange={this.handleInputChange}/>
+                 <InputGroupAddon addonType="append">
+                   <Button outline color="primary" onClick={() => this.search()}>Search</Button>
+                 </InputGroupAddon>
+              </InputGroup>
             </div>
           </div>
         </Form>
