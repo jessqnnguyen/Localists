@@ -26,9 +26,10 @@ class Dashboard extends Component {
     }
 
     console.log(this.state.lists);
+    const user = firebase.auth().currentUser;
     firebase.auth().onAuthStateChanged((user) => {
-      const database = firebase.database();
       if (user) {
+        const database = firebase.database();
         console.log(user.uid)
         const ref = database.ref("lists/" + user.uid);
         ref.once("value", (snapshot) => {
@@ -36,7 +37,7 @@ class Dashboard extends Component {
           if (snapshot.exists()) {
             snapshot.forEach((listSnapshot) => {
               l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
-            });
+            }); 
             this.setState({ lists: l });
             console.log(this.state.lists, l);
           }
