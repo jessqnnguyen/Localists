@@ -37,7 +37,7 @@ class Dashboard extends Component {
           if (snapshot.exists()) {
             snapshot.forEach((listSnapshot) => {
               l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
-            });
+            }); 
             this.setState({ lists: l });
             console.log(this.state.lists, l);
           }
