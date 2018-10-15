@@ -206,9 +206,6 @@ class DiscoverPage extends Component {
                  </InputGroupAddon>
               </InputGroup>
             </div>
-            <div class="searchButton">
-              <Button outline color="primary">Search</Button>
-            </div>
           </div>
         </Form>
         {hasClickedSearch && this.renderResultTabs()}
