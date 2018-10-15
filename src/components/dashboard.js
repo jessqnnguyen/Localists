@@ -13,7 +13,6 @@ import { withRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
 import LoginForm from './login_form';
 import ListIcon from './list.svg';
-import List from './create_list_form';
 require('firebase/auth')
 
 class Dashboard extends Component {
@@ -27,9 +26,10 @@ class Dashboard extends Component {
     }
 
     console.log(this.state.lists);
+    const user = firebase.auth().currentUser;
     firebase.auth().onAuthStateChanged((user) => {
-      const database = firebase.database();
       if (user) {
+        const database = firebase.database();
         console.log(user.uid)
         const ref = database.ref("lists/" + user.uid);
         ref.once("value", (snapshot) => {
@@ -59,9 +59,6 @@ class Dashboard extends Component {
 
       listElements.push(this.createListElement(this.state.lists[i].title));
     }
-    // for (let i=0; i < tempList.length; i++) {
-    //   listElements.push(this.createListElement(tempList[i].title));
-    // }
     return listElements;
   }
 
@@ -150,8 +147,8 @@ class Dashboard extends Component {
               </div>
             </div>
             <ListGroup>
-            {this.createListsTable()}
-                    </ListGroup>
+              {this.createListsTable()}
+            </ListGroup>
           </div>
           <div class="followingLists">
             <div class="followingListsHeader">
