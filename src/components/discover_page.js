@@ -5,7 +5,12 @@ import {
   Form,
   FormGroup,
   Nav,
-  Card,CardBody,CardSubtitle,CardText,CardTitle,CardLink,
+  Card,
+  CardBody,
+  CardSubtitle,
+  CardText,
+  CardTitle,
+  CardLink,
   NavItem,
   NavLink,
   Input,
@@ -200,6 +205,9 @@ class DiscoverPage extends Component {
                    <Button outline color="primary" onClick={() => this.search()}>Search</Button>
                  </InputGroupAddon>
               </InputGroup>
+            </div>
+            <div class="searchButton">
+              <Button outline color="primary">Search</Button>
             </div>
           </div>
         </Form>
