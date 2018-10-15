@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import * as routes from '../constants/routes';
 import {
-  Form,
-  FormGroup,
-  Label,
-  Input,
   Button,
   ListGroup,
   ListGroupItem,
@@ -16,17 +12,37 @@ import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
 import LoginForm from './login_form';
-import RegisterForm from './register_form';
 import ListIcon from './list.svg';
-import DatabaseUtils from './database_utils';
 require('firebase/auth')
-
 
 class Dashboard extends Component {
 
   constructor(props) {
     super(props);
     this.routeChange = this.routeChange.bind(this);
+    this.state = {
+      lists:[],
+      followedLists:[]
+    }
+
+    console.log(this.state.lists);
+    firebase.auth().onAuthStateChanged((user) => {
+      const database = firebase.database();
+      if (user) {
+        console.log(user.uid)
+        const ref = database.ref("lists/" + user.uid);
+        ref.once("value", (snapshot) => {
+          var l = [];
+          if (snapshot.exists()) {
+            snapshot.forEach((listSnapshot) => {
+              l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
+            });
+            this.setState({ lists: l });
+            console.log(this.state.lists, l);
+          }
+        });
+      }
+    });
   }
 
   routeChange () {
@@ -35,14 +51,12 @@ class Dashboard extends Component {
   }
 
   createListsTable = () => {
-    const tempList = [
-      {id: "0", title: "Animal cafes to check out in Tokyo", length: "10"},
-      {id: "1", title: "Great brunch cafes in the city", length: "7"},
-      {id: "2", title: "Best cafes in Paris", length: "3"}
-    ];
+    console.log(this.state.lists);
     let listElements = [];
-    for (let i=0; i < tempList.length; i++) {
-      listElements.push(this.createListElement(tempList[i].title));
+    for (let i=0; i < this.state.lists.length; i++) {
+      console.log(this.state.lists[i].title);
+
+      listElements.push(this.createListElement(this.state.lists[i].title));
     }
     return listElements;
   }
@@ -72,12 +86,12 @@ class Dashboard extends Component {
               <a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a>
             </ListGroupItemText>
           </div>
-            <div class="listRight">
-              {this.createProfileIcon(owner)}
-              <div class="listOwnerName">
-                <ListGroupItemText>{owner}</ListGroupItemText>
-              </div>
+          <div class="listRight">
+            {this.createProfileIcon(owner)}
+            <div class="listOwnerName">
+              <ListGroupItemText>{owner}</ListGroupItemText>
             </div>
+          </div>
         </div>
       </ListGroupItem>
     );
