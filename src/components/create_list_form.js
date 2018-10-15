@@ -71,17 +71,6 @@ export class List {
       }
     }
   }
-
-  setListTitle(listId) {
-      if (isUserLoggedIn()) {
-          var userLists = getUserLists();
-          userLists.child(listId).once("value", function(snapshot) {
-            if (snapshot.exists()) {
-                snapshot.val();
-            }
-           });
-      }
-  }
 }
 
 // Just for reference. JS doesn't handle types.
