@@ -5,9 +5,7 @@ import classnames from 'classnames';
 import {
   Form,
   FormGroup,
-  Label,
   Nav,
-  Row,
   Card,CardBody,CardSubtitle,CardText,CardTitle,CardLink,
   NavItem,
   NavLink,
@@ -19,9 +17,6 @@ import {
   InputGroup,
   InputGroupAddon
 } from 'reactstrap';
-import { Route } from 'react-router-dom';
-import Dashboard from './dashboard';
-import { Link } from 'react-router-dom';
 import firebase from 'firebase/app';
 import '../styles/discover_page_styles.css';
 require('firebase/auth')
@@ -68,7 +63,8 @@ class DiscoverPage extends Component {
     var listResults = [];
     var userResults = [];
 
-    // populate list search
+		// Populates list search results.
+		// TODO(robert): Delete these comments when done. 
     // "lists" collection structure:
     // user id
     //  - list id
@@ -81,7 +77,8 @@ class DiscoverPage extends Component {
         childSnapshot.forEach(function(childSnapshot) {
           const list = childSnapshot.val();
           for (let place of list.places) {
-            // UNTESTED: add list if one of its places has an address that contains the query
+						// TODO(robert): Verify if this works.
+            // Add list if one of its places has an address that contains the query
             console.log("place address: " + place.address + "\nplace name: " + place.name);
             const address = place.address.toLowerCase();
             if (address.includes(query) || address == (query)) {
@@ -98,18 +95,14 @@ class DiscoverPage extends Component {
     });
     console.log("listResults = " + JSON.stringify(listResults));
 
-    // populate user search
-    // users collection structure
-    // user id:
-    //  - "email"
-    //  - "name"
+		// Populate user search results. 
     db.ref('users').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
-        const user = childSnapshot.val();
-        const name = user.name.toLowerCase();
-        if (name.includes(query) || name == (query)) {
-          userResults.push(user);
-        }
+				const user = childSnapshot.val();
+				const name = user.name ? user.name.toLowerCase() : "";
+				if (name.includes(query) || name == (query)) {
+					userResults.push(user);
+				}
       });
       this.setState(() => ({
         userResults: userResults,
@@ -132,7 +125,8 @@ class DiscoverPage extends Component {
         <CardBody>
           <CardTitle>{user.name}</CardTitle>
           <CardSubtitle>{user.email}</CardSubtitle>
-          <CardText>Some info about the user?</CardText>
+					{/* TODO: Store user's location in db and display here or delete this subtitle. */}
+          <CardText>Insert user location here</CardText>
           <CardLink href="#">Follow</CardLink>
           <CardLink href="#">View</CardLink>
         </CardBody>
@@ -145,7 +139,8 @@ class DiscoverPage extends Component {
       <Card class="card">
         <CardBody>
           <CardTitle>{list.title}</CardTitle>
-          <CardSubtitle>insert subtitle?</CardSubtitle>
+					{/* TODO: Store a description field in the list table on the db or display here and delete this subtitle. */}
+          <CardSubtitle>List subtitle if exists</CardSubtitle>
           <CardLink href="#">View</CardLink>
         </CardBody>
       </Card>
