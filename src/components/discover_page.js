@@ -71,6 +71,7 @@ class DiscoverPage extends Component {
     const db = firebase.database();
     var listResults = [];
     var userResults = [];
+
 		// Populate list search results.
     db.ref('lists').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
@@ -93,6 +94,7 @@ class DiscoverPage extends Component {
       }));
     });
     console.log("listResults = " + JSON.stringify(listResults));
+
     // Populate user search results. 
     db.ref('users').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
@@ -107,10 +109,11 @@ class DiscoverPage extends Component {
       }));
     });
     console.log("userResults = " + JSON.stringify(userResults));
+
     // reset current results page
     this.setState({
       currentPage: 1
-    })
+    });
   }
 
   toggle(tab) {
@@ -156,7 +159,7 @@ class DiscoverPage extends Component {
     // NOTE: for now, tabs do not track what page you were on (toggle() resets currentPage to 1)
     const indexOfLastResult = currentPage * resultsPerPage;
     const indexOfFirstResult = indexOfLastResult - resultsPerPage;
-
+    
     return (
       <div class="searchResults">
         <Nav tabs>
@@ -211,7 +214,7 @@ class DiscoverPage extends Component {
     for (let i = 1; i <= Math.ceil(resultsLength / resultsPerPage); i++) {
       pageNumbers.push(i);
     }
-    // render page numbers
+
     return (
       <Pagination>
         {pageNumbers.map(number => (
