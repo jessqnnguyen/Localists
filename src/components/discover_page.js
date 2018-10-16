@@ -71,8 +71,7 @@ class DiscoverPage extends Component {
     const db = firebase.database();
     var listResults = [];
     var userResults = [];
-
-		// Populates list search results.
+		// Populate list search results.
     db.ref('lists').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
         childSnapshot.forEach(function(childSnapshot) {
@@ -80,10 +79,8 @@ class DiscoverPage extends Component {
           if (list.places != null) {
             for (let place of list.places) {
               // Add list if one of its places has an address that contains the query
-              console.log("place address: " + place.address + "\nplace name: " + place.name);
               const address = place.address.toLowerCase();
               if (address.includes(query) || address == (query)) {
-                console.log("added list: title = " + list.title);
                 listResults.push(list);
                 break;
               }
@@ -96,7 +93,6 @@ class DiscoverPage extends Component {
       }));
     });
     console.log("listResults = " + JSON.stringify(listResults));
-
     // Populate user search results. 
     db.ref('users').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
@@ -111,6 +107,10 @@ class DiscoverPage extends Component {
       }));
     });
     console.log("userResults = " + JSON.stringify(userResults));
+    // reset current results page
+    this.setState({
+      currentPage: 1
+    })
   }
 
   toggle(tab) {
@@ -151,7 +151,6 @@ class DiscoverPage extends Component {
   }
 
   renderResultTabs() {
-    console.log("called renderResultTabs");
     const { currentPage, resultsPerPage, listResults, userResults } = this.state;
     // find index of first and last result to render based on page number
     // NOTE: for now, tabs do not track what page you were on (toggle() resets currentPage to 1)
@@ -177,7 +176,6 @@ class DiscoverPage extends Component {
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
-            {/* TODO: render based on currentPage, resultsPerPage instead of just mapping all results */}
             {listResults.length > 0 && listResults.slice(indexOfFirstResult, indexOfLastResult).map(r => this.listItem(r))}
             {listResults.length == 0 && this.renderNoResultsFound()}
             {this.renderPagination("Lists")}
@@ -213,11 +211,7 @@ class DiscoverPage extends Component {
     for (let i = 1; i <= Math.ceil(resultsLength / resultsPerPage); i++) {
       pageNumbers.push(i);
     }
-    // TEMP: testing
-    console.log("renderPagination called for " + resultsTab);
-    console.log("\tresult length: " + resultsLength);
-    console.log("\tpage numbers: " + JSON.stringify(pageNumbers));
-    // TODO: return Pagination stuff based on PageNumbers
+    // render page numbers
     return (
       <Pagination>
         {pageNumbers.map(number => (
@@ -236,7 +230,6 @@ class DiscoverPage extends Component {
   }
 
   handlePageChange = (event) => {
-    console.log("handlePageChange: target key = " + event.target.id);
     this.setState({
       currentPage: event.target.id
     });
@@ -245,7 +238,6 @@ class DiscoverPage extends Component {
   render() {
     const { query, hasClickedSearch } = this.state;
     console.log("query: " + query);
-    console.log("hasClickedSearch: " + hasClickedSearch);
     return (
       <div class="discoverPage">
         <h1 class="display-4">Discover</h1>
