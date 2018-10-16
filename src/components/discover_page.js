@@ -37,6 +37,8 @@ class DiscoverPage extends Component {
       query: "",
       /* Whether the user has clicked the search button yet */
       hasClickedSearch: false, 
+      currPage: 1,
+      resultsPerPage: 3,
       listResults: [],
       userResults: [],
     };
@@ -168,10 +170,12 @@ class DiscoverPage extends Component {
           <TabPane tabId="1">
             {listResults.length > 0 && listResults.map(r => this.listItem(r))}
             {listResults.length == 0 && this.renderNoResultsFound()}
+            {this.renderPagination("Lists")}
           </TabPane>
           <TabPane tabId="2">
             {userResults.length > 0 && userResults.map(r => this.userItem(r))}
             {userResults.length == 0 && this.renderNoResultsFound()}
+            {this.renderPagination("Users")}
           </TabPane>
         </TabContent>
       </div>
@@ -182,6 +186,28 @@ class DiscoverPage extends Component {
     return <div class="noResultsFoundAlert">
       <Alert color="danger">No results found!</Alert>
     </div>;
+  }
+  
+  // based on: https://stackoverflow.com/questions/40232847/how-to-implement-pagination-in-reactjs
+  renderPagination(resultsTab) {
+    const { currPage, resultsPerPage, listResults, userResults } = this.state;
+    // result length depends on which tab we're rendering
+    var resultsLength;
+    if (resultsTab == "Lists") {
+      resultsLength = listResults.length;
+    } else if (resultsTab == "Users") {
+      resultsLength = userResults.length;
+    }
+    // determine how many pages there should be based on result length
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(resultsLength / resultsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+
+    // TODO: return Pagination stuff based on PageNumbers
+    console.log("renderPagination called for " + resultsTab);
+    console.log("\tresult length: " + resultsLength);
+    console.log("\tpage numbers: " + JSON.stringify(pageNumbers));
   }
 
   render() {
