@@ -179,7 +179,9 @@ class DiscoverPage extends Component {
   }
   
   renderNoResultsFound() {
-    return <Alert color="danger">No results found!</Alert>
+    return <div class="noResultsFoundAlert">
+      <Alert color="danger">No results found!</Alert>
+    </div>;
   }
 
   render() {
