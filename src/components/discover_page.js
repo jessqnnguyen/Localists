@@ -19,7 +19,10 @@ import {
   InputGroup,
   TabContent,
   TabPane,
-  InputGroupAddon
+  InputGroupAddon,
+  Pagination, 
+  PaginationItem,
+  PaginationLink
 } from 'reactstrap';
 import firebase from 'firebase/app';
 import '../styles/discover_page_styles.css';
@@ -37,8 +40,8 @@ class DiscoverPage extends Component {
       query: "",
       /* Whether the user has clicked the search button yet */
       hasClickedSearch: false, 
-      currPage: 1,
       resultsPerPage: 3,
+      currentPage: 1,
       listResults: [],
       userResults: [],
     };
@@ -113,7 +116,8 @@ class DiscoverPage extends Component {
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
-        activeTab: tab
+        activeTab: tab,
+        currentPage: 1
       });
     }
   }
@@ -122,7 +126,7 @@ class DiscoverPage extends Component {
     return (
       <Card class="card">
         <CardBody>
-          <CardTitle>{user.name}</CardTitle>
+          <CardTitle>{user.name || "No name! (shouldn't happen)"}</CardTitle>
           <CardSubtitle>{user.email}</CardSubtitle>
           {/* TODO: Store user's location in db and display here or delete this subtitle. */}
           <CardText>Insert user location here</CardText>
@@ -148,7 +152,12 @@ class DiscoverPage extends Component {
 
   renderResultTabs() {
     console.log("called renderResultTabs");
-    const { listResults, userResults } = this.state;
+    const { currentPage, resultsPerPage, listResults, userResults } = this.state;
+    // find index of first and last result to render based on page number
+    // NOTE: for now, tabs do not track what page you were on (toggle() resets currentPage to 1)
+    const indexOfLastResult = currentPage * resultsPerPage;
+    const indexOfFirstResult = indexOfLastResult - resultsPerPage;
+
     return (
       <div class="searchResults">
         <Nav tabs>
@@ -168,12 +177,13 @@ class DiscoverPage extends Component {
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
-            {listResults.length > 0 && listResults.map(r => this.listItem(r))}
+            {/* TODO: render based on currentPage, resultsPerPage instead of just mapping all results */}
+            {listResults.length > 0 && listResults.slice(indexOfFirstResult, indexOfLastResult).map(r => this.listItem(r))}
             {listResults.length == 0 && this.renderNoResultsFound()}
             {this.renderPagination("Lists")}
           </TabPane>
           <TabPane tabId="2">
-            {userResults.length > 0 && userResults.map(r => this.userItem(r))}
+            {userResults.length > 0 && userResults.slice(indexOfFirstResult, indexOfLastResult).map(r => this.userItem(r))}
             {userResults.length == 0 && this.renderNoResultsFound()}
             {this.renderPagination("Users")}
           </TabPane>
@@ -190,8 +200,8 @@ class DiscoverPage extends Component {
   
   // based on: https://stackoverflow.com/questions/40232847/how-to-implement-pagination-in-reactjs
   renderPagination(resultsTab) {
-    const { currPage, resultsPerPage, listResults, userResults } = this.state;
-    // result length depends on which tab we're rendering
+    const { resultsPerPage, listResults, userResults } = this.state;
+    // result length depends on which tab is active
     var resultsLength;
     if (resultsTab == "Lists") {
       resultsLength = listResults.length;
@@ -203,11 +213,33 @@ class DiscoverPage extends Component {
     for (let i = 1; i <= Math.ceil(resultsLength / resultsPerPage); i++) {
       pageNumbers.push(i);
     }
-
-    // TODO: return Pagination stuff based on PageNumbers
+    // TEMP: testing
     console.log("renderPagination called for " + resultsTab);
     console.log("\tresult length: " + resultsLength);
     console.log("\tpage numbers: " + JSON.stringify(pageNumbers));
+    // TODO: return Pagination stuff based on PageNumbers
+    return (
+      <Pagination>
+        {pageNumbers.map(number => (
+          <PaginationItem>
+            <PaginationLink
+              key={number}
+              id={number}
+              onClick={this.handlePageChange}
+            >
+              {number}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
+      </Pagination>
+    );
+  }
+
+  handlePageChange = (event) => {
+    console.log("handlePageChange: target key = " + event.target.id);
+    this.setState({
+      currentPage: event.target.id
+    });
   }
 
   render() {
