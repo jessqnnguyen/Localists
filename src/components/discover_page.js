@@ -72,14 +72,16 @@ class DiscoverPage extends Component {
       snapshot.forEach(function(childSnapshot) {
         childSnapshot.forEach(function(childSnapshot) {
           const list = childSnapshot.val();
-          for (let place of list.places) {
-            // Add list if one of its places has an address that contains the query
-            console.log("place address: " + place.address + "\nplace name: " + place.name);
-            const address = place.address.toLowerCase();
-            if (address.includes(query) || address == (query)) {
-              console.log("added list: title = " + list.title);
-              listResults.push(list);
-              break;
+          if (list.places != null) {
+            for (let place of list.places) {
+              // Add list if one of its places has an address that contains the query
+              console.log("place address: " + place.address + "\nplace name: " + place.name);
+              const address = place.address.toLowerCase();
+              if (address.includes(query) || address == (query)) {
+                console.log("added list: title = " + list.title);
+                listResults.push(list);
+                break;
+              }
             }
           }
         });
