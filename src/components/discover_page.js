@@ -72,7 +72,7 @@ class DiscoverPage extends Component {
     var listResults = [];
     var userResults = [];
 
-		// Populate list search results.
+    // Populate list search results.
     db.ref('lists').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
         childSnapshot.forEach(function(childSnapshot) {
@@ -159,7 +159,7 @@ class DiscoverPage extends Component {
     // NOTE: for now, tabs do not track what page you were on (toggle() resets currentPage to 1)
     const indexOfLastResult = currentPage * resultsPerPage;
     const indexOfFirstResult = indexOfLastResult - resultsPerPage;
-    
+
     return (
       <div class="searchResults">
         <Nav tabs>
