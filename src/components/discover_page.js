@@ -40,7 +40,7 @@ class DiscoverPage extends Component {
       query: "",
       /* Whether the user has clicked the search button yet */
       hasClickedSearch: false, 
-      resultsPerPage: 3,
+      resultsPerPage: 8,
       currentPage: 1,
       listResults: [],
       userResults: [],
@@ -114,6 +114,7 @@ class DiscoverPage extends Component {
     this.setState({
       currentPage: 1
     });
+    this.toggle('1');
   }
 
   toggle(tab) {
