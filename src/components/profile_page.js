@@ -2,29 +2,18 @@ import React, { Component } from 'react';
 import * as routes from '../constants/routes';
 import { withRouter } from 'react-router-dom';
 import {
-  Form,
-  FormGroup,
-  Label,
-  Input,
   Button,
-  Alert,
-  InputGroup,
-  InputGroupAddon,
   ListGroupItem,
   ListGroup,
   ListGroupItemText,
   ListGroupItemHeading
 } from 'reactstrap';
-import { Route } from 'react-router-dom';
-import Dashboard from './dashboard';
 import { Link } from 'react-router-dom';
-import firebase from 'firebase/app';
 import '../styles/profile_page_styles.css';
-require('firebase/auth')
+import { AppConsumer } from '../AppContext';
 
 
 class ProfilePage extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -33,26 +22,15 @@ class ProfilePage extends Component {
         email: 'jessqnnguyen@gmail.com'
       },
       lists: [
-        { title: "Fav brunch places" }, 
+        { title: "Fav brunch places" },
         { title: "Best cafes in Paris" },
         { title: "Animal cafes to checkout in Tokyo" },
       ],
     };
-    this.routeChange = this.routeChange.bind(this);
-  }
-
-  routeChange () {
-    window.location.reload();
-    this.props.history.push(routes.HOME);
   }
 
   handleInputChange = (event) => {
-    const target = event.target;
-    const name = target.name;
-
-    this.setState(() => ({
-      [name]: target.value
-    }));
+    this.setState(() => ({ [event.target.name]: event.target.value }));
   }
 
   createProfileIcon(owner) {
@@ -82,7 +60,7 @@ class ProfilePage extends Component {
                 <div class="listOwnerName">
                   <ListGroupItemText>Jessica Nguyen</ListGroupItemText>
                 </div>
-                <Button color="success" onClick={() => this.routeChange()}>Edit profile</Button>
+                <Button color="success" onClick={() => {}}>Edit profile</Button>
               </div>
             </div>
           </ListGroupItem>

@@ -13,13 +13,11 @@ import { withRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
 import LoginForm from './login_form';
 import ListIcon from './list.svg';
-require('firebase/auth')
+import { AppConsumer } from '../AppContext';
 
 class Dashboard extends Component {
-
   constructor(props) {
     super(props);
-    this.routeChange = this.routeChange.bind(this);
     this.state = {
       lists:[],
       followedLists:[]
@@ -37,18 +35,13 @@ class Dashboard extends Component {
           if (snapshot.exists()) {
             snapshot.forEach((listSnapshot) => {
               l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
-            }); 
+            });
             this.setState({ lists: l });
             console.log(this.state.lists, l);
           }
         });
       }
     });
-  }
-
-  routeChange () {
-    window.location.reload();
-    this.props.history.push(routes.CREATELIST);    
   }
 
   createListsTable = () => {
@@ -123,7 +116,7 @@ class Dashboard extends Component {
             <ListGroupItemText id="dashboardListViewLink">
               <a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a>
             </ListGroupItemText>
-            <Button color="success" onClick={() => this.routeChange()}>Edit list</Button>
+            <Button color="success" onClick={() => {}}>Edit list</Button>
           </div>
         </div>
       </ListGroupItem>
@@ -131,41 +124,40 @@ class Dashboard extends Component {
   }
 
   render() {
-    if (JSON.parse(sessionStorage.loggedIn) === true) {
-      return (
-        <div class="dashboard">
-          <div class="lists">
-            <div class="listsHeader">
-              <div class="listHeaderHeading">
-                <img id="listsHeaderIcon" src={ListIcon}/>
-                <h1>Your lists</h1>
+    return (
+      <AppConsumer>
+        {({loggedIn}) =>
+          loggedIn ? <div class="dashboard">
+            <div class="lists">
+              <div class="listsHeader">
+                <div class="listHeaderHeading">
+                  <img id="listsHeaderIcon" src={ListIcon}/>
+                  <h1>Your lists</h1>
+                </div>
+                <div class="addListButton">
+                  <Button outline color="primary" size="lg" onClick={() => this.props.history.push(routes.CREATELIST)}>
+                    Create new list
+                  </Button>
+                </div>
               </div>
-              <div class="addListButton">
-                <Button outline color="primary" size="lg" onClick={() => this.routeChange()}>
-                  Create new list
-                </Button>
-              </div>
+              <ListGroup>
+                {this.createListsTable()}
+              </ListGroup>
             </div>
-            <ListGroup>
-              {this.createListsTable()}
-            </ListGroup>
+            <div class="followingLists">
+              <div class="followingListsHeader">
+                <img id="listsHeaderIcon" src={ListIcon}/>
+                <div class="followinglistsHeading"><h1>Lists you're following</h1></div>
+              </div>
+              <ListGroup>
+                {this.createFollowingListsTable()}
+              </ListGroup>
+            </div>
           </div>
-          <div class="followingLists">
-            <div class="followingListsHeader">
-              <img id="listsHeaderIcon" src={ListIcon}/>
-              <div class="followinglistsHeading"><h1>Lists you're following</h1></div> 
-            </div> 
-            <ListGroup>
-              {this.createFollowingListsTable()}
-            </ListGroup>
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <LoginForm/>
-      );
+        : <LoginForm/>
     }
+    </AppConsumer>
+    );
   }
 }
 

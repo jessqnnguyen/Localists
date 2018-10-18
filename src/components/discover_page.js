@@ -20,26 +20,24 @@ import {
   TabContent,
   TabPane,
   InputGroupAddon,
-  Pagination, 
+  Pagination,
   PaginationItem,
   PaginationLink
 } from 'reactstrap';
 import firebase from 'firebase/app';
 import '../styles/discover_page_styles.css';
 import classnames from 'classnames';
-require('firebase/auth')
+import { AppConsumer } from '../AppContext';
 
 
 class DiscoverPage extends Component {
 
   constructor(props) {
     super(props);
-    this.routeChange = this.routeChange.bind(this);
-
     this.state = {
       query: "",
       /* Whether the user has clicked the search button yet */
-      hasClickedSearch: false, 
+      hasClickedSearch: false,
       resultsPerPage: 8,
       currentPage: 1,
       listResults: [],
@@ -47,22 +45,8 @@ class DiscoverPage extends Component {
     };
   }
 
-  routeChange () {
-    window.location.reload();
-    this.props.history.push(routes.HOME); 
-  }
-
-  register = () => {
-    this.routeChange("register");
-  }
-
   handleInputChange = (event) => {
-    const target = event.target;
-    const name = target.name;
-
-    this.setState(() => ({
-      [name]: target.value
-    }));
+    this.setState(() => ({ [event.target.name]: event.target.value }));
   }
 
   search = () => {
@@ -95,7 +79,7 @@ class DiscoverPage extends Component {
     });
     console.log("listResults = " + JSON.stringify(listResults));
 
-    // Populate user search results. 
+    // Populate user search results.
     db.ref('users').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
         const user = childSnapshot.val();
@@ -193,13 +177,13 @@ class DiscoverPage extends Component {
       </div>
     );
   }
-  
+
   renderNoResultsFound() {
     return <div class="noResultsFoundAlert">
       <Alert color="danger">No results found!</Alert>
     </div>;
   }
-  
+
   // based on: https://stackoverflow.com/questions/40232847/how-to-implement-pagination-in-reactjs
   renderPagination(resultsTab) {
     const { resultsPerPage, listResults, userResults } = this.state;
@@ -249,7 +233,7 @@ class DiscoverPage extends Component {
           <div class="searchBar">
             <div class="searchInput">
               <InputGroup>
-                <Input name="query" id="exampleEmail" placeholder="Search users and places" onChange={this.handleInputChange}/>
+                <Input name="query" id="exampleEmail" placeholder="Search users and places" onChange={event => this.setState({ query: event.target.value })}/>
                 <InputGroupAddon addonType="append">
                   <Button outline color="primary" onClick={() => this.search()}>Search</Button>
                 </InputGroupAddon>

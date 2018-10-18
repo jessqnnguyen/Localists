@@ -1,11 +1,5 @@
 
 import firebase from 'firebase/app';
-require('firebase/auth')
-
-
-export function isUserLoggedIn() {
-    return firebase.auth().currentUser ? true : false;
-}
 
 export function getUserLists() {
     var user = firebase.auth().currentUser;

@@ -11,15 +11,6 @@ import ProfilePage from './components/profile_page';
 // Route related
 import {Switch, Route} from 'react-router-dom';
 import * as routes from './constants/routes';
-import firebase from 'firebase/app';
-import {
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Button
-} from 'reactstrap';
-require('firebase/auth')
 
 export default class App extends Component {
   render() {

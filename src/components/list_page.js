@@ -2,29 +2,17 @@ import React, { Component } from 'react';
 import * as routes from '../constants/routes';
 import { withRouter } from 'react-router-dom';
 import {
-  Form,
-  FormGroup,
-  Label,
-  Input,
   Button,
-  Alert,
-  InputGroup,
-  InputGroupAddon,
   ListGroupItem,
   ListGroup,
   ListGroupItemText,
   ListGroupItemHeading
 } from 'reactstrap';
-import { Route } from 'react-router-dom';
-import Dashboard from './dashboard';
-import { Link } from 'react-router-dom';
-import firebase from 'firebase/app';
 import '../styles/list_page_styles.css';
-require('firebase/auth')
+import { AppConsumer } from '../AppContext';
 
 
 class ListPage extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -35,12 +23,6 @@ class ListPage extends Component {
         {name: "Grandma's at McEvoy", address: "140-142 McEvoy St, Alexandria NSW 2015"},
       ],
     };
-    this.routeChange = this.routeChange.bind(this);
-  }
-
-  routeChange () {
-    window.location.reload();
-    this.props.history.push(routes.HOME);
   }
 
   createProfileIcon(owner) {
@@ -68,7 +50,7 @@ class ListPage extends Component {
               <div class="listLeft">
                 <ListGroupItemHeading>Fav brunch places in the city</ListGroupItemHeading>
                 <ListGroupItemText>
-                  <Button color="success" onClick={() => this.routeChange()}>Edit list</Button>
+                  <Button color="success" onClick={() => this.props.history.push(routes.HOME)}>Edit list</Button>
                 </ListGroupItemText>
               </div>
               <div class="listRight">
