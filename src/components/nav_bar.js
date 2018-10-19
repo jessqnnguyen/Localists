@@ -21,8 +21,21 @@ export default class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      lists: [],
+      name: "",
     };
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        
+        this.setState({ name: user.uid });
+        const database = firebase.database();
+        const ref = database.ref('users/' + user.uid);
+        ref.once("value", (snapshot) => {
+          this.setState({ name: snapshot.val().name });
+        });
+      } 
+    });
   }
 
   toggle() {
@@ -30,6 +43,7 @@ export default class NavBar extends Component {
   }
 
   render() {
+    const userEmail = "jane@jane.com";
     return (
       <AppConsumer>
       {({loggedIn}) =>
@@ -50,7 +64,7 @@ export default class NavBar extends Component {
                 </Nav>
                 <Nav className="ml-auto" navbar>
                   <NavItem>
-                    <NavLink><Link to={routes.PROFILE}>My profile</Link></NavLink>
+                    <NavLink><Link to={`/profile/${this.state.name}`}>My profile</Link></NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink onClick={() => firebase.auth().signOut()}>Logout</NavLink>
