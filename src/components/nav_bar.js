@@ -43,7 +43,6 @@ export default class NavBar extends Component {
   }
 
   render() {
-    const userEmail = "jane@jane.com";
     return (
       <AppConsumer>
       {({loggedIn}) =>
