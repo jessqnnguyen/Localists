@@ -20,7 +20,6 @@ class ProfilePage extends Component {
     this.state = {
       user: {
         name: props.match.params.name,
-        email: props.match.params.name,
       },
       lists: [],
     };
