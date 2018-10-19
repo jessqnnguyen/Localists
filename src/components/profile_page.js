@@ -11,6 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import '../styles/profile_page_styles.css';
 import { AppConsumer } from '../AppContext';
+import firebase from 'firebase/app';
 
 
 class ProfilePage extends Component {
@@ -18,15 +19,25 @@ class ProfilePage extends Component {
     super(props);
     this.state = {
       user: {
-        name: 'Jessica Nguyen',
-        email: 'jessqnnguyen@gmail.com'
+        name: props.match.params.name,
       },
-      lists: [
-        { title: "Fav brunch places" },
-        { title: "Best cafes in Paris" },
-        { title: "Animal cafes to checkout in Tokyo" },
-      ],
+      lists: [],
     };
+    firebase.auth().onAuthStateChanged((user) => {
+      const database = firebase.database();
+        console.log(user.uid)
+        const ref = database.ref("lists/" + user.uid);
+        ref.once("value", (snapshot) => {
+          var l = [];
+          if (snapshot.exists()) {
+            snapshot.forEach((listSnapshot) => {
+              l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
+            });
+            this.setState({ lists: l });
+            console.log(this.state.lists, l);
+          }
+        });
+    });
   }
 
   handleInputChange = (event) => {
@@ -58,7 +69,7 @@ class ProfilePage extends Component {
               <div class="profileSection">
                 {this.createProfileIcon("Jessica Nguyen")}
                 <div class="listOwnerName">
-                  <ListGroupItemText>Jessica Nguyen</ListGroupItemText>
+                  <ListGroupItemText>{this.state.user.name}</ListGroupItemText>
                 </div>
                 <Button color="success" onClick={() => {}}>Edit profile</Button>
               </div>
