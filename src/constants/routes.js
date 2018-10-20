@@ -7,5 +7,5 @@ export const REGISTER = '/register';
 export const PROFILE = '/profile/:name';
 export const MANAGELISTS = '/managelists';
 export const LISTPAGE = '/listPage';
-export const LISTPAGEID = '/listPage/:id';
+export const LISTPAGEID = '/listPage/:uid/:id';
 export const CREATELIST = '/createList'

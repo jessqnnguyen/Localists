@@ -10,19 +10,20 @@ import {
 } from 'reactstrap';
 import '../styles/list_page_styles.css';
 import { AppConsumer } from '../AppContext';
-
+import firebase from 'firebase/app';
 
 class ListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: 'Fav brunch places',
-      places: [
-        {name: "Four Ate Five", address: "485 Crown St, Surry Hills NSW 2010"},
-        {name: "Devon Cafe", address: "76 Devonshire St, Surry Hills NSW 2010"},
-        {name: "Grandma's at McEvoy", address: "140-142 McEvoy St, Alexandria NSW 2015"},
-      ],
+      list: {title: '', places: []}
     };
+  }
+
+  componentDidMount(){
+    return firebase.database().ref('/lists/' + this.props.match.params.uid + '/' + this.props.match.params.id).once('value').then((snapshot) => {
+      this.setState({list: snapshot.val()});
+    });
   }
 
   createProfileIcon(owner) {
@@ -49,7 +50,7 @@ class ListPage extends Component {
             <ListGroupItem active>
               <div class="listItem">
                 <div class="listLeft">
-                  <ListGroupItemHeading>Fav brunch places in the city</ListGroupItemHeading>
+                  <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
                   <ListGroupItemText>
                     <Button color="success" onClick={() => this.props.history.push(routes.HOME)}>Edit list</Button>
                   </ListGroupItemText>
@@ -65,7 +66,7 @@ class ListPage extends Component {
           </ListGroup>
         </div>
         <ListGroup>
-          {this.state.places.map(place =>
+          {this.state.list.places.map(place =>
           <ListGroupItem>
             <ListGroupItemHeading>{place.name}</ListGroupItemHeading>
             <ListGroupItemText>{place.address}</ListGroupItemText>
