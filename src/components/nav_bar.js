@@ -54,7 +54,7 @@ export default class NavBar extends Component {
                     <NavLink><Link to={`/profile/${uid}`}>My profile</Link></NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink onClick={() => firebase.auth().signOut()}>Logout</NavLink>
+                    <NavLink onClick={() => firebase.auth().signOut()}><Link to={routes.HOME}>Logout</Link></NavLink>
                   </NavItem>
                 </Nav>
               </Collapse>

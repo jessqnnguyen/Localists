@@ -36,7 +36,7 @@ class ProfilePage extends Component {
         const user_ref = database.ref("users/" + user.uid);
         user_ref.once("value", snapshot => {
           const u = snapshot.val();
-          console.log("profile_page.js: u = " + u);
+          console.log("profile_page.js: u = " + JSON.stringify(u));
           // TODO: un-comment below when "users" database issue is fixed
           // this.setState({
           //   name: u.name
@@ -118,23 +118,17 @@ class ProfilePage extends Component {
 
   render() {
     return (
-      <AppConsumer>
-        {({loggedIn, uid}) =>
-          loggedIn ?
-            <div class="listPage">
-              {this.createProfileHeader()}
-              <div class="profileLists">
-                <div class="profileListsHeading">
-                  <h1 class="display-4">My lists</h1>
-                </div>
-                <ListGroup>
-                  {this.createListsTable()}
-                </ListGroup>
-              </div>
-            </div>
-          : <LoginForm/>
-        }
-      </AppConsumer>
+      <div class="listPage">
+        {this.createProfileHeader()}
+        <div class="profileLists">
+          <div class="profileListsHeading">
+            <h1 class="display-4">My lists</h1>
+          </div>
+          <ListGroup>
+            {this.createListsTable()}
+          </ListGroup>
+        </div>
+      </div>
     );
   }
 }
