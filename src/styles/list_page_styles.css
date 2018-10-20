@@ -8,8 +8,30 @@
     margin-top: 50px;
 }
 
-.listPageListItem {
+.listPageHeaderSection {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.listPageListTitle {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.listPageEditListButton {
+    margin-bottom: 20px;
+}
+
+.listPageProfileIconName {
+    margin-top: 20px;
+}
+
+.listPageListItem {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.listPageListItemsSection {
+    margin-top: 20px;
 }

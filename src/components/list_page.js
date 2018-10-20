@@ -48,15 +48,15 @@ class ListPage extends Component {
         <div class="listHeader">
           <ListGroup>
             <ListGroupItem active>
-              <div class="listPageListItem">
-                <div class="listPageListTitle">
-                  <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
-                </div>
+              <div class="listPageHeaderSection">
                 <div class="listPageProfileIconName">
                   {this.createProfileIcon("Jessica Nguyen")}
                   <div class="listOwnerName">
                     <ListGroupItemText>Jessica Nguyen</ListGroupItemText>
                   </div>
+                </div>
+                <div class="listPageListTitle">
+                  <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
                 </div>
                 <div class="listPageEditListButton">
                     <Button color="success" onClick={() => this.props.history.push(routes.HOME)}>Edit list</Button>
@@ -65,13 +65,17 @@ class ListPage extends Component {
             </ListGroupItem>
           </ListGroup>
         </div>
-        <ListGroup>
-          {this.state.list.places.map(place =>
-          <ListGroupItem>
-            <ListGroupItemHeading>{place.name}</ListGroupItemHeading>
-            <ListGroupItemText>{place.address}</ListGroupItemText>
-          </ListGroupItem>)}
-        </ListGroup>
+        <div class="listPageListItemsSection">
+          <ListGroup>
+            {this.state.list.places.map(place =>
+            <ListGroupItem>
+              <div class="listPageListItem">
+                <ListGroupItemHeading>{place.name}</ListGroupItemHeading>
+                <ListGroupItemText>{place.address}</ListGroupItemText>
+              </div>
+            </ListGroupItem>)}
+          </ListGroup>
+        </div>
       </div>
     );
   }
