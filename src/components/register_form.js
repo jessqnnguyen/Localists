@@ -21,11 +21,26 @@ export default class RegisterForm extends Component {
   }
 
   register(email, password, name) {
-    firebase.auth().createUserWithEmailAndPassword(email, password).then(() => {
-      firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(() => {
+      var user = firebase.auth().currentUser;
+      console.log("current logged in user id = " + user.uid);
+      var db = firebase.database();
+      db.ref('users/' + user.uid).set({
         name: name,
-        email: email
-      }, {merge:true}).then(() => firebase.auth().signInWithEmailAndPassword(email, password).then(() => this.props.history.push(routes.HOME)));
+        email: email,
+      }).then(() => {
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(() => {
+          this.props.history.push(routes.HOME);
+        });
+      })
+
+      // SAVING A USER TO DATABASE - FIRESTORE VERSION: left here if we want to refactor stuff later
+      // firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set({
+      //   name: name,
+      //   email: email
+      // }, {merge:true}).then(() => firebase.auth().signInWithEmailAndPassword(email, password).then(() => this.props.history.push(routes.HOME)));
     })
     .catch(function (error) {
       var errorCode = error.code;
