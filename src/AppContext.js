@@ -11,6 +11,7 @@ export class AppProvider extends React.Component {
       loggedIn: sessionStorage.getItem('loggedIn'),
       uid: ''
     }
+
     firebase.auth().onAuthStateChanged((user) => this.setState({ loggedIn: user ? true : false, uid: user ? user.uid : null }, () => sessionStorage.setItem('loggedIn', true)));
   }
 
