@@ -94,8 +94,13 @@ class CreateListForm extends Component {
   }
 
   handlePlaceAddressChange = (idx) => (event) => {
+    console.log("idx = " + idx);
+    console.log("places before slicing = " + JSON.stringify(this.state.places));
     const newPlaces = this.state.places.slice();
+
+    console.log("new address = " + event.target.value);
     newPlaces[idx].address = event.target.value;
+    console.log("newPlaces = " + JSON.stringify(newPlaces));
     this.setState({
       places: newPlaces
     });
@@ -150,7 +155,7 @@ class CreateListForm extends Component {
                   <Input type="name" name="name" id="name" placeholder={this.state.title} value={this.state.title} onChange={this.handleTitleChange}/>
                 </FormGroup>
                 {this.state.places.map((place, idx) => (
-                  <div class="placeGroup">
+                  <div key={idx} class="placeGroup">
                     <div class="placeGroupHeader">
                       <div class="placeIndexName">
                         <p class="h5">Place {idx + 1}</p>
@@ -186,9 +191,8 @@ class CreateListForm extends Component {
                               onChange={this.handlePlaceAddressChange(idx)}
                             />
                           </GooglePlacesSuggest>
-                        )
-                        }
-                        />
+                        )}
+                      />
                     </FormGroup>
                   </div>
                 ))}
