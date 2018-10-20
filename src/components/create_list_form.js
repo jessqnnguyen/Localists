@@ -119,10 +119,11 @@ class CreateListForm extends Component {
 
   handleSelectSuggest = (idx) => (geocodedPrediction, originalPrediction) => {
     const newPlaces = this.state.places.slice();
+    newPlaces[idx].name = originalPrediction.description;
     newPlaces[idx].address = geocodedPrediction.formatted_address;
     newPlaces[idx].googlePlacesId = geocodedPrediction.place_id
     this.setState({
-      places: newPlaces
+      places: newPlaces,
     });
   }
 
