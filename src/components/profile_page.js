@@ -11,6 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import '../styles/profile_page_styles.css';
 import { AppConsumer } from '../AppContext';
+import LoginForm from './login_form';
 import firebase from 'firebase/app';
 
 
@@ -30,7 +31,7 @@ class ProfilePage extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       const database = firebase.database();
       if (user) {
-        console.log(user.uid)
+        console.log(user.uid);
         // get user's name
         const user_ref = database.ref("users/" + user.uid);
         user_ref.once("value", snapshot => {
@@ -117,17 +118,23 @@ class ProfilePage extends Component {
 
   render() {
     return (
-      <div class="listPage">
-        {this.createProfileHeader()}
-        <div class="profileLists">
-          <div class="profileListsHeading">
-            <h1 class="display-4">My lists</h1>
-          </div>
-          <ListGroup>
-            {this.createListsTable()}
-          </ListGroup>
-        </div>
-      </div>
+      <AppConsumer>
+        {({loggedIn, uid}) =>
+          loggedIn ?
+            <div class="listPage">
+              {this.createProfileHeader()}
+              <div class="profileLists">
+                <div class="profileListsHeading">
+                  <h1 class="display-4">My lists</h1>
+                </div>
+                <ListGroup>
+                  {this.createListsTable()}
+                </ListGroup>
+              </div>
+            </div>
+          : <LoginForm/>
+        }
+      </AppConsumer>
     );
   }
 }
