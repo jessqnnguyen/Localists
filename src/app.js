@@ -25,7 +25,7 @@ export default class App extends Component {
             <Route exact path={routes.DISCOVER} component={DiscoverPage}></Route>
             <Route exact path={routes.CREATELIST} component={CreateListForm}></Route>
             <Route path={routes.LISTPAGEID} component={ListPage}></Route>
-            <Route path={routes.PROFILE} component={ProfilePage}></Route>
+            <Route path={routes.PROFILEID} component={ProfilePage}></Route>
           </Switch>
         </div>
       </div>

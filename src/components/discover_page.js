@@ -138,7 +138,7 @@ class DiscoverPage extends Component {
                   email: user.email,
                 });
               }}>{followedUsers && followedUsers[user.uid] ? 'Unfollow' : 'Follow'}</CardLink>
-              <CardLink><Link to={routes.LISTPAGE + '/' + uid + '/' + user.uid}>View</Link></CardLink>
+              <CardLink><Link to={routes.PROFILE + '/' + user.uid}>View</Link></CardLink>
             </CardBody>
           </Card>
         }
