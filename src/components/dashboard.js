@@ -100,10 +100,12 @@ class Dashboard extends Component {
   }
 
   render() {
-    // var ownLists;
     var ownLists;
     if (this.state.loading) {
-      ownLists = <img src={loadingSpinner} class="mx-auto" alt="Loading"/>;
+      ownLists = 
+        <div class="loadingSpinner">
+          <img src={loadingSpinner} class="mx-auto" alt="Loading"/>
+        </div>;
     }
     else {
       ownLists = this.state.lists.map(list => <AppConsumer>
