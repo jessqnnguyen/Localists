@@ -11,7 +11,23 @@ export class AppProvider extends React.Component {
       loggedIn: false,
       uid: ''
     }
-    firebase.auth().onAuthStateChanged((user) => this.setState({ loggedIn: user ? true : false, uid: user.uid }));
+    firebase.auth().onAuthStateChanged(user => {
+      console.log("CALLED");
+      console.log(JSON.stringify(user));
+      // user has been logged out, so user == null --> only set loggedIn status to false
+      if (user == null) {
+        console.log("CAUGHT ERROR, user = " + JSON.stringify(user));
+        this.setState({ 
+          loggedIn: false, 
+        }); 
+      } else {
+        console.log("what, user = " + JSON.stringify(user));
+        this.setState({ 
+          loggedIn: true, 
+          uid: user.uid
+        });
+      }
+    });
   }
 
   render() {

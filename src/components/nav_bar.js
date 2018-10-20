@@ -26,8 +26,9 @@ export default class NavBar extends Component {
       uid: "",
     };
     firebase.auth().onAuthStateChanged((user) => {
+      console.log("CALLED");
       if (user) {
-
+        
         this.setState({ uid: user.uid });
         const database = firebase.database();
         const ref = database.ref('users/' + user.uid);
