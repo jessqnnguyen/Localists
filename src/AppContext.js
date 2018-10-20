@@ -8,22 +8,11 @@ export class AppProvider extends React.Component {
     super(props);
 
     this.state = {
-      loggedIn: false,
+      loggedIn: sessionStorage.getItem('loggedIn'),
       uid: ''
     }
-    firebase.auth().onAuthStateChanged(user => {
-      // user == null means that user has logged out --> only set loggedIn status to false
-      if (user == null) {
-        this.setState({ 
-          loggedIn: false, 
-        }); 
-      } else {
-        this.setState({ 
-          loggedIn: true, 
-          uid: user.uid
-        });
-      }
-    });
+
+    firebase.auth().onAuthStateChanged((user) => this.setState({ loggedIn: user ? true : false, uid: user ? user.uid : null }, () => sessionStorage.setItem('loggedIn', true)));
   }
 
   render() {
