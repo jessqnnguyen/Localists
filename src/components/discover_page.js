@@ -53,7 +53,11 @@ class DiscoverPage extends Component {
 
   search = () => {
     const query = this.state.query.toLowerCase();
-    this.state.hasClickedSearch = true;
+    // initiating a search should reset loading and has clicked search status to true
+    this.setState({
+      hasClickedSearch: true,
+      loading: true,
+    })
     const db = firebase.database();
     var listResults = [];
     var userResults = [];
@@ -77,6 +81,7 @@ class DiscoverPage extends Component {
       });
       this.setState(() => ({
         listResults: listResults,
+        loading: false,
       }));
     });
     console.log("listResults = " + JSON.stringify(listResults));
@@ -92,6 +97,7 @@ class DiscoverPage extends Component {
       });
       this.setState(() => ({
         userResults: userResults,
+        loading: false,
       }));
     });
     console.log("userResults = " + JSON.stringify(userResults));
@@ -99,7 +105,6 @@ class DiscoverPage extends Component {
     // reset current results page, loading has finished
     this.setState({
       currentPage: 1,
-      loading: false,
     });
     this.toggle('1');
   }
