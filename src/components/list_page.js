@@ -48,18 +48,18 @@ class ListPage extends Component {
         <div class="listHeader">
           <ListGroup>
             <ListGroupItem active>
-              <div class="listItem">
-                <div class="listLeft">
+              <div class="listPageListItem">
+                <div class="listPageListTitle">
                   <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
-                  <ListGroupItemText>
-                    <Button color="success" onClick={() => this.props.history.push(routes.HOME)}>Edit list</Button>
-                  </ListGroupItemText>
                 </div>
-                <div class="listRight">
+                <div class="listPageProfileIconName">
                   {this.createProfileIcon("Jessica Nguyen")}
                   <div class="listOwnerName">
                     <ListGroupItemText>Jessica Nguyen</ListGroupItemText>
                   </div>
+                </div>
+                <div class="listPageEditListButton">
+                    <Button color="success" onClick={() => this.props.history.push(routes.HOME)}>Edit list</Button>
                 </div>
               </div>
             </ListGroupItem>
