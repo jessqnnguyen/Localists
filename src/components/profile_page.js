@@ -21,9 +21,7 @@ class ProfilePage extends Component {
     this.state = {
       user: {
         uid: props.match.params.uid,
-        // TODO: Display the user's name when the database issue is fixed. 
-        // Remove this placeholder text.
-        name: "placeholder: " + props.match.params.uid,
+        name: "",
       },
       lists: [],
     };
@@ -38,9 +36,11 @@ class ProfilePage extends Component {
           const u = snapshot.val();
           console.log("profile_page.js: u = " + JSON.stringify(u));
           // TODO: un-comment below when "users" database issue is fixed
-          // this.setState({
-          //   name: u.name
-          // });
+          this.setState({
+            user: {
+              name: u.name
+            }
+          });
         });
         // get user's lists
         const lists_ref = database.ref("lists/" + user.uid);
