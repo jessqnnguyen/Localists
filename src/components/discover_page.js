@@ -149,12 +149,18 @@ class DiscoverPage extends Component {
   listItem(list) {
     return (
       <AppConsumer>
-        {({uid}) =>
+        {({uid, followedLists}) =>
           <Card class="card">
             <CardBody>
               <CardTitle>{list.title}</CardTitle>
               {/* TODO: Store a description field in the list table on the db or display here and delete this subtitle. */}
               <CardSubtitle>List subtitle if exists</CardSubtitle>
+              <CardLink onClick={() => {
+                followedLists && followedLists[list.id] ? firebase.database().ref('users/' + uid + '/followedLists/' + list.id).remove()
+                  : firebase.database().ref('users/' + uid + '/followedLists/' + list.id).set({
+                  places: list.places, title: list.title, uid: list.uid
+                });
+              }}>{followedLists && followedLists[list.id] ? 'Unfollow' : 'Follow'}</CardLink>
               <CardLink href="#"><Link to={routes.LISTPAGE + '/' + list.uid + '/' + list.id}>View</Link></CardLink>
             </CardBody>
           </Card>
