@@ -51,42 +51,6 @@ class Dashboard extends Component {
     });
   }
 
-  createFollowingListsTable = () => {
-    const tempList = [
-      {id: "0", title: "Fav ramen places in Sydney", length: "10", owner: "Jessica Nguyen"},
-      {id: "1", title: "Good jazz bars", length: "7", owner: "Nick Balnaves"},
-      {id: "2", title: "Best camping grounds", length: "3", owner: "Nick Balnaves"}
-    ];
-    let listElements = [];
-    for (let i=0; i < tempList.length; i++) {
-      const title = tempList[i].title;
-      const owner = tempList[i].owner;
-      listElements.push(this.createFollowingListElement(title, owner));
-    }
-    return listElements;
-  }
-
-  createFollowingListElement(title, owner) {
-    return (
-      <ListGroupItem>
-        <div class="listItem">
-          <div class="listLeft">
-            <ListGroupItemHeading>{title}</ListGroupItemHeading>
-            <ListGroupItemText>
-              <a class="text-primary"><Link to={routes.LISTPAGE}>View</Link></a>
-            </ListGroupItemText>
-          </div>
-          <div class="listRight">
-            {this.createProfileIcon(owner)}
-            <div class="listOwnerName">
-              <ListGroupItemText>{owner}</ListGroupItemText>
-            </div>
-          </div>
-        </div>
-      </ListGroupItem>
-    );
-  }
-
   createProfileIcon(owner) {
     if (owner == "Jessica Nguyen") {
       return (
@@ -141,7 +105,7 @@ class Dashboard extends Component {
   render() {
     return (
       <AppConsumer>
-        {({uid}) =>
+        {({uid, followedLists}) =>
           uid ? <div class="dashboard">
             <div class="lists">
               <div class="listsHeader">
@@ -168,7 +132,24 @@ class Dashboard extends Component {
                 <div class="followinglistsHeading"><h1>Lists you're following</h1></div>
               </div>
               <ListGroup>
-                {this.createFollowingListsTable()}
+                {followedLists && Object.keys(followedLists).map(list =>
+                  <ListGroupItem>
+                    <div class="listItem">
+                      <div class="listLeft">
+                        <ListGroupItemHeading>{followedLists[list].title}</ListGroupItemHeading>
+                        <ListGroupItemText>
+                          <a class="text-primary"><Link to={routes.LISTPAGE}>View</Link></a>
+                        </ListGroupItemText>
+                      </div>
+                      <div class="listRight">
+                        {this.createProfileIcon("Jessica Nguyen")}
+                        <div class="listOwnerName">
+                          <ListGroupItemText>{"Jessica Nguyen"}</ListGroupItemText>
+                        </div>
+                      </div>
+                    </div>
+                  </ListGroupItem>
+                )}
               </ListGroup>
             </div>
           </div>
