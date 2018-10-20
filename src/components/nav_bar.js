@@ -27,14 +27,14 @@ export default class NavBar extends Component {
     };
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        
+
         this.setState({ name: user.uid });
         const database = firebase.database();
         const ref = database.ref('users/' + user.uid);
         ref.once("value", (snapshot) => {
-          this.setState({ name: snapshot.val().name });
+          // this.setState({ name: snapshot.val().name });
         });
-      } 
+      }
     });
   }
 

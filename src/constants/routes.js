@@ -6,5 +6,6 @@ export const LOGIN = '/login';
 export const REGISTER = '/register';
 export const PROFILE = '/profile/:name';
 export const MANAGELISTS = '/managelists';
-export const CREATELIST = '/createList'
 export const LISTPAGE = '/listPage';
+export const LISTPAGEID = '/listPage/:id';
+export const CREATELIST = '/createList'

@@ -50,7 +50,7 @@ class Dashboard extends Component {
     for (let i=0; i < this.state.lists.length; i++) {
       console.log(this.state.lists[i].title);
 
-      listElements.push(this.createListElement(this.state.lists[i].title));
+      listElements.push(this.createListElement(this.state.lists[i].title, this.state.lists[i].id));
     }
     return listElements;
   }
@@ -107,19 +107,23 @@ class Dashboard extends Component {
     }
   }
 
-  createListElement(title) {
+  createListElement(title, listId) {
     return (
-      <ListGroupItem>
-        <div class="listElement">
-          <ListGroupItemHeading id="dashboardListTitle">{title}</ListGroupItemHeading>
-          <div class="dashboardListFooter">
-            <ListGroupItemText id="dashboardListViewLink">
-              <a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a>
-            </ListGroupItemText>
-            <Button color="success" onClick={() => {}}>Edit list</Button>
+      <AppConsumer>
+      {({uid}) =>
+        <ListGroupItem>
+          <div class="listElement">
+            <ListGroupItemHeading id="dashboardListTitle">{title}</ListGroupItemHeading>
+            <div class="dashboardListFooter">
+              <ListGroupItemText id="dashboardListViewLink">
+                <a class="text-primary"><Link to={routes.LISTPAGE + '/' + uid + '/' + listId}>View</Link></a>
+              </ListGroupItemText>
+              <Button color="success" onClick={() => {}}>Edit list</Button>
+            </div>
           </div>
-        </div>
-      </ListGroupItem>
+        </ListGroupItem>
+      }
+      </AppConsumer>
     );
   }
 

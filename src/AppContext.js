@@ -8,9 +8,10 @@ export class AppProvider extends React.Component {
     super(props);
 
     this.state = {
-      loggedIn: false
+      loggedIn: false,
+      uid: ''
     }
-    firebase.auth().onAuthStateChanged((user) => this.setState({ loggedIn: user ? true : false }));
+    firebase.auth().onAuthStateChanged((user) => this.setState({ loggedIn: user ? true : false, uid: user.uid }));
   }
 
   render() {

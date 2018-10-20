@@ -41,55 +41,35 @@ class ListPage extends Component {
     }
   }
 
-  createListHeader() {
-    return (
-      <div class="listHeader">
-        <ListGroup>
-          <ListGroupItem active>
-            <div class="listItem">
-              <div class="listLeft">
-                <ListGroupItemHeading>Fav brunch places in the city</ListGroupItemHeading>
-                <ListGroupItemText>
-                  <Button color="success" onClick={() => this.props.history.push(routes.HOME)}>Edit list</Button>
-                </ListGroupItemText>
-              </div>
-              <div class="listRight">
-                {this.createProfileIcon("Jessica Nguyen")}
-                <div class="listOwnerName">
-                  <ListGroupItemText>Jessica Nguyen</ListGroupItemText>
-                </div>
-              </div>
-            </div>
-          </ListGroupItem>
-        </ListGroup>
-      </div>
-    );
-  }
-
-  createListsTable = () => {
-    const places = this.state.places;
-    let listElements = [];
-    for (let i=0; i < places.length; i++) {
-      listElements.push(this.createListElement(places[i].name, places[i].address));
-    }
-    return listElements;
-  }
-
-  createListElement(name, address) {
-    return(
-      <ListGroupItem>
-        <ListGroupItemHeading>{name}</ListGroupItemHeading>
-        <ListGroupItemText>{address}</ListGroupItemText>
-      </ListGroupItem>
-    );
-  }
-
   render() {
     return (
       <div class="listPage">
-        {this.createListHeader()}
+        <div class="listHeader">
+          <ListGroup>
+            <ListGroupItem active>
+              <div class="listItem">
+                <div class="listLeft">
+                  <ListGroupItemHeading>Fav brunch places in the city</ListGroupItemHeading>
+                  <ListGroupItemText>
+                    <Button color="success" onClick={() => this.props.history.push(routes.HOME)}>Edit list</Button>
+                  </ListGroupItemText>
+                </div>
+                <div class="listRight">
+                  {this.createProfileIcon("Jessica Nguyen")}
+                  <div class="listOwnerName">
+                    <ListGroupItemText>Jessica Nguyen</ListGroupItemText>
+                  </div>
+                </div>
+              </div>
+            </ListGroupItem>
+          </ListGroup>
+        </div>
         <ListGroup>
-          {this.createListsTable()}
+          {this.state.places.map(place =>
+          <ListGroupItem>
+            <ListGroupItemHeading>{place.name}</ListGroupItemHeading>
+            <ListGroupItemText>{place.address}</ListGroupItemText>
+          </ListGroupItem>)}
         </ListGroup>
       </div>
     );

@@ -19,12 +19,12 @@ export default class App extends Component {
         <NavBar/>
         <div class="content">
           <Switch>
-            <Route exact  path={routes.HOME} component={Dashboard}></Route>
+            <Route exact path={routes.HOME} component={Dashboard}></Route>
             <Route exact path={routes.LOGIN} component={LoginForm}></Route>
             <Route exact path={routes.REGISTER} component={RegisterForm}></Route>
             <Route exact path={routes.DISCOVER} component={DiscoverPage}></Route>
             <Route exact path={routes.CREATELIST} component={CreateListForm}></Route>
-            <Route exact path={routes.LISTPAGE} component={ListPage}></Route>
+            <Route path={routes.LISTPAGEID} component={ListPage}></Route>
             <Route path={routes.PROFILE} component={ProfilePage}></Route>
           </Switch>
         </div>
