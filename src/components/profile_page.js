@@ -34,6 +34,9 @@ class ProfilePage extends Component {
     const db = firebase.database();
     const user_ref = db.ref("users/" + this.state.user.uid);
     user_ref.once("value", snapshot => {
+      if (!snapshot.exists()) {
+        throw "profile_page.js: invalid user id";
+      }
       const u = snapshot.val();
       console.log("profile_page.js: u = " + JSON.stringify(u));
       this.setState({
@@ -79,7 +82,6 @@ class ProfilePage extends Component {
   }
 
   createProfileHeader() {
-    console.log("createProfileHeader: user name = " + this.state.user.name);
     return (
       <div class="listHeader">
         <ListGroup>
