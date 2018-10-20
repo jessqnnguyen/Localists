@@ -26,31 +26,34 @@ class ProfilePage extends Component {
       },
       lists: [],
     };
+    
     firebase.auth().onAuthStateChanged((user) => {
       const database = firebase.database();
-      console.log(user.uid)
-      // get user's name
-      const user_ref = database.ref("users/" + user.uid);
-      user_ref.once("value", snapshot => {
-        const u = snapshot.val();
-        console.log("profile_page.js: u = " + u);
-        // TODO: un-comment below when "users" database issue is fixed
-        // this.setState({
-        //   name: u.name
-        // });
-      });
-      // get user's lists
-      const lists_ref = database.ref("lists/" + user.uid);
-      lists_ref.once("value", (snapshot) => {
-        var l = [];
-        if (snapshot.exists()) {
-          snapshot.forEach((listSnapshot) => {
-            l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
-          });
-          this.setState({ lists: l });
-          console.log(this.state.lists, l);
-        }
-      });
+      if (user) {
+        console.log(user.uid)
+        // get user's name
+        const user_ref = database.ref("users/" + user.uid);
+        user_ref.once("value", snapshot => {
+          const u = snapshot.val();
+          console.log("profile_page.js: u = " + u);
+          // TODO: un-comment below when "users" database issue is fixed
+          // this.setState({
+          //   name: u.name
+          // });
+        });
+        // get user's lists
+        const lists_ref = database.ref("lists/" + user.uid);
+        lists_ref.once("value", (snapshot) => {
+          var l = [];
+          if (snapshot.exists()) {
+            snapshot.forEach((listSnapshot) => {
+              l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
+            });
+            this.setState({ lists: l });
+            console.log(this.state.lists, l);
+          }
+        });
+      }
     });
   }
 
