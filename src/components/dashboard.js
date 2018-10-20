@@ -44,17 +44,6 @@ class Dashboard extends Component {
     });
   }
 
-  createListsTable = () => {
-    console.log(this.state.lists);
-    let listElements = [];
-    for (let i=0; i < this.state.lists.length; i++) {
-      console.log(this.state.lists[i].title);
-
-      listElements.push(this.createListElement(this.state.lists[i].title, this.state.lists[i].id));
-    }
-    return listElements;
-  }
-
   createFollowingListsTable = () => {
     const tempList = [
       {id: "0", title: "Fav ramen places in Sydney", length: "10", owner: "Jessica Nguyen"},
@@ -107,26 +96,6 @@ class Dashboard extends Component {
     }
   }
 
-  createListElement(title, listId) {
-    return (
-      <AppConsumer>
-      {({uid}) =>
-        <ListGroupItem>
-          <div class="listElement">
-            <ListGroupItemHeading id="dashboardListTitle">{title}</ListGroupItemHeading>
-            <div class="dashboardListFooter">
-              <ListGroupItemText id="dashboardListViewLink">
-                <a class="text-primary"><Link to={routes.LISTPAGE + '/' + uid + '/' + listId}>View</Link></a>
-              </ListGroupItemText>
-              <Button color="success" onClick={() => {}}>Edit list</Button>
-            </div>
-          </div>
-        </ListGroupItem>
-      }
-      </AppConsumer>
-    );
-  }
-
   render() {
     return (
       <AppConsumer>
@@ -145,7 +114,21 @@ class Dashboard extends Component {
                 </div>
               </div>
               <ListGroup>
-                {this.createListsTable()}
+                {this.state.lists.map(list => <AppConsumer>
+                  {({uid}) =>
+                    <ListGroupItem>
+                      <div class="listElement">
+                        <ListGroupItemHeading id="dashboardListTitle">{list.title}</ListGroupItemHeading>
+                        <div class="dashboardListFooter">
+                          <ListGroupItemText id="dashboardListViewLink">
+                            <a class="text-primary"><Link to={routes.LISTPAGE + '/' + uid + '/' + list.id}>View</Link></a>
+                          </ListGroupItemText>
+                          <Button color="success" onClick={() => {}}>Edit list</Button>
+                        </div>
+                      </div>
+                    </ListGroupItem>
+                  }
+                  </AppConsumer>)}
               </ListGroup>
             </div>
             <div class="followingLists">
