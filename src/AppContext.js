@@ -8,11 +8,18 @@ export class AppProvider extends React.Component {
     super(props);
 
     this.state = {
-      loggedIn: sessionStorage.getItem('loggedIn'),
-      uid: ''
+      uid: sessionStorage.getItem('uid'),
+      followedUsers: {}
     }
 
-    firebase.auth().onAuthStateChanged((user) => this.setState({ loggedIn: user ? true : false, uid: user ? user.uid : null }, () => sessionStorage.setItem('loggedIn', true)));
+    firebase.auth().onAuthStateChanged((user) => {
+      this.setState({
+      uid: user ? user.uid : undefined,
+    }, () => sessionStorage.setItem('uid', user ? user.uid : undefined))});
+
+    firebase.database().ref("users/" + this.state.uid).on("value", snapshot => {
+      this.setState({ followedUsers: snapshot.val() && snapshot.val().followedUsers });
+    });
   }
 
   render() {

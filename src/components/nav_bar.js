@@ -33,8 +33,8 @@ export default class NavBar extends Component {
   render() {
     return (
       <AppConsumer>
-      {({loggedIn, uid}) =>
-        loggedIn ?
+      {({uid}) =>
+        uid ?
           <div name="navBar">
             <Navbar color="light" light expand="md">
               <NavbarBrand href="/">Localists</NavbarBrand>

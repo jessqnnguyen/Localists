@@ -28,6 +28,7 @@ import firebase from 'firebase/app';
 import '../styles/discover_page_styles.css';
 import classnames from 'classnames';
 import { AppConsumer } from '../AppContext';
+import { Link } from 'react-router-dom';
 
 
 class DiscoverPage extends Component {
@@ -82,7 +83,8 @@ class DiscoverPage extends Component {
     // Populate user search results.
     db.ref('users').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
-        const user = childSnapshot.val();
+        let user = childSnapshot.val();
+        user.uid = childSnapshot.key;
         const name = user.name ? user.name.toLowerCase() : "";
         if (name.includes(query) || name == (query)) {
           userResults.push(user);
@@ -112,16 +114,25 @@ class DiscoverPage extends Component {
 
   userItem(user) {
     return (
-      <Card class="card">
-        <CardBody>
-          <CardTitle>{user.name || "No name! (shouldn't happen)"}</CardTitle>
-          <CardSubtitle>{user.email}</CardSubtitle>
-          {/* TODO: Store user's location in db and display here or delete this subtitle. */}
-          <CardText>Insert user location here</CardText>
-          <CardLink href="#">Follow</CardLink>
-          <CardLink href="#">View</CardLink>
-        </CardBody>
-      </Card>
+      <AppConsumer>
+        {({uid, followedUsers}) =>
+          <Card class="card">
+            <CardBody>
+              <CardTitle>{user.name || "No name! (shouldn't happen)"}</CardTitle>
+              <CardSubtitle>{user.email}</CardSubtitle>
+              {/* TODO: Store user's location in db and display here or delete this subtitle. */}
+              <CardText>Insert user location here</CardText>
+              <CardLink onClick={() => {
+                followedUsers && followedUsers[user.uid] ? firebase.database().ref('users/' + uid + '/followedUsers/' + user.uid).remove()
+                  : firebase.database().ref('users/' + uid + '/followedUsers/' + user.uid).set({
+                  email: user.email,
+                });
+              }}>{followedUsers && followedUsers[user.uid] ? 'Unfollow' : 'Follow'}</CardLink>
+              <CardLink><Link to={routes.LISTPAGE + '/' + uid + '/' + user.uid}>View</Link></CardLink>
+            </CardBody>
+          </Card>
+        }
+      </AppConsumer>
     );
   }
 

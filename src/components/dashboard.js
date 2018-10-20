@@ -73,7 +73,7 @@ class Dashboard extends Component {
           <div class="listLeft">
             <ListGroupItemHeading>{title}</ListGroupItemHeading>
             <ListGroupItemText>
-              <a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a>
+              <a class="text-primary"><Link to={routes.LISTPAGE}>View</Link></a>
             </ListGroupItemText>
           </div>
           <div class="listRight">
@@ -141,8 +141,8 @@ class Dashboard extends Component {
   render() {
     return (
       <AppConsumer>
-        {({loggedIn}) =>
-          loggedIn ? <div class="dashboard">
+        {({uid}) =>
+          uid ? <div class="dashboard">
             <div class="lists">
               <div class="listsHeader">
                 <div class="listHeaderHeading">
@@ -155,9 +155,9 @@ class Dashboard extends Component {
                   </Button>
                 </div>
               </div>
-              {this.state.loading 
-                ? this.renderLoadingSpinner() 
-                : this.state.lists.length == 0 
+              {this.state.loading
+                ? this.renderLoadingSpinner()
+                : this.state.lists.length == 0
                     ? <div class="noListsMessage">{this.renderNoListsMessage()}</div>
                     : <ListGroup> {this.renderUserLists()} </ListGroup>
               }

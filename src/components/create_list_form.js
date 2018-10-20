@@ -95,8 +95,8 @@ class CreateListForm extends Component {
   render() {
     return (
       <AppConsumer>
-        {({loggedIn}) =>
-          loggedIn ?
+        {({uid}) =>
+          uid ?
             <div class="createListForm">
               <div class="createListHeading">
                 <h1 class="display-4">Create a new list</h1>
