@@ -23,12 +23,12 @@ export default class NavBar extends Component {
     this.state = {
       isOpen: false,
       lists: [],
-      name: "",
+      uid: "",
     };
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
 
-        this.setState({ name: user.uid });
+        this.setState({ uid: user.uid });
         const database = firebase.database();
         const ref = database.ref('users/' + user.uid);
         ref.once("value", (snapshot) => {
@@ -63,7 +63,7 @@ export default class NavBar extends Component {
                 </Nav>
                 <Nav className="ml-auto" navbar>
                   <NavItem>
-                    <NavLink><Link to={`/profile/${this.state.name}`}>My profile</Link></NavLink>
+                    <NavLink><Link to={`/profile/${this.state.uid}`}>My profile</Link></NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink onClick={() => firebase.auth().signOut()}>Logout</NavLink>
@@ -74,27 +74,27 @@ export default class NavBar extends Component {
             {/* </div> */}
           </div>
         : <div name="navBar">
-          <Navbar color="light" light expand="md">
-            <NavbarBrand href="/">Localists</NavbarBrand>
-            <NavbarToggler onClick={this.toggle} />
-            <Collapse isOpen={this.state.isOpen} navbar>
-              <Nav className="mr-auto" navbar>
-                <NavItem>
-                  <NavLink><Link to={routes.HOME}>Home</Link></NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink><Link to={routes.DISCOVER}>Discover</Link></NavLink>
-                </NavItem>
-              </Nav>
-              <Nav className="ml-auto" navbar>
-                <NavItem>
-                  <Link to={routes.LOGIN}>Login</Link>
-                </NavItem>
-              </Nav>
-            </Collapse>
-          </Navbar>
-        </div>
-      }
+            <Navbar color="light" light expand="md">
+              <NavbarBrand href="/">Localists</NavbarBrand>
+              <NavbarToggler onClick={this.toggle} />
+              <Collapse isOpen={this.state.isOpen} navbar>
+                <Nav className="mr-auto" navbar>
+                  <NavItem>
+                    <NavLink><Link to={routes.HOME}>Home</Link></NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink><Link to={routes.DISCOVER}>Discover</Link></NavLink>
+                  </NavItem>
+                </Nav>
+                <Nav className="ml-auto" navbar>
+                  <NavItem>
+                    <Link to={routes.LOGIN}>Login</Link>
+                  </NavItem>
+                </Nav>
+              </Collapse>
+            </Navbar>
+          </div>
+        }
       </AppConsumer>
     );
   }
