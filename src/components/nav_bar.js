@@ -30,59 +30,49 @@ export default class NavBar extends Component {
     this.setState({ isOpen: !this.state.isOpen });
   }
 
+  renderLogin(uid) {
+    return (
+      uid ?
+        <Nav className="ml-auto" navbar>
+          <NavItem>
+            <NavLink><Link to={`/profile/${uid}`}>My profile</Link></NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink><Link onClick={() => firebase.auth().signOut()} to={routes.HOME}>Logout</Link></NavLink>
+          </NavItem>
+        </Nav>
+      :
+        <Nav className="ml-auto" navbar>
+          <NavItem>
+            <Link to={routes.LOGIN}>Login</Link>
+          </NavItem>
+        </Nav>
+    );
+  }
+
   render() {
     return (
       <AppConsumer>
       {({uid}) =>
-        uid ?
-          <div name="navBar">
-            <Navbar color="light" light expand="md">
-              <NavbarBrand href="/">Localists</NavbarBrand>
-              {/* <NavbarBrand href="/"><img src="https://puu.sh/BFnVJ/ad76812c7b.png"/></NavbarBrand> */}
-              <NavbarToggler onClick={this.toggle} />
-              <Collapse isOpen={this.state.isOpen} navbar>
-                <Nav className="mr-auto" navbar>
-                  <NavItem>
-                    <NavLink><Link to={routes.HOME}>Home</Link></NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink><Link to={routes.DISCOVER}>Discover</Link></NavLink>
-                  </NavItem>
-                </Nav>
-                <Nav className="ml-auto" navbar>
-                  <NavItem>
-                    <NavLink><Link to={`/profile/${uid}`}>My profile</Link></NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink onClick={() => firebase.auth().signOut()}>Logout</NavLink>
-                  </NavItem>
-                </Nav>
-              </Collapse>
-            </Navbar>
-            {/* </div> */}
-          </div>
-        : <div name="navBar">
-            <Navbar color="light" light expand="md">
-              <NavbarBrand href="/">Localists</NavbarBrand>
-              <NavbarToggler onClick={this.toggle} />
-              <Collapse isOpen={this.state.isOpen} navbar>
-                <Nav className="mr-auto" navbar>
-                  <NavItem>
-                    <NavLink><Link to={routes.HOME}>Home</Link></NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink><Link to={routes.DISCOVER}>Discover</Link></NavLink>
-                  </NavItem>
-                </Nav>
-                <Nav className="ml-auto" navbar>
-                  <NavItem>
-                    <Link to={routes.LOGIN}>Login</Link>
-                  </NavItem>
-                </Nav>
-              </Collapse>
-            </Navbar>
-          </div>
-        }
+        <div name="navBar">
+          <Navbar color="light" light expand="md">
+            <NavbarBrand href="/">Localists</NavbarBrand>
+            {/* <NavbarBrand href="/"><img src="https://puu.sh/BFnVJ/ad76812c7b.png"/></NavbarBrand> */}
+            <NavbarToggler onClick={this.toggle} />
+            <Collapse isOpen={this.state.isOpen} navbar>
+              <Nav className="mr-auto" navbar>
+                <NavItem>
+                  <NavLink><Link to={routes.HOME}>Home</Link></NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink><Link to={routes.DISCOVER}>Discover</Link></NavLink>
+                </NavItem>
+              </Nav>
+              {this.renderLogin(uid)}
+            </Collapse>
+          </Navbar>
+        </div>
+      }
       </AppConsumer>
     );
   }
