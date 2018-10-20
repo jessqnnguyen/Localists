@@ -83,55 +83,6 @@ class CreateListForm extends Component {
     };
   }
 
-  handleInputChange = (event) => {
-    this.setState(() => ({ [event.target.name]: event.target.value }));
-  }
-
-  handlePlaceNameChange = (idx) => (event) => {
-    const newPlaces = this.state.places.slice();
-    newPlaces[idx].name = event.target.value;
-    this.setState({ places: newPlaces });
-  }
-
-  handlePlaceAddressChange = (idx) => (event) => {
-    console.log("idx = " + idx);
-    console.log("places before slicing = " + JSON.stringify(this.state.places));
-    const newPlaces = this.state.places.slice();
-
-    console.log("new address = " + event.target.value);
-    newPlaces[idx].address = event.target.value;
-    console.log("newPlaces = " + JSON.stringify(newPlaces));
-    this.setState({
-      places: newPlaces
-    });
-  }
-
-  handleTitleChange = (event) => {
-    this.setState({ title: event.target.value });
-  }
-
-  handleAddPlace = () => {
-    this.setState({
-      places: this.state.places.concat([{ name: '', address: '' }])
-    });
-  }
-
-  handleRemovePlace = (idx) => () => {
-    this.setState({
-      places: this.state.places.filter((place, sidx) => idx !== sidx)
-    });
-  }
-
-  handleSelectSuggest = (idx) => (geocodedPrediction, originalPrediction) => {
-    const newPlaces = this.state.places.slice();
-    newPlaces[idx].name = originalPrediction.description;
-    newPlaces[idx].address = geocodedPrediction.formatted_address;
-    newPlaces[idx].googlePlacesId = geocodedPrediction.place_id
-    this.setState({
-      places: newPlaces,
-    });
-  }
-
   // TODO(chris): Save this list to the firebase database.
   saveList() {
     // Stuff to send to the database.
@@ -153,24 +104,20 @@ class CreateListForm extends Component {
               <Form>
                 <FormGroup id="titleField">
                   <Label for="nameField">Title</Label>
-                  <Input type="name" name="name" id="name" placeholder={this.state.title} value={this.state.title} onChange={this.handleTitleChange}/>
+                  <Input type="name" name="name" id="name" placeholder={this.state.title} value={this.state.title} onChange={(event) => this.setState({ title: event.target.value })}/>
                 </FormGroup>
-                {this.state.places.map((place, idx) => (
-                  <div key={idx} class="placeGroup">
+                {this.state.places.map((place, index) => (
+                  <div key={index} class="placeGroup">
                     <div class="placeGroupHeader">
                       <div class="placeIndexName">
-                        <p class="h5">Place {idx + 1}</p>
+                        <p class="h5">Place {index + 1}</p>
                       </div>
                       <div class="placeRemoveButton">
-                        <Button outline color="danger" onClick={this.handleRemovePlace(idx)}>Remove</Button>
+                        <Button outline color="danger" onClick={() => this.setState({ places: this.state.places.filter((place, sidx) => index !== sidx) })}>Remove</Button>
                       </div>
                     </div>
                     <FormGroup id="placeNameField">
                       <Label for="nameField">Place name</Label>
-                      <Input type="name" name="name" placeholder={place.name} value={place.name} onChange={this.handlePlaceNameChange(idx)}/>
-                    </FormGroup>
-                    <FormGroup id="placeAddressField">
-                      <Label for="nameField">Address</Label>
                       <GoogleMapLoader
                         params={{
                           key: 'AIzaSyCBnlJi4Ij4k4zmrzEgSGqP8ntZjOk4hZY',
@@ -179,26 +126,46 @@ class CreateListForm extends Component {
                         render={googleMaps => googleMaps && (
                           <GooglePlacesSuggest
                           googleMaps={googleMaps}
-                          autocompletionRequest={{ input: place.address }}
-                          onSelectSuggest={this.handleSelectSuggest(idx)}
+                          autocompletionRequest={{ input: place.name }}
+                          onSelectSuggest={(geocodedPrediction, originalPrediction) => this.setState({ places: [
+                            ...this.state.places.slice(0, index),
+                            { ...this.state.places[index], name: originalPrediction.description, address: geocodedPrediction.formatted_address, googlePlacesId: geocodedPrediction.place_id },
+                            ...this.state.places.slice(index + 1)
+                          ]})}
                           textNoResults="No results"
                           customRender={prediction => (
                             <div className="customWrapper">{prediction ? prediction.description : "No results"}</div>
                           )}
                           >
-                            <Input
-                              type="text"
-                              value={place.address}
-                              onChange={this.handlePlaceAddressChange(idx)}
-                            />
-                          </GooglePlacesSuggest>
-                        )}
+                        <Input type="name" name="name" placeholder={place.name} value={place.name} onChange={(event) =>
+                          this.setState({ places: [
+                            ...this.state.places.slice(0, index),
+                            { ...this.state.places[index], name: event.target.value },
+                            ...this.state.places.slice(index + 1)
+                          ]})
+                        }/>
+                        </GooglePlacesSuggest>
+                      )}
+                    />
+                    </FormGroup>
+                    <FormGroup id="placeAddressField">
+                      <Label for="nameField">Address</Label>
+                      <Input
+                        type="text"
+                        value={place.address}
+                        onChange={(event) =>
+                          this.setState({ places: [
+                            ...this.state.places.slice(0, index),
+                            { ...this.state.places[index], address: event.target.value },
+                            ...this.state.places.slice(index + 1)
+                          ]})
+                        }
                       />
                     </FormGroup>
                   </div>
                 ))}
                 <div class="addPlaceButton">
-                  <Button outline color="primary" size="sm" onClick={() => this.handleAddPlace()}>Add new place</Button>
+                  <Button outline color="primary" size="sm" onClick={() => this.setState({ places: this.state.places.concat([{ name: '', address: '' }]) })}>Add new place</Button>
                 </div>
                 <div class="saveChangesButton">
                   <Button color="primary" size="lg" onClick={() => this.saveList()}>Save changes</Button>
