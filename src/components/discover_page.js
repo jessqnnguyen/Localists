@@ -65,9 +65,11 @@ class DiscoverPage extends Component {
 
     // Populate list search results.
     db.ref('lists').on('value', snapshot => {
-      snapshot.forEach(function(childSnapshot) {
-        childSnapshot.forEach(function(childSnapshot) {
-          const list = childSnapshot.val();
+      snapshot.forEach(function(parentSnapshot) {
+        parentSnapshot.forEach(function(childSnapshot) {
+          let list = childSnapshot.val();
+          list.id = childSnapshot.key;
+          list.uid = parentSnapshot.key;
           if (list.places != null) {
             for (let place of list.places) {
               // Add list if one of its places has an address that contains the query
@@ -146,14 +148,18 @@ class DiscoverPage extends Component {
 
   listItem(list) {
     return (
-      <Card class="card">
-        <CardBody>
-          <CardTitle>{list.title}</CardTitle>
-          {/* TODO: Store a description field in the list table on the db or display here and delete this subtitle. */}
-          <CardSubtitle>List subtitle if exists</CardSubtitle>
-          <CardLink href="#">View</CardLink>
-        </CardBody>
-      </Card>
+      <AppConsumer>
+        {({uid}) =>
+          <Card class="card">
+            <CardBody>
+              <CardTitle>{list.title}</CardTitle>
+              {/* TODO: Store a description field in the list table on the db or display here and delete this subtitle. */}
+              <CardSubtitle>List subtitle if exists</CardSubtitle>
+              <CardLink href="#"><Link to={routes.LISTPAGE + '/' + list.uid + '/' + list.id}>View</Link></CardLink>
+            </CardBody>
+          </Card>
+        }
+      </AppConsumer>
     );
   }
 
@@ -187,7 +193,7 @@ class DiscoverPage extends Component {
               ? <Alert type="info">Loading...</Alert>
               : listResults.length == 0
                 ? this.renderNoResultsFound()
-                : listResults.slice(indexOfFirstResult, indexOfLastResult).map(r => this.listItem(r))
+                : listResults.slice(indexOfFirstResult, indexOfLastResult).map(list => this.listItem(list))
             }
             {this.renderPagination("Lists")}
           </TabPane>
@@ -196,7 +202,7 @@ class DiscoverPage extends Component {
               ? <Alert type="info">Loading...</Alert>
               : userResults.length == 0
                 ? this.renderNoResultsFound()
-                : userResults.slice(indexOfFirstResult, indexOfLastResult).map(r => this.userItem(r))
+                : userResults.slice(indexOfFirstResult, indexOfLastResult).map(user => this.userItem(user))
             }
             {this.renderPagination("Users")}
           </TabPane>

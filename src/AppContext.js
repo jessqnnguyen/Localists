@@ -9,7 +9,8 @@ export class AppProvider extends React.Component {
 
     this.state = {
       uid: sessionStorage.getItem('uid'),
-      followedUsers: {}
+      followedUsers: {},
+      followedLists: {}
     }
 
     firebase.auth().onAuthStateChanged((user) => {
@@ -18,7 +19,7 @@ export class AppProvider extends React.Component {
     }, () => sessionStorage.setItem('uid', user ? user.uid : undefined))});
 
     firebase.database().ref("users/" + this.state.uid).on("value", snapshot => {
-      this.setState({ followedUsers: snapshot.val() && snapshot.val().followedUsers });
+      snapshot.val() && this.setState({ followedUsers: snapshot.val().followedUsers, followedLists: snapshot.val().followedLists });
     });
   }
 
