@@ -19,15 +19,31 @@ class ProfilePage extends Component {
     super(props);
     this.state = {
       user: {
-        name: props.match.params.name,
+        uid: props.match.params.uid,
+        // TODO: Display the user's name when the database issue is fixed. 
+        // Remove this placeholder text.
+        name: "placeholder: " + props.match.params.uid,
       },
       lists: [],
     };
+    
     firebase.auth().onAuthStateChanged((user) => {
       const database = firebase.database();
+      if (user) {
         console.log(user.uid)
-        const ref = database.ref("lists/" + user.uid);
-        ref.once("value", (snapshot) => {
+        // get user's name
+        const user_ref = database.ref("users/" + user.uid);
+        user_ref.once("value", snapshot => {
+          const u = snapshot.val();
+          console.log("profile_page.js: u = " + u);
+          // TODO: un-comment below when "users" database issue is fixed
+          // this.setState({
+          //   name: u.name
+          // });
+        });
+        // get user's lists
+        const lists_ref = database.ref("lists/" + user.uid);
+        lists_ref.once("value", (snapshot) => {
           var l = [];
           if (snapshot.exists()) {
             snapshot.forEach((listSnapshot) => {
@@ -37,6 +53,7 @@ class ProfilePage extends Component {
             console.log(this.state.lists, l);
           }
         });
+      }
     });
   }
 

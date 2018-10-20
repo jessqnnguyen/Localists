@@ -5,7 +5,9 @@ import {
   ListGroup,
   ListGroupItem,
   ListGroupItemHeading,
-  ListGroupItemText
+  ListGroupItemText,
+  Jumbotron,
+  Container,
 } from 'reactstrap';
 import '../styles/dashboard_styles.css';
 import { Link } from 'react-router-dom';
@@ -14,17 +16,19 @@ import firebase from 'firebase/app';
 import LoginForm from './login_form';
 import ListIcon from './list.svg';
 import { AppConsumer } from '../AppContext';
+import loadingSpinner from '../images/svg-loaders/grid.svg';
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       lists:[],
-      followedLists:[]
+      followedLists:[],
+
+      loading:true
     }
 
     console.log(this.state.lists);
-    const user = firebase.auth().currentUser;
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const database = firebase.database();
@@ -36,8 +40,11 @@ class Dashboard extends Component {
             snapshot.forEach((listSnapshot) => {
               l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
             });
-            this.setState({ lists: l });
-            console.log(this.state.lists, l);
+            this.setState({ lists: l, loading: false});
+            // console.log(this.state.lists, l);
+          } else {
+            // No lists found, loading done, set loading to false
+            this.setState({ loading: false });
           }
         });
       }
@@ -96,6 +103,41 @@ class Dashboard extends Component {
     }
   }
 
+  renderUserLists() {
+    return this.state.lists.map(list => <AppConsumer>
+      {({uid}) =>
+        <ListGroupItem>
+          <div class="listElement">
+            <ListGroupItemHeading id="dashboardListTitle">{list.title}</ListGroupItemHeading>
+            <div class="dashboardListFooter">
+              <ListGroupItemText id="dashboardListViewLink">
+                <a class="text-primary"><Link to={routes.LISTPAGE + '/' + uid + '/' + list.id}>View</Link></a>
+              </ListGroupItemText>
+              <Button color="success" onClick={() => {}}>Edit list</Button>
+            </div>
+          </div>
+        </ListGroupItem>
+      }
+      </AppConsumer>)
+  }
+
+  renderNoListsMessage() {
+    return (<Jumbotron>
+      <Container>
+        <h1>You have no lists yet :(</h1>
+        <p className="lead">Click 'Create new list' to create your first list now</p>
+      </Container>
+    </Jumbotron>);
+  }
+
+  renderLoadingSpinner() {
+    return (
+      <div class="loadingSpinner">
+        <img src={loadingSpinner} class="mx-auto" alt="Loading"/>
+      </div>
+    );
+  }
+
   render() {
     return (
       <AppConsumer>
@@ -113,23 +155,12 @@ class Dashboard extends Component {
                   </Button>
                 </div>
               </div>
-              <ListGroup>
-                {this.state.lists.map(list => <AppConsumer>
-                  {({uid}) =>
-                    <ListGroupItem>
-                      <div class="listElement">
-                        <ListGroupItemHeading id="dashboardListTitle">{list.title}</ListGroupItemHeading>
-                        <div class="dashboardListFooter">
-                          <ListGroupItemText id="dashboardListViewLink">
-                            <a class="text-primary"><Link to={routes.LISTPAGE + '/' + uid + '/' + list.id}>View</Link></a>
-                          </ListGroupItemText>
-                          <Button color="success" onClick={() => {}}>Edit list</Button>
-                        </div>
-                      </div>
-                    </ListGroupItem>
-                  }
-                  </AppConsumer>)}
-              </ListGroup>
+              {this.state.loading 
+                ? this.renderLoadingSpinner() 
+                : this.state.lists.length == 0 
+                    ? <div class="noListsMessage">{this.renderNoListsMessage()}</div>
+                    : <ListGroup> {this.renderUserLists()} </ListGroup>
+              }
             </div>
             <div class="followingLists">
               <div class="followingListsHeader">
