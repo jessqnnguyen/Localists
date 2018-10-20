@@ -14,13 +14,16 @@ import firebase from 'firebase/app';
 import LoginForm from './login_form';
 import ListIcon from './list.svg';
 import { AppConsumer } from '../AppContext';
+import loadingSpinner from '../images/svg-loaders/grid.svg';
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       lists:[],
-      followedLists:[]
+      followedLists:[],
+
+      loading:true
     }
 
     console.log(this.state.lists);
@@ -36,8 +39,8 @@ class Dashboard extends Component {
             snapshot.forEach((listSnapshot) => {
               l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
             });
-            this.setState({ lists: l });
-            console.log(this.state.lists, l);
+            this.setState({ lists: l, loading:false });
+            // console.log(this.state.lists, l);
           }
         });
       }
@@ -97,6 +100,51 @@ class Dashboard extends Component {
   }
 
   render() {
+    // var ownLists;
+    var ownLists;
+    if (this.state.loading) {
+      ownLists = <img src={loadingSpinner} class="mx-auto" alt="Loading"/>;
+    }
+    else {
+      ownLists = this.state.lists.map(list => <AppConsumer>
+        {({uid}) =>
+          <ListGroupItem>
+            <div class="listElement">
+              <ListGroupItemHeading id="dashboardListTitle">{list.title}</ListGroupItemHeading>
+              <div class="dashboardListFooter">
+                <ListGroupItemText id="dashboardListViewLink">
+                  <a class="text-primary"><Link to={routes.LISTPAGE + '/' + uid + '/' + list.id}>View</Link></a>
+                </ListGroupItemText>
+                <Button color="success" onClick={() => {}}>Edit list</Button>
+              </div>
+            </div>
+          </ListGroupItem>
+        }
+        </AppConsumer>)
+    }
+
+    // var followedLists;
+    // if (this.state.loading) {
+    //   ownLists = <img src={loadingSpinner} class="mx-auto" alt="Loading"/>;
+    // }
+    // else {
+    //   ownLists = this.state.lists.map(list => <AppConsumer>
+    //     {({uid}) =>
+    //       <ListGroupItem>
+    //         <div class="listElement">
+    //           <ListGroupItemHeading id="dashboardListTitle">{list.title}</ListGroupItemHeading>
+    //           <div class="dashboardListFooter">
+    //             <ListGroupItemText id="dashboardListViewLink">
+    //               <a class="text-primary"><Link to={routes.LISTPAGE + '/' + uid + '/' + list.id}>View</Link></a>
+    //             </ListGroupItemText>
+    //             <Button color="success" onClick={() => {}}>Edit list</Button>
+    //           </div>
+    //         </div>
+    //       </ListGroupItem>
+    //     }
+    //     </AppConsumer>)
+    // }
+
     return (
       <AppConsumer>
         {({loggedIn}) =>
@@ -114,21 +162,7 @@ class Dashboard extends Component {
                 </div>
               </div>
               <ListGroup>
-                {this.state.lists.map(list => <AppConsumer>
-                  {({uid}) =>
-                    <ListGroupItem>
-                      <div class="listElement">
-                        <ListGroupItemHeading id="dashboardListTitle">{list.title}</ListGroupItemHeading>
-                        <div class="dashboardListFooter">
-                          <ListGroupItemText id="dashboardListViewLink">
-                            <a class="text-primary"><Link to={routes.LISTPAGE + '/' + uid + '/' + list.id}>View</Link></a>
-                          </ListGroupItemText>
-                          <Button color="success" onClick={() => {}}>Edit list</Button>
-                        </div>
-                      </div>
-                    </ListGroupItem>
-                  }
-                  </AppConsumer>)}
+                {ownLists}
               </ListGroup>
             </div>
             <div class="followingLists">
