@@ -28,6 +28,7 @@ import firebase from 'firebase/app';
 import '../styles/discover_page_styles.css';
 import classnames from 'classnames';
 import { AppConsumer } from '../AppContext';
+import loadingSpinner from '../images/svg-loaders/grid.svg';
 
 
 class DiscoverPage extends Component {
@@ -40,6 +41,7 @@ class DiscoverPage extends Component {
       hasClickedSearch: false,
       resultsPerPage: 8,
       currentPage: 1,
+      loading: true,
       listResults: [],
       userResults: [],
     };
@@ -94,9 +96,10 @@ class DiscoverPage extends Component {
     });
     console.log("userResults = " + JSON.stringify(userResults));
 
-    // reset current results page
+    // reset current results page, loading has finished
     this.setState({
-      currentPage: 1
+      currentPage: 1,
+      loading: false,
     });
     this.toggle('1');
   }
@@ -164,13 +167,21 @@ class DiscoverPage extends Component {
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
-            {listResults.length > 0 && listResults.slice(indexOfFirstResult, indexOfLastResult).map(r => this.listItem(r))}
-            {listResults.length == 0 && this.renderNoResultsFound()}
+            {this.state.loading
+              ? <Alert type="info">Loading...</Alert>
+              : listResults.length == 0
+                ? this.renderNoResultsFound()
+                : listResults.slice(indexOfFirstResult, indexOfLastResult).map(r => this.listItem(r)) 
+            }
             {this.renderPagination("Lists")}
           </TabPane>
           <TabPane tabId="2">
-            {userResults.length > 0 && userResults.slice(indexOfFirstResult, indexOfLastResult).map(r => this.userItem(r))}
-            {userResults.length == 0 && this.renderNoResultsFound()}
+            {this.state.loading
+              ? <Alert type="info">Loading...</Alert>
+              : userResults.length == 0
+                ? this.renderNoResultsFound()
+                : userResults.slice(indexOfFirstResult, indexOfLastResult).map(r => this.userItem(r)) 
+            }
             {this.renderPagination("Users")}
           </TabPane>
         </TabContent>
