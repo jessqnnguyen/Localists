@@ -20,7 +20,7 @@ class ProfilePage extends Component {
     this.state = {
       user: {
         uid: props.match.params.uid,
-        name: "placeholder",
+        name: "placeholder: " + props.match.params.uid,
       },
       lists: [],
     };
