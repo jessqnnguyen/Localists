@@ -19,3 +19,12 @@
 .listOwnerName {
     text-align: center;
 }
+
+.profileSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.profileIcon {
+    align-self: center;
+}
