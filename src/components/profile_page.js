@@ -18,6 +18,8 @@ import firebase from 'firebase/app';
 class ProfilePage extends Component {
   constructor(props) {
     super(props);
+  
+    // set profile state
     this.state = {
       user: {
         uid: props.match.params.uid,
@@ -25,34 +27,32 @@ class ProfilePage extends Component {
       },
       lists: [],
     };
-    
-    firebase.auth().onAuthStateChanged((user) => {
-      const database = firebase.database();
-      if (user) {
-        console.log(user.uid);
-        // get user's name
-        const user_ref = database.ref("users/" + user.uid);
-        user_ref.once("value", snapshot => {
-          const u = snapshot.val();
-          console.log("profile_page.js: u = " + JSON.stringify(u));
-          // TODO: un-comment below when "users" database issue is fixed
-          this.setState({
-            user: {
-              name: u.name
-            }
-          });
+  }
+
+  async componentDidMount() {
+    // get user's name based on id
+    const db = firebase.database();
+    const user_ref = db.ref("users/" + this.state.user.uid);
+    user_ref.once("value", snapshot => {
+      const u = snapshot.val();
+      console.log("profile_page.js: u = " + JSON.stringify(u));
+      this.setState({
+        user: {
+          name: u.name
+        }
+      });
+    });
+
+    // get user's lists
+    const lists_ref = db.ref("lists/" + this.state.user.uid);
+    lists_ref.once("value", (snapshot) => {
+      var l = [];
+      if (snapshot.exists()) {
+        snapshot.forEach((listSnapshot) => {
+          l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
         });
-        // get user's lists
-        const lists_ref = database.ref("lists/" + user.uid);
-        lists_ref.once("value", (snapshot) => {
-          var l = [];
-          if (snapshot.exists()) {
-            snapshot.forEach((listSnapshot) => {
-              l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
-            });
-            this.setState({ lists: l });
-            console.log(this.state.lists, l);
-          }
+        this.setState({
+          lists: l
         });
       }
     });
@@ -79,6 +79,7 @@ class ProfilePage extends Component {
   }
 
   createProfileHeader() {
+    console.log("createProfileHeader: user name = " + this.state.user.name);
     return (
       <div class="listHeader">
         <ListGroup>
