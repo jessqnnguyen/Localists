@@ -150,7 +150,7 @@ class CreateListForm extends Component {
                   <Input type="name" name="name" id="name" placeholder={this.state.title} value={this.state.title} onChange={this.handleTitleChange}/>
                 </FormGroup>
                 {this.state.places.map((place, idx) => (
-              <div class="placeGroup">
+                  <div class="placeGroup">
                     <div class="placeGroupHeader">
                       <div class="placeIndexName">
                         <p class="h5">Place {idx + 1}</p>
@@ -161,7 +161,7 @@ class CreateListForm extends Component {
                     </div>
                     <FormGroup id="placeNameField">
                       <Label for="nameField">Place name</Label>
-                      <Input type="name" name="name" id="name" placeholder={place.name} value={place.name} onChange={this.handlePlaceNameChange(idx)}/>
+                      <Input type="name" name="name" placeholder={place.name} value={place.name} onChange={this.handlePlaceNameChange(idx)}/>
                     </FormGroup>
                     <FormGroup id="placeAddressField">
                       <Label for="nameField">Address</Label>
