@@ -67,18 +67,4 @@ class LoginForm extends Component {
   }
 }
 
-// <Form>
-//   <FormGroup id="emailField">
-//     <Label for="exampleEmail">Email</Label>
-//     <Input type="email" name="email" id="exampleEmail" placeholder="Email" value={this.state.email} onChange={event => this.setState({ email: event.target.value })}/>
-//   </FormGroup>
-//   <FormGroup id="passwordField">
-//     <Label for="examplePassword">Password</Label>
-//     <Input type="password" name="password" id="examplePassword" placeholder="Password" value={this.state.password} onChange={event => this.setState({ password: event.target.value })}/>
-//   </FormGroup>
-//   <div class="loginButton">
-//     <Button color="primary" onClick={() => this.login()}>Login</Button>
-//   </div>
-// </Form>
-
 export default withRouter(LoginForm);

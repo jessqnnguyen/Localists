@@ -202,8 +202,8 @@ class CreateListForm extends Component {
             </div>
           : <LoginForm/>
         }
-        </AppConsumer>
-      );
+      </AppConsumer>
+    );  
   }
 }
 
