@@ -203,7 +203,7 @@ class CreateListForm extends Component {
           : <LoginForm/>
         }
       </AppConsumer>
-    );  
+    );
   }
 }
 
