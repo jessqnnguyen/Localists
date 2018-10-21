@@ -11,6 +11,17 @@ import {
 import '../styles/list_page_styles.css';
 import { AppConsumer } from '../AppContext';
 import firebase from 'firebase/app';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+
+const MyMapComponent = withScriptjs(withGoogleMap((props) =>
+  <GoogleMap
+    defaultZoom={10}
+    center={props.places[0] && props.places[0].location ? props.places[0].location: { lat: -34.397, lng: 150.644 }}
+    position={props.places[0] && props.places[0].location ? props.places[0].location: { lat: -34.397, lng: 150.644 }}
+  >
+    {props.places.map(place => <Marker position={place.location} />)}
+  </GoogleMap>
+))
 
 class ListPage extends Component {
   constructor(props) {
@@ -59,7 +70,7 @@ class ListPage extends Component {
                   <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
                 </div>
                 <div class="listPageEditListButton">
-                    <Button color="success" onClick={() => this.props.history.push(routes.HOME)}>Edit list</Button>
+                  <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + this.props.match.params.uid + '/' + this.props.match.params.id)}>Edit list</Button>
                 </div>
               </div>
             </ListGroupItem>
@@ -76,6 +87,14 @@ class ListPage extends Component {
             </ListGroupItem>)}
           </ListGroup>
         </div>
+        <MyMapComponent
+          isMarkerShown
+          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBnlJi4Ij4k4zmrzEgSGqP8ntZjOk4hZY&v=3.exp&libraries=geometry,drawing,places"
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+          places={this.state.list.places}
+        />
       </div>
     );
   }

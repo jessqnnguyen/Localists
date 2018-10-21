@@ -77,7 +77,7 @@ class Dashboard extends Component {
               <ListGroupItemText id="dashboardListViewLink">
                 <a class="text-primary"><Link to={routes.LISTPAGE + '/' + uid + '/' + list.id}>View</Link></a>
               </ListGroupItemText>
-              <Button color="success" onClick={() => {}}>Edit list</Button>
+              <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + uid + '/' + list.id)}>Edit list</Button> 
             </div>
           </div>
         </ListGroupItem>
@@ -89,7 +89,16 @@ class Dashboard extends Component {
     return (<Jumbotron>
       <Container>
         <h1>You have no lists yet :(</h1>
-        <p className="lead">Click 'Create new list' to create your first list now</p>
+        <p className="lead">Click 'Create new list' to create your first list</p>
+      </Container>
+    </Jumbotron>);
+  }
+
+  renderNoFollowingListsMessage() {
+    return (<Jumbotron>
+      <Container>
+        <h1>You're not following any lists yet :(</h1>
+        <p className="lead">Click 'Discover' to find new lists to follow</p>
       </Container>
     </Jumbotron>);
   }
@@ -102,59 +111,68 @@ class Dashboard extends Component {
     );
   }
 
+  renderFollowingLists(followedLists) {
+    return(<ListGroup>
+      {followedLists && Object.keys(followedLists).map(list =>
+        <ListGroupItem>
+          <div class="listItem">
+            <div class="listLeft">
+              <ListGroupItemHeading>{followedLists[list].title}</ListGroupItemHeading>
+              <ListGroupItemText>
+                <a class="text-primary"><Link to={routes.LISTPAGE + '/' + followedLists[list].uid + '/' + list}>View</Link></a>
+              </ListGroupItemText>
+            </div>
+            <div class="listRight">
+              {this.createProfileIcon("Jessica Nguyen")}
+              <div class="listOwnerName">
+                <ListGroupItemText>{"Jessica Nguyen"}</ListGroupItemText>
+              </div>
+            </div>
+          </div>
+        </ListGroupItem>
+      )}
+    </ListGroup>);
+  }
+
   render() {
     return (
       <AppConsumer>
         {({uid, followedLists}) =>
-          uid ? <div class="dashboard">
-            <div class="lists">
-              <div class="listsHeader">
-                <div class="listHeaderHeading">
+          uid ? 
+            <div class="dashboard">
+              <div class="lists">
+                <div class="listsHeader">
+                  <div class="listHeaderHeading">
+                    <img id="listsHeaderIcon" src={ListIcon}/>
+                    <h1>Your lists</h1>
+                  </div>
+                  <div class="addListButton">
+                    <Button outline color="primary" size="lg" onClick={() => this.props.history.push(routes.CREATELIST)}>
+                      Create new list
+                    </Button>
+                  </div>
+                </div>
+                {this.state.loading
+                  ? this.renderLoadingSpinner()
+                  : this.state.lists.length == 0
+                      ? <div class="noListsMessage">{this.renderNoListsMessage()}</div>
+                      : <ListGroup> {this.renderUserLists()} </ListGroup>
+                }
+              </div>
+              <div class="followingLists">
+                <div class="followingListsHeader">
                   <img id="listsHeaderIcon" src={ListIcon}/>
-                  <h1>Your lists</h1>
+                  <div class="followinglistsHeading"><h1>Lists you're following</h1></div>
                 </div>
-                <div class="addListButton">
-                  <Button outline color="primary" size="lg" onClick={() => this.props.history.push(routes.CREATELIST)}>
-                    Create new list
-                  </Button>
-                </div>
+                {this.state.loading
+                  ? this.renderLoadingSpinner()
+                  : this.state.followedLists.length == 0
+                      ? <div class="noListsMessage">{this.renderNoFollowingListsMessage()}</div>
+                      : <ListGroup> {this.renderFollowingLists(followedLists)} </ListGroup>}
               </div>
-              {this.state.loading
-                ? this.renderLoadingSpinner()
-                : this.state.lists.length == 0
-                    ? <div class="noListsMessage">{this.renderNoListsMessage()}</div>
-                    : <ListGroup> {this.renderUserLists()} </ListGroup>
-              }
-            </div>
-            <div class="followingLists">
-              <div class="followingListsHeader">
-                <img id="listsHeaderIcon" src={ListIcon}/>
-                <div class="followinglistsHeading"><h1>Lists you're following</h1></div>
-              </div>
-              <ListGroup>
-                {followedLists && Object.keys(followedLists).map(list =>
-                  <ListGroupItem>
-                    <div class="listItem">
-                      <div class="listLeft">
-                        <ListGroupItemHeading>{followedLists[list].title}</ListGroupItemHeading>
-                        <ListGroupItemText>
-                          <a class="text-primary"><Link to={routes.LISTPAGE + '/' + followedLists[list].uid + '/' + list}>View</Link></a>
-                        </ListGroupItemText>
-                      </div>
-                      <div class="listRight">
-                        {this.createProfileIcon("Jessica Nguyen")}
-                        <div class="listOwnerName">
-                          <ListGroupItemText>{"Jessica Nguyen"}</ListGroupItemText>
-                        </div>
-                      </div>
-                    </div>
-                  </ListGroupItem>
-                )}
-              </ListGroup>
-            </div>
           </div>
         : <LoginForm/>
-    }
+      }
     </AppConsumer>
     );
   }
