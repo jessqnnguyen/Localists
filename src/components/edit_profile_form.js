@@ -116,7 +116,7 @@ class EditProfileForm extends Component {
                 <FormGroup>
                   <Label for="exampleFile">Upload a profile picture</Label>
                   {this.state.isUploading && <p>Progress: {this.state.progress}</p>}
-                  {this.state.avatarURL && <img src={this.state.avatarURL} />}
+                  {this.state.avatarURL && <div class="editProfilePageImage"> <img src={this.state.avatarURL}/> </div>}
                   <div class="editProfileUploadImageButton">
                     <FileUploader
                       accept="image/*"
