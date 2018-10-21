@@ -3,22 +3,13 @@ import * as routes from '../constants/routes';
 import { withRouter } from 'react-router-dom';
 import { Form, FormGroup, Label, Input, Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { getUserLists } from './database_utils';
-import '../styles/create_list_form_styles.css';
+import '../styles/edit_list_form_styles.css';
 import GoogleMapLoader from "react-google-maps-loader"
 import GooglePlacesSuggest from "react-google-places-suggest"
 import { AppConsumer } from '../AppContext';
 import LoginForm from './login_form';
 import firebase from 'firebase/app';
 import { List } from './create_list_form';
-
-// Just for reference. JS doesn't handle types.
-// export class Place {
-//   constructor (name, address) {
-//     this.name = name;
-//     this.address = address;
-//   }
-// }
-
 
 class EditListForm extends Component {
   constructor(props) {
@@ -87,9 +78,13 @@ class EditListForm extends Component {
       <AppConsumer>
         {({ uid }) =>
           uid ?
-            <div class="createListForm">
-              <div class="createListHeading">
+            <div class="editListForm">
+              <div class="editListFormHeading">
                 <h1 class="display-4">Edit your list</h1>
+                <div class="editListFormDeleteListButton">
+                  <Button outline color="danger" size="sm" onClick={() => this.toggle()}>Delete List</Button>
+                </div>
+                {this.renderModal()}
               </div>
               <Form>
                 <FormGroup id="titleField">
@@ -167,8 +162,6 @@ class EditListForm extends Component {
                   <Button color="primary" size="lg" onClick={() => this.saveList()}>Save changes</Button>
                 </div>
                 <div class="saveChangesButton">
-                  <Button color="danger" size="lg" onClick={() => this.toggle()}>Delete List</Button>
-                  {this.renderModal()}
                 </div>
               </Form>
             </div>
