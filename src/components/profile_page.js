@@ -85,7 +85,7 @@ class ProfilePage extends Component {
   }
 
   createProfileIcon() {
-    const { avatarUrl } = this.state.user;
+    const avatarUrl = this.state.user.avatarUrl;
     console.log("avatarUrl in createProfileIcon call" + avatarUrl);
     return (
       <div class="profileIcon">
