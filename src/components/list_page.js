@@ -27,25 +27,45 @@ class ListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      ownerName: "",
       list: {
-        title: '', 
+        title: "", 
         places: [],
       }
     };
   }
 
   async componentDidMount(){
-    const listPath = this.props.match.params.uid + '/' + this.props.match.params.id;
-    return firebase.database().ref('lists/' + listPath).once('value', snapshot => {
+    const db = firebase.database();
+    const uid = this.props.match.params.uid;
+    const id = this.props.match.params.id
+
+    // get user's name - copy pasted from profile_page
+    // TODO: get profile image url once implemented
+    const user_ref = db.ref("users/" + uid);
+    user_ref.once("value", snapshot => {
+      if (!snapshot.exists()) {
+        throw "list_page.js: invalid user id";
+      }
+      const u = snapshot.val();
+      console.log("list_page.js: u = " + JSON.stringify(u));
+      this.setState({
+        ownerName: u.name
+      });
+    });
+
+    // get list specified by url parameters
+    const listPath = uid + '/' + id;
+    db.ref('lists/' + listPath).once('value', snapshot => {
       this.setState({
         list: snapshot.val()
       });
     });
   }
 
-  // TODO: get name of owner based on uid
+  // TODO: profile icon should be based on user's profile image url
   createProfileIcon(owner) {
-    if (owner == "Jessica Nguyen") {
+    if (this.state.ownerName == "Jessica Nguyen") {
       return (
         <div class="profileIcon">
           <img class="listProfileIcon" src="https://puu.sh/BF4oC/0a21e57d9d.png" class="rounded-circle"/>
@@ -60,7 +80,6 @@ class ListPage extends Component {
     }
   }
 
-  // TODO: hide edit list button if user doesn't own the list
   createFollow(uid, followedLists) {
     const listOwnerId = this.props.match.params.uid;
     const listId = this.props.match.params.id
@@ -82,7 +101,6 @@ class ListPage extends Component {
   render() {
     const listPath = this.props.match.params.uid + '/' + this.props.match.params.id;
     return (
-
       <AppConsumer>
         {({uid, followedLists}) =>
           <div class="listPage">
@@ -91,20 +109,26 @@ class ListPage extends Component {
                 <ListGroupItem active>
                   <div class="listPageHeaderSection">
                     <div class="listPageProfileIconName">
-                      {this.createProfileIcon("Jessica Nguyen")}
+                      {this.createProfileIcon()}
                       <div class="listOwnerName">
-                        <ListGroupItemText>Jessica Nguyen</ListGroupItemText>
+                        <ListGroupItemText>{this.state.ownerName}</ListGroupItemText>
                       </div>
                     </div>
                     <div class="listPageListTitle">
                       <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
                     </div>
-                    <div class="listPageEditListButton">
-                      <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + listPath)}>Edit list</Button>
-                    </div>
-                    <div>
-                      {this.createFollow(uid, followedLists)}
-                    </div>
+                    {this.props.match.params.uid == uid && 
+                      <div class="listPageEditListButton">
+                        <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + listPath)}>
+                          Edit list
+                        </Button>
+                      </div>
+                    }
+                    {this.props.match.params.uid != uid &&
+                      <div>
+                        {this.createFollow(uid, followedLists)}
+                      </div>
+                    }
                   </div>
                 </ListGroupItem>
               </ListGroup>
