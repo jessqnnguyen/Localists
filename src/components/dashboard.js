@@ -166,7 +166,7 @@ class Dashboard extends Component {
                 </div>
                 {this.state.loading
                   ? this.renderLoadingSpinner()
-                  : this.state.lists.length == 0
+                  : this.state.followedLists.length == 0
                       ? <div class="noListsMessage">{this.renderNoFollowingListsMessage()}</div>
                       : <ListGroup> {this.renderFollowingLists(followedLists)} </ListGroup>}
               </div>
