@@ -107,13 +107,13 @@ class DiscoverPage extends Component {
     });
     console.log("listResults = " + JSON.stringify(listResults));
 
-    // Populate user search results.
+    // Populate user search results
     db.ref('users').on('value', snapshot => {
       snapshot.forEach(function(childSnapshot) {
         let user = childSnapshot.val();
         user.uid = childSnapshot.key;
         const name = user.name ? user.name.toLowerCase() : "";
-        if (name.includes(query) || name == (query)) {
+        if ((name.includes(query) || name == (query))) {
           userResults.push(user);
         }
       });
@@ -150,12 +150,18 @@ class DiscoverPage extends Component {
               <CardSubtitle>{user.email}</CardSubtitle>
               {/* TODO: Store user's location in db and display here or delete this subtitle. */}
               <CardText>Insert user location here</CardText>
-              <CardLink onClick={() => {
-                followedUsers && followedUsers[user.uid] ? firebase.database().ref('users/' + uid + '/followedUsers/' + user.uid).remove()
-                  : firebase.database().ref('users/' + uid + '/followedUsers/' + user.uid).set({
-                  email: user.email,
-                });
-              }}>{followedUsers && followedUsers[user.uid] ? 'Unfollow' : 'Follow'}</CardLink>
+              {/* only show follow/unfollow button if the result user id is not the current user*/}
+              {user.uid != uid && 
+                <CardLink onClick={() => {
+                  followedUsers && followedUsers[user.uid] 
+                    ? firebase.database().ref('users/' + uid + '/followedUsers/' + user.uid).remove()
+                    : firebase.database().ref('users/' + uid + '/followedUsers/' + user.uid).set({
+                        email: user.email,
+                      });
+                }}>
+                  {followedUsers && followedUsers[user.uid] ? 'Unfollow' : 'Follow'}
+                </CardLink>
+              }
               <CardLink><Link to={routes.PROFILE + '/' + user.uid}>View</Link></CardLink>
             </CardBody>
           </Card>
@@ -166,17 +172,13 @@ class DiscoverPage extends Component {
 
   listItem(list) {
     return (
-      <AppConsumer>
-        {({uid, followedLists}) =>
-          <Card class="card">
-            <CardBody>
-              <CardTitle>{list.title}</CardTitle>
-              <CardSubtitle>by <Link to={`/profile/${list.uid}`}> {list.uname || list.uid} </Link></CardSubtitle>
-              <CardLink href="#"><Link to={routes.LISTPAGE + '/' + list.uid + '/' + list.id}>View</Link></CardLink>
-            </CardBody>
-          </Card>
-        }
-      </AppConsumer>
+      <Card class="card">
+        <CardBody>
+          <CardTitle>{list.title}</CardTitle>
+          <CardSubtitle>by <Link to={`/profile/${list.uid}`}> {list.uname || list.uid} </Link></CardSubtitle>
+          <CardLink href="#"><Link to={routes.LISTPAGE + '/' + list.uid + '/' + list.id}>View</Link></CardLink>
+        </CardBody>
+      </Card>
     );
   }
 
@@ -186,7 +188,6 @@ class DiscoverPage extends Component {
     // NOTE: for now, tabs do not track what page you were on (toggle() resets currentPage to 1)
     const indexOfLastResult = currentPage * resultsPerPage;
     const indexOfFirstResult = indexOfLastResult - resultsPerPage;
-
     return (
       <div class="searchResults">
         <Nav tabs>
@@ -276,7 +277,7 @@ class DiscoverPage extends Component {
   render() {
     const { query, hasClickedSearch } = this.state;
     console.log("query: " + query);
-    return (
+    return (      
       <div class="discoverPage">
         <h1 class="display-4">Discover</h1>
         <Form>
@@ -292,7 +293,7 @@ class DiscoverPage extends Component {
           </div>
         </Form>
         {hasClickedSearch && this.renderResultTabs()}
-      </div>
+      </div>        
     );
   }
 }
