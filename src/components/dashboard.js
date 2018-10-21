@@ -25,7 +25,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       lists:[],
-      followedLists:[],
+      followedLists:{},
       userUid: '',
       avatarUrl: 'https://firebasestorage.googleapis.com/v0/b/list-66.appspot.com/o/images%2FHsEUxwCJYSMeHf010LSPXiPDKJt2.png?alt=media&token=7c0b5758-d8c4-43b6-a5f0-33d80ba87ec3',
       avatarUrls: {},
@@ -34,6 +34,7 @@ class Dashboard extends Component {
 
     console.log(this.state.lists);
     firebase.auth().onAuthStateChanged((user) => {
+      console.log("onauthchanged");
       if (user) {
         const database = firebase.database();
         console.log(user.uid)
@@ -54,39 +55,46 @@ class Dashboard extends Component {
         this.setState({ userUid: user.uid });
         firebase.database().ref("users/" + user.uid).on("value", snapshot => {
           if (snapshot.val()) {
+            console.log("checking user table now..");
             this.setState({ followedUsers: snapshot.val().followedUsers, followedLists: snapshot.val().followedLists });
             console.log(snapshot.val());
           }
         });
+        this.cacheProfileIcons();
       }
     });
   }
 
+  cacheProfileIcons() {
+    const followedLists = this.state.followedLists;
+      for (let key in Object.keys(followedLists)) {
+        console.log("enter for loop " + key);
+        const list = this.state.followedLists[key];
+        let userId = list.userId;
+        firebase.database().ref("users/" + userId).once("value", snapshot => {
+          console.log("this ref worked");
+          if (snapshot.exists()) {
+              console.log("this snapshot exists in the ref");
+              const user = snapshot.val();
+              const avatarUrl = user.avatar;
+              this.setState({ avatarUrl: avatarUrl });
+              let newAvatarUrls = this.state.avatarUrls;
+              newAvatarUrls[userId] = avatarUrl;
+              this.setState({ avatarUrls: newAvatarUrls });
+              console.log('avatarUrl set to ' + avatarUrl);
+          } else {
+              console.log("no snapshot found for " + userId);
+          }
+        });
+    } 
+  }
+
   createProfileIcon(userId) {
-    // console.log("avatarUrl in createProfileIcon = " + avatarUrl);
-    console.log('owner ' + userId);
-    let avatarUrl = '';
-    firebase.database().ref("users/" + userId).once("value", snapshot => {
-      console.log("this ref worked");
-      if (snapshot.exists()) {
-          console.log("this snapshot exists in the ref");
-          const user = snapshot.val();
-          avatarUrl = user.avatar;
-          this.setState({ avatarUrl: avatarUrl });
-          let newAvatarUrls = this.state.avatarUrls;
-          newAvatarUrls[userId] = avatarUrl;
-          this.setState({ avatarUrls: newAvatarUrls });
-          console.log('avatarUrl set to ' + avatarUrl);
-      } else {
-          console.log("no snapshot found for " + userId);
-      }
-    });
     return (
       <div class="profileIcon">
         <img class="listProfileIcon" src={this.state.avatarUrls[userId]} class="rounded-circle"/>
       </div>
     );
-    
   }
 
   renderUserLists() {
