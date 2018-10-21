@@ -26,6 +26,7 @@ class ProfilePage extends Component {
         uid: props.match.params.uid,
         name: "",
       },
+      uid: props.match.params.uid,
       avatarUrl: '',
       lists: [],
     };
@@ -55,7 +56,7 @@ class ProfilePage extends Component {
       var l = [];
       if (snapshot.exists()) {
         snapshot.forEach((listSnapshot) => {
-          l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
+          l.push({id:listSnapshot.key, uid:this.state.user.uid, title:listSnapshot.val().title, places:listSnapshot.val().places});
         });
         this.setState({
           lists: l
@@ -100,16 +101,17 @@ class ProfilePage extends Component {
     const lists = this.state.lists;
     let listElements = [];
     for (let i=0; i < lists.length; i++) {
-      listElements.push(this.createListElement(lists[i].title));
+      listElements.push(this.createListElement(lists[i].title, lists[i].uid, lists[i].id));
     }
     return listElements;
   }
 
-  createListElement(title) {
+  createListElement(title, uid, id) {
+    console.log("user id at createListElement()" + this.state.uid);
     return(
       <ListGroupItem>
         <ListGroupItemHeading>{title}</ListGroupItemHeading>
-        <ListGroupItemText><a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a></ListGroupItemText>
+        <ListGroupItemText><a class="text-primary" href="#"><Link to={routes.LISTPAGE + '/' + this.state.uid + '/' +  id}>View</Link></a></ListGroupItemText>
       </ListGroupItem>
     );
   }
