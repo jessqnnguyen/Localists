@@ -1,0 +1,10 @@
+.editListForm {
+    align-self: flex-start;
+    margin-top: 60px;
+    margin-left: 60px;
+}
+
+.editListFormDeleteListButton {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
