@@ -91,22 +91,3 @@ export default class RegisterForm extends Component {
     );
   }
 }
-
-
-// <Form>
-//   <FormGroup id="nameField">
-//     <Label for="nameField">Name</Label>
-//     <Input type="name" name="name" id="name" placeholder="Jane Doe" value={this.state.name} onChange={event => this.setState({ name: event.target.value })}/>
-//   </FormGroup>
-//   <FormGroup id="registerEmailField">
-//     <Label for="exampleEmail">Email</Label>
-//     <Input type="email" name="email" id="exampleEmail" placeholder="jane@example.com" value={this.state.email} onChange={event => this.setState({ email: event.target.value })}/>
-//   </FormGroup>
-//   <FormGroup id="passwordField">
-//     <Label for="examplePassword">Password</Label>
-//     <Input type="password" name="password" id="examplePassword" placeholder="password" value={this.state.password} onChange={event => this.setState({ password: event.target.value })}/>
-//   </FormGroup>
-//   <div class="registerButton">
-//     <Button color="primary" onClick={() => this.register(this.state.email, this.state.password, this.state.name)}>Submit</Button>
-//   </div>
-// </Form>
