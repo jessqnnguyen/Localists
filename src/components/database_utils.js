@@ -12,3 +12,19 @@ export function getUserLists() {
     }
 }
 
+export function getUserAvatar(userId) {
+    let avatarUrl = '';
+    console.log("this called");
+    firebase.database().ref("users/" + userId).once("value", snapshot => {
+        console.log("this ref worked");
+        if (snapshot.exists()) {
+            console.log("this snapshot exists in the ref");
+            const user = snapshot.val();
+            avatarUrl = user.avatar;
+            console.log('avatarUrl set to ' + avatarUrl);
+        } else {
+            console.log("no snapshot found for " + userId);
+        }
+    });
+    return avatarUrl;
+}

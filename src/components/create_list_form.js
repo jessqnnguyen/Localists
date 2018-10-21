@@ -8,6 +8,7 @@ import GoogleMapLoader from "react-google-maps-loader"
 import GooglePlacesSuggest from "react-google-places-suggest"
 import { AppConsumer } from '../AppContext';
 import LoginForm from './login_form';
+import firebase from 'firebase/app';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
@@ -49,12 +50,13 @@ export class List {
 
   save() {
     var userLists = getUserLists();
-    
+    var user = firebase.auth().currentUser;
     // If the list has already been loaded i.e. if the list id is non-empty
     if (this.id !== "") {
       userLists.child(this.id).set({
         title: this.title,
         places: this.places,
+        userId: user.uid,
       });
     } else {
       // The list is new so set the list id to the id returned
@@ -63,6 +65,7 @@ export class List {
       userLists.child(this.id).set({
         title: this.title,
         places: this.places,
+        userId: user.uid,
       });
     }
   }

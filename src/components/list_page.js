@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as routes from '../constants/routes';
+import * as images from '../constants/images';
 import { withRouter } from 'react-router-dom';
 import {
   Button,
@@ -12,6 +13,7 @@ import '../styles/list_page_styles.css';
 import { AppConsumer } from '../AppContext';
 import firebase from 'firebase/app';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import { getUserAvatar } from './database_utils';
 import CommentSection from './comment_section';
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
@@ -28,12 +30,29 @@ class ListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: props.match.params.uid,
+      avatarUrl: '',
       ownerName: "",
       list: {
         title: "", 
         places: [],
       }
     };
+    let avatarUrl = '';
+    const userId = this.state.userId;
+    firebase.database().ref("users/" + userId).once("value", snapshot => {
+        console.log("this ref worked");
+        if (snapshot.exists()) {
+            console.log("this snapshot exists in the ref");
+            const user = snapshot.val();
+            avatarUrl = user.avatar;
+            this.setState({avatarUrl: avatarUrl});
+            this.setState({ownerName: user.name});
+            console.log('avatarUrl set to ' + avatarUrl);
+        } else {
+            console.log("no snapshot found for " + userId);
+        }
+    });
   }
 
   async componentDidMount(){
@@ -64,28 +83,20 @@ class ListPage extends Component {
     });
   }
 
-  // TODO: profile icon should be based on user's profile image url
-  createProfileIcon(owner) {
-    if (this.state.ownerName == "Jessica Nguyen") {
-      return (
-        <div class="profileIcon">
-          <img class="listProfileIcon" src="https://puu.sh/BF4oC/0a21e57d9d.png" class="rounded-circle"/>
-        </div>
-      );
-    } else {
-      return (
-        <div class="profileIcon">
-          <img class="listProfileIcon" src="https://puu.sh/BF4zA/2483e27981.png" class="rounded-circle"/>
-        </div>
-      );
-    }
+  createProfileIcon() {
+    return (
+      <div class="profileIcon">
+        <img class="listProfileIcon" src={this.state.avatarUrl ? this.state.avatarUrl : images.DEFAULTPROFILEICON } class="rounded-circle"/>
+      </div>
+    );
+  
   }
 
   createFollow(uid, followedLists) {
     const listOwnerId = this.props.match.params.uid;
     const listId = this.props.match.params.id
     return (
-      <Button onClick={() => {
+      <Button color="success" onClick={() => {
         followedLists && followedLists[listId] 
           ? firebase.database().ref('users/' + uid + '/followedLists/' + listId).remove()
           : firebase.database().ref('users/' + uid + '/followedLists/' + listId).set({

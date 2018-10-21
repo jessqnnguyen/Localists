@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as routes from '../constants/routes';
+import * as images from '../constants/images';
 import { withRouter } from 'react-router-dom';
 import {
   Button,
@@ -24,6 +25,7 @@ class ProfilePage extends Component {
       user: {
         uid: props.match.params.uid,
         name: "",
+        avatarUrl: '',
       },
       lists: [],
     };
@@ -41,11 +43,11 @@ class ProfilePage extends Component {
       console.log("profile_page.js: u = " + JSON.stringify(u));
       this.setState({
         user: {
-          name: u.name
+          name: u.name,
+          avatarUrl: u.avatar,
         }
       });
     });
-
     // get user's lists
     const lists_ref = db.ref("lists/" + this.state.user.uid);
     lists_ref.once("value", (snapshot) => {
@@ -66,19 +68,11 @@ class ProfilePage extends Component {
   }
 
   createProfileIcon(owner) {
-    if (owner == "Jessica Nguyen") {
-      return (
-        <div class="profileIcon">
-          <img class="listProfileIcon" src="https://puu.sh/BF4oC/0a21e57d9d.png" class="rounded-circle"/>
-        </div>
-      );
-    } else {
-      return (
-        <div class="profileIcon">
-          <img class="listProfileIcon" src="https://puu.sh/BF4zA/2483e27981.png" class="rounded-circle"/>
-        </div>
-      );
-    }
+    return (
+      <div class="profileIcon">
+        <img class="listProfileIcon" src={ this.state.avatarUrl ? this.state.avatarUrl : images.DEFAULTPROFILEICON } class="rounded-circle"/>
+      </div>
+    );
   }
 
   createProfileHeader() {

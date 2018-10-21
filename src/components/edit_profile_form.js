@@ -52,7 +52,7 @@ class EditProfileForm extends Component {
         db.ref('users/' + user.uid).set({
           name: this.state.name,
           email: this.state.email,
-          avatar: this.state.avatarURL,
+          avatar: this.state.avatarURL ? this.state.avatarURL : '',
         });
 
         // If the user has updated their password, the state should store the new password
@@ -129,10 +129,6 @@ class EditProfileForm extends Component {
                       onProgress={this.handleProgress}
                     />
                   </div>
-                  {/* <Input type="file" name="file" id="exampleFile" /> */}
-                  <FormText color="muted">
-                    Please upload a square image.
-                  </FormText>
                 </FormGroup>
                 <div class="editProfileSaveChangesButton">
                   <Button color="primary" size="lg" onClick={() => this.saveChanges()}>Save changes</Button>
