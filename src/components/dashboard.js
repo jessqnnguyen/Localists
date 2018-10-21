@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as routes from '../constants/routes';
+import * as images from '../constants/images';
 import {
   Button,
   ListGroup,
@@ -95,9 +96,10 @@ class Dashboard extends Component {
   }
 
   createProfileIcon(userId) {
+    const avatarUrl = this.state.avatarUrls[userId];
     return (
       <div class="profileIcon">
-        <img class="listProfileIcon" src={this.state.avatarUrls[userId]} class="rounded-circle"/>
+        <img class="listProfileIcon" src={avatarUrl ? avatarUrl : images.DEFAULTPROFILEICON} class="rounded-circle"/>
       </div>
     );
   }
