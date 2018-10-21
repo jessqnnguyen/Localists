@@ -229,7 +229,7 @@ class Dashboard extends Component {
                                   </ListGroupItemText>
                                 </div>
                                 <div class="listRight">
-                                  {this.createProfileIcon(followedLists[list].userId)}
+                                  {this.createProfileIcon(followedLists[list].uid)}
                                   <div class="listOwnerName">
                                     <ListGroupItemText>{this.state.userNames[followedLists[list].uid]}</ListGroupItemText>
                                   </div>
