@@ -30,18 +30,20 @@ class ListPage extends Component {
       list: {
         title: '', 
         places: [],
-        uid: this.props.match.params.uid,
-        id: this.props.match.params.id
       }
     };
   }
 
-  componentDidMount(){
-    return firebase.database().ref('/lists/' + this.state.list.uid + '/' + this.state.list.id).once('value').then((snapshot) => {
-      this.setState({list: snapshot.val()});
+  async componentDidMount(){
+    const listPath = this.props.match.params.uid + '/' + this.props.match.params.id;
+    return firebase.database().ref('lists/' + listPath).once('value', snapshot => {
+      this.setState({
+        list: snapshot.val()
+      });
     });
   }
 
+  // TODO: get name of owner based on uid
   createProfileIcon(owner) {
     if (owner == "Jessica Nguyen") {
       return (
@@ -58,11 +60,31 @@ class ListPage extends Component {
     }
   }
 
-  // createFollow() {
-
-  // }
+  // TODO: render follow/unfollow button
+  createFollow() {
+    const listOwnerId = this.props.match.params.uid;
+    const listId = this.props.match.params.id
+    return (
+      <AppConsumer>
+        {({uid, followedLists}) =>
+          <Button onClick={() => {
+            followedLists && followedLists[listId] 
+              ? firebase.database().ref('users/' + uid + '/followedLists/' + listId).remove()
+              : firebase.database().ref('users/' + uid + '/followedLists/' + listId).set({
+                  places: this.state.list.places,
+                  title: this.state.list.title,
+                  uid: listOwnerId,
+                });
+          }}>
+            {followedLists && followedLists[listId] ? 'Unfollow' : 'Follow'}
+          </Button>
+        }
+      </AppConsumer>
+    );
+  }
 
   render() {
+    const listPath = this.props.match.params.uid + '/' + this.props.match.params.id;
     return (
       <div class="listPage">
         <div class="listHeader">
@@ -79,10 +101,10 @@ class ListPage extends Component {
                   <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
                 </div>
                 <div class="listPageEditListButton">
-                  <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + this.state.list.uid + '/' + this.state.list.id)}>Edit list</Button>
+                  <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + listPath)}>Edit list</Button>
                 </div>
                 <div>
-                  {/* {this.createFollow()} */}
+                  {this.createFollow()}
                 </div>
               </div>
             </ListGroupItem>
