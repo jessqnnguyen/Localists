@@ -58,7 +58,7 @@ class Dashboard extends Component {
         firebase.database().ref("users/" + user.uid).on("value", snapshot => {
           if (snapshot.val()) {
             console.log("checking user table now..");
-            this.setState({ followedLists: snapshot.val().followedLists });
+            this.setState({ followedLists: snapshot.val().followedLists, followedUsers: snapshot.val().followedUsers });
             console.log(snapshot.val());
             this.cacheProfileIcons();
           }
@@ -186,7 +186,7 @@ class Dashboard extends Component {
     const { followedLists } = this.state;
     return (
       <AppConsumer>
-        {({uid, followedLists}) =>
+        {({uid, followedLists, followedUsers }) =>
           uid ? 
             <div class="dashboard">
               <div class="lists">

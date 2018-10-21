@@ -9,6 +9,7 @@ import {
   ListGroupItemText,
   ListGroupItemHeading
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import '../styles/list_page_styles.css';
 import { AppConsumer } from '../AppContext';
 import firebase from 'firebase/app';
@@ -113,6 +114,7 @@ class ListPage extends Component {
 
   render() {
     const listPath = this.props.match.params.uid + '/' + this.props.match.params.id;
+    const profilePath = '/profile/' + this.props.match.params.uid;
     return (
       <AppConsumer>
         {({uid, followedLists}) =>
@@ -124,7 +126,7 @@ class ListPage extends Component {
                     <div class="listPageProfileIconName">
                       {this.createProfileIcon()}
                       <div class="listOwnerName">
-                        <ListGroupItemText>{this.state.ownerName}</ListGroupItemText>
+                        <ListGroupItemText><a onClick={() => this.props.history.push(profilePath)}>{this.state.ownerName}</a></ListGroupItemText>
                       </div>
                     </div>
                     <div class="listPageListTitle">

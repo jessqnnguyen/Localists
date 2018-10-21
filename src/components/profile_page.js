@@ -77,23 +77,50 @@ class ProfilePage extends Component {
     );
   }
 
+  createFollow(uid, followedUsers) {
+    const userId = this.props.match.params.uid;
+    const listId = this.props.match.params.id;
+    const sessionUser = sessionStorage.getItem('uid');
+    return (
+      <Button color="success" onClick={() => {
+        followedUsers 
+          ? firebase.database().ref('users/' + sessionUser + '/followedUsers/' + uid).remove()
+          : firebase.database().ref('users/' + sessionUser + '/followedUsers/' + uid).set({
+              uid: userId,
+            });
+      }}>
+        {followedUsers ? 'Unfollow' : 'Follow'}
+      </Button>
+    );
+  }
+
   createProfileHeader() {
     return (
-      <div class="listHeader">
-        <ListGroup>
-          <ListGroupItem active>
-            <div class="profileHeader">
-              <div class="profileSection">
-                {this.createProfileIcon()}
-                <div class="listOwnerName">
-                  <ListGroupItemText>{this.state.user.name}</ListGroupItemText>
+      <AppConsumer>
+        {({uid, followedUsers}) =>
+        <div class="listHeader">
+          <ListGroup>
+            <ListGroupItem active>
+              <div class="profileHeader">
+                <div class="profileSection">
+                  {this.createProfileIcon()}
+                  <div class="listOwnerName">
+                    <ListGroupItemText>{this.state.user.name}</ListGroupItemText>
+                  </div>
+                  {this.props.match.params.uid != sessionStorage.getItem('uid')
+                    ?
+                        <div class="profilePageFollowUserButton">
+                          {this.createFollow(this.props.match.params.uid, followedUsers)}
+                        </div>
+                    : <Button color="success" onClick={() => this.props.history.push(routes.EDITPROFILE)}>Edit profile</Button>
+                  }
                 </div>
-                <Button color="success" onClick={() => this.props.history.push(routes.EDITPROFILE)}>Edit profile</Button>
               </div>
-            </div>
-          </ListGroupItem>
-        </ListGroup>
-      </div>
+            </ListGroupItem>
+          </ListGroup>
+        </div>
+        }
+      </AppConsumer>
     );
   }
 
