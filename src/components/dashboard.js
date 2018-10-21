@@ -18,6 +18,7 @@ import ListIcon from './list.svg';
 import { AppConsumer } from '../AppContext';
 import loadingSpinner from '../images/svg-loaders/grid.svg';
 import { List } from './create_list_form';
+import { getUserAvatar } from './database_utils';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -26,7 +27,8 @@ class Dashboard extends Component {
       lists:[],
       followedLists:[],
       userUid: '',
-
+      avatarUrl: 'https://firebasestorage.googleapis.com/v0/b/list-66.appspot.com/o/images%2FHsEUxwCJYSMeHf010LSPXiPDKJt2.png?alt=media&token=7c0b5758-d8c4-43b6-a5f0-33d80ba87ec3',
+      avatarUrls: {},
       loading:true
     }
 
@@ -56,38 +58,35 @@ class Dashboard extends Component {
             console.log(snapshot.val());
           }
         });
-        console.log("followedlists.length after update: " + this.state.followedLists.length);
       }
     });
   }
 
-  createProfileIcon(owner) {
-    const database = firebase.database();
-    const ref = database.ref("users/" + owner);
-    console.log('owner' + owner);
+  createProfileIcon(userId) {
+    // console.log("avatarUrl in createProfileIcon = " + avatarUrl);
+    console.log('owner ' + userId);
     let avatarUrl = '';
-    ref.once("value", (snapshot) => {
+    firebase.database().ref("users/" + userId).once("value", snapshot => {
+      console.log("this ref worked");
       if (snapshot.exists()) {
-        const user = snapshot.val();
-        avatarUrl = user.avatar;
+          console.log("this snapshot exists in the ref");
+          const user = snapshot.val();
+          avatarUrl = user.avatar;
+          this.setState({ avatarUrl: avatarUrl });
+          let newAvatarUrls = this.state.avatarUrls;
+          newAvatarUrls[userId] = avatarUrl;
+          this.setState({ avatarUrls: newAvatarUrls });
+          console.log('avatarUrl set to ' + avatarUrl);
       } else {
-        console.log("no snapshot found for " + owner);
+          console.log("no snapshot found for " + userId);
       }
     });
-    if (owner == "Jessica Nguyen") {
-      return (
-        <div class="profileIcon">
-          <img class="listProfileIcon" src="https://puu.sh/BF4oC/0a21e57d9d.png" class="rounded-circle"/>
-        </div>
-      );
-    } else {
-      return (
-        <div class="profileIcon">
-          avatarUrl:{avatarUrl}
-          <img class="listProfileIcon" src={avatarUrl} class="rounded-circle"/>
-        </div>
-      );
-    }
+    return (
+      <div class="profileIcon">
+        <img class="listProfileIcon" src={this.state.avatarUrls[userId]} class="rounded-circle"/>
+      </div>
+    );
+    
   }
 
   renderUserLists() {
@@ -105,7 +104,7 @@ class Dashboard extends Component {
           </div>
         </ListGroupItem>
       }
-      </AppConsumer>)
+      </AppConsumer>);
   }
 
   renderNoListsMessage() {
@@ -193,9 +192,28 @@ class Dashboard extends Component {
                 </div>
                 {this.state.loading
                   ? this.renderLoadingSpinner()
-                  : !this.state.followedLists || this.state.followedLists.length == 0
+                  : !followedLists || followedLists.length == 0
                       ? <div class="noListsMessage">{this.renderNoFollowingListsMessage()}</div>
-                      : <ListGroup> {this.renderFollowingLists()} </ListGroup>}
+                      :  <ListGroup>
+                          {followedLists && Object.keys(followedLists).map(list =>
+                            <ListGroupItem>
+                              <div class="listItem">
+                                <div class="listLeft">
+                                  <ListGroupItemHeading>{followedLists[list].title}</ListGroupItemHeading>
+                                  <ListGroupItemText>
+                                    <a class="text-primary"><Link to={routes.LISTPAGE + '/' + followedLists[list].uid + '/' + list}>View</Link></a>
+                                  </ListGroupItemText>
+                                </div>
+                                <div class="listRight">
+                                  {this.createProfileIcon(followedLists[list].userId)}
+                                  <div class="listOwnerName">
+                                    <ListGroupItemText>{"Jessica Nguyen"}</ListGroupItemText>
+                                  </div>
+                                </div>
+                              </div>
+                        </ListGroupItem>
+                      )}
+                    </ListGroup> }
               </div>
           </div>
         : <LoginForm/>
