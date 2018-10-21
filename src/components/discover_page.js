@@ -167,7 +167,7 @@ class DiscoverPage extends Component {
   listItem(list) {
     return (
       <AppConsumer>
-        {({uid, followedLists}) =>
+        {({uid}) =>
           <Card class="card">
             <CardBody>
               <CardTitle>{list.title}</CardTitle>
