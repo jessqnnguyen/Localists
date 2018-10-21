@@ -29,6 +29,22 @@ class ProfilePage extends Component {
       },
       lists: [],
     };
+    let avatarUrl = '';
+    const userId = props.match.params.uid;
+    firebase.database().ref("users/" + userId).once("value", snapshot => {
+        console.log("this ref worked");
+        if (snapshot.exists()) {
+            console.log("this snapshot exists in the ref");
+            const user = snapshot.val();
+            avatarUrl = user.avatar;
+            this.state = {
+              avatarUrl: avatarUrl,
+            };
+            console.log('avatarUrl set to ' + this.state.avatarUrl);
+        } else {
+            console.log("no snapshot found for " + userId);
+        }
+    });
   }
 
   async componentDidMount() {
@@ -41,10 +57,11 @@ class ProfilePage extends Component {
       }
       const u = snapshot.val();
       console.log("profile_page.js: u = " + JSON.stringify(u));
+      console.log("avatar url in componentDidMount() " + u.avatar);
       this.setState({
         user: {
           name: u.name,
-          avatarUrl: u.avatar,
+          avatarUrl: u.avatar
         }
       });
     });
@@ -67,10 +84,12 @@ class ProfilePage extends Component {
     this.setState(() => ({ [event.target.name]: event.target.value }));
   }
 
-  createProfileIcon(owner) {
+  createProfileIcon() {
+    const { avatarUrl } = this.state.user;
+    console.log("avatarUrl in createProfileIcon call" + avatarUrl);
     return (
       <div class="profileIcon">
-        <img class="listProfileIcon" src={ this.state.avatarUrl ? this.state.avatarUrl : images.DEFAULTPROFILEICON } class="rounded-circle"/>
+        <img class="listProfileIcon" src={ avatarUrl ? avatarUrl : images.DEFAULTPROFILEICON } class="rounded-circle"/>
       </div>
     );
   }
@@ -82,7 +101,7 @@ class ProfilePage extends Component {
           <ListGroupItem active>
             <div class="profileHeader">
               <div class="profileSection">
-                {this.createProfileIcon("Jessica Nguyen")}
+                {this.createProfileIcon()}
                 <div class="listOwnerName">
                   <ListGroupItemText>{this.state.user.name}</ListGroupItemText>
                 </div>
