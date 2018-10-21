@@ -30,6 +30,7 @@ class Dashboard extends Component {
       userUid: this.props.uid,
       avatarUrl: 'https://firebasestorage.googleapis.com/v0/b/list-66.appspot.com/o/images%2FHsEUxwCJYSMeHf010LSPXiPDKJt2.png?alt=media&token=7c0b5758-d8c4-43b6-a5f0-33d80ba87ec3',
       avatarUrls: {},
+      userNames: {},
       loading:true
     }
 
@@ -76,7 +77,8 @@ class Dashboard extends Component {
       console.log("enter for loop " + key);
       const list = followedLists[key];
       console.log("list " + list);
-      let userId = list.userId;
+      let userId = list.uid;
+      console.log("user id is " + userId);
       firebase.database().ref("users/" + userId).once("value", snapshot => {
         console.log("this ref worked");
         if (snapshot.exists()) {
@@ -87,6 +89,11 @@ class Dashboard extends Component {
             let newAvatarUrls = this.state.avatarUrls;
             newAvatarUrls[userId] = avatarUrl;
             this.setState({ avatarUrls: newAvatarUrls });
+            let newUserNames = this.state.userNames;
+            newUserNames[userId] = user.name;
+            console.log("user name is " + user.name);
+            this.setState({ userNames: newUserNames });
+            console.log("userNames[" + userId + "] = " + this.state.userNames[userId]);
             console.log('avatarUrl set to ' + avatarUrl);
         } else {
             console.log("no snapshot found for " + userId);
@@ -149,7 +156,7 @@ class Dashboard extends Component {
   }
 
   renderFollowingLists() {
-    const { followedLists } = this.state.followedLists;
+    const { followedLists, userNames } = this.state;
     if (!followedLists) {
       console.log("thisran");
     }
@@ -166,7 +173,7 @@ class Dashboard extends Component {
             <div class="listRight">
               {this.createProfileIcon(list.userId)}
               <div class="listOwnerName">
-                <ListGroupItemText>{"Jessica Nguyen"}</ListGroupItemText>
+                <ListGroupItemText>{userNames[list.uid]}</ListGroupItemText>
               </div>
             </div>
           </div>
@@ -224,7 +231,7 @@ class Dashboard extends Component {
                                 <div class="listRight">
                                   {this.createProfileIcon(followedLists[list].userId)}
                                   <div class="listOwnerName">
-                                    <ListGroupItemText>{"Jessica Nguyen"}</ListGroupItemText>
+                                    <ListGroupItemText>{this.state.userNames[followedLists[list].uid]}</ListGroupItemText>
                                   </div>
                                 </div>
                               </div>
