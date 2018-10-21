@@ -17,6 +17,7 @@ import LoginForm from './login_form';
 import ListIcon from './list.svg';
 import { AppConsumer } from '../AppContext';
 import loadingSpinner from '../images/svg-loaders/grid.svg';
+import { List } from './create_list_form';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class Dashboard extends Component {
     this.state = {
       lists:[],
       followedLists:[],
+      userUid: '',
 
       loading:true
     }
@@ -47,11 +49,31 @@ class Dashboard extends Component {
             this.setState({ loading: false });
           }
         });
+        this.setState({ userUid: user.uid });
+        firebase.database().ref("users/" + user.uid).on("value", snapshot => {
+          if (snapshot.val()) {
+            this.setState({ followedUsers: snapshot.val().followedUsers, followedLists: snapshot.val().followedLists });
+            console.log(snapshot.val());
+          }
+        });
+        console.log("followedlists.length after update: " + this.state.followedLists.length);
       }
     });
   }
 
   createProfileIcon(owner) {
+    const database = firebase.database();
+    const ref = database.ref("users/" + owner);
+    console.log('owner' + owner);
+    let avatarUrl = '';
+    ref.once("value", (snapshot) => {
+      if (snapshot.exists()) {
+        const user = snapshot.val();
+        avatarUrl = user.avatar;
+      } else {
+        console.log("no snapshot found for " + owner);
+      }
+    });
     if (owner == "Jessica Nguyen") {
       return (
         <div class="profileIcon">
@@ -61,7 +83,8 @@ class Dashboard extends Component {
     } else {
       return (
         <div class="profileIcon">
-          <img class="listProfileIcon" src="https://puu.sh/BF4zA/2483e27981.png" class="rounded-circle"/>
+          avatarUrl:{avatarUrl}
+          <img class="listProfileIcon" src={avatarUrl} class="rounded-circle"/>
         </div>
       );
     }
@@ -111,8 +134,12 @@ class Dashboard extends Component {
     );
   }
 
-  renderFollowingLists(followedLists) {
-    return(<ListGroup>
+  renderFollowingLists() {
+    const { followedLists } = this.state.followedLists;
+    if (!followedLists) {
+      console.log("thisran");
+    }
+    return (<ListGroup>
       {followedLists && Object.keys(followedLists).map(list =>
         <ListGroupItem>
           <div class="listItem">
@@ -123,7 +150,7 @@ class Dashboard extends Component {
               </ListGroupItemText>
             </div>
             <div class="listRight">
-              {this.createProfileIcon("Jessica Nguyen")}
+              {this.createProfileIcon(list.userId)}
               <div class="listOwnerName">
                 <ListGroupItemText>{"Jessica Nguyen"}</ListGroupItemText>
               </div>
@@ -166,9 +193,9 @@ class Dashboard extends Component {
                 </div>
                 {this.state.loading
                   ? this.renderLoadingSpinner()
-                  : this.state.followedLists.length == 0
+                  : !this.state.followedLists || this.state.followedLists.length == 0
                       ? <div class="noListsMessage">{this.renderNoFollowingListsMessage()}</div>
-                      : <ListGroup> {this.renderFollowingLists(followedLists)} </ListGroup>}
+                      : <ListGroup> {this.renderFollowingLists()} </ListGroup>}
               </div>
           </div>
         : <LoginForm/>
