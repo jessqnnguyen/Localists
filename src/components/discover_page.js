@@ -70,12 +70,19 @@ class DiscoverPage extends Component {
           let list = childSnapshot.val();
           list.id = childSnapshot.key;
           list.uid = parentSnapshot.key;
-          if (list.title.includes(query) || list.title === query) {
+          const listTitle = list.title.toLowerCase();
+          if (listTitle.includes(query) || listTitle === query) {
             listResults.push(list);
+            return;
           }
           if (list.places != null) {
             for (let place of list.places) {
               // Add list if one of its places has an address that contains the query
+              const name = place.name.toLowerCase();
+              if (name.includes(query) || name == query) {
+                listResults.push(list);
+                break;
+              }
               const address = place.address.toLowerCase();
               if (address.includes(query) || address == (query)) {
                 listResults.push(list);
