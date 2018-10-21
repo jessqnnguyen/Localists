@@ -77,7 +77,7 @@ class Dashboard extends Component {
               <ListGroupItemText id="dashboardListViewLink">
                 <a class="text-primary"><Link to={routes.LISTPAGE + '/' + uid + '/' + list.id}>View</Link></a>
               </ListGroupItemText>
-              <Button color="success" onClick={() => {}}>Edit list</Button>
+              <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + uid + '/' + list.id)}>Edit list</Button> 
             </div>
           </div>
         </ListGroupItem>

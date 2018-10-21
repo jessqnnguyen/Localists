@@ -8,6 +8,17 @@ import GoogleMapLoader from "react-google-maps-loader"
 import GooglePlacesSuggest from "react-google-places-suggest"
 import { AppConsumer } from '../AppContext';
 import LoginForm from './login_form';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+
+const MyMapComponent = withScriptjs(withGoogleMap((props) =>
+  <GoogleMap
+    defaultZoom={10}
+    center={props.places[0].location}
+    position={props.places[0].location}
+  >
+    {props.places.map(place => <Marker position={place.location} />)}
+  </GoogleMap>
+))
 
 export class List {
   constructor(title, places) {
@@ -78,7 +89,8 @@ class CreateListForm extends Component {
       title: 'Fav brunch places',
       places: [{
         name: "Four Ate Five",
-        address: "485 Crown St, Surry Hills, Sydney"
+        address: "485 Crown St, Surry Hills, Sydney",
+        location: {lat: -33.8881246, lng: 151.2132603}
       }],
     };
   }
@@ -93,6 +105,7 @@ class CreateListForm extends Component {
   }
 
   render() {
+    console.log(this.state.places[0].location)
     return (
       <AppConsumer>
         {({uid}) =>
@@ -127,11 +140,22 @@ class CreateListForm extends Component {
                           <GooglePlacesSuggest
                           googleMaps={googleMaps}
                           autocompletionRequest={{ input: place.name }}
-                          onSelectSuggest={(geocodedPrediction, originalPrediction) => this.setState({ places: [
-                            ...this.state.places.slice(0, index),
-                            { ...this.state.places[index], name: originalPrediction.description, address: geocodedPrediction.formatted_address, googlePlacesId: geocodedPrediction.place_id },
-                            ...this.state.places.slice(index + 1)
-                          ]})}
+                          onSelectSuggest={(geocodedPrediction, originalPrediction) => {
+                            this.setState({ places: [
+                              ...this.state.places.slice(0, index),
+                              {
+                                ...this.state.places[index],
+                                name: originalPrediction.description,
+                                address: geocodedPrediction.formatted_address,
+                                location: {
+                                  lat: geocodedPrediction.geometry.location.lat(),
+                                  lng: geocodedPrediction.geometry.location.lng()
+                                },
+                                googlePlacesId: geocodedPrediction.place_id
+                              },
+                              ...this.state.places.slice(index + 1)
+                            ]})
+                          }}
                           textNoResults="No results"
                           customRender={prediction => (
                             <div className="customWrapper">{prediction ? prediction.description : "No results"}</div>
@@ -171,6 +195,14 @@ class CreateListForm extends Component {
                   <Button color="primary" size="lg" onClick={() => this.saveList()}>Save changes</Button>
                 </div>
               </Form>
+              <MyMapComponent
+                isMarkerShown
+                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBnlJi4Ij4k4zmrzEgSGqP8ntZjOk4hZY&v=3.exp&libraries=geometry,drawing,places"
+                loadingElement={<div style={{ height: `100%` }} />}
+                containerElement={<div style={{ height: `400px` }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+                places={this.state.places}
+              />
             </div>
           : <LoginForm/>
         }
