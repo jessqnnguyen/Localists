@@ -83,7 +83,7 @@ class ListPage extends Component {
     });
   }
 
-  createProfileIcon(owner) {
+  createProfileIcon() {
     return (
       <div class="profileIcon">
         <img class="listProfileIcon" src={this.state.avatarUrl ? this.state.avatarUrl : images.DEFAULTPROFILEICON } class="rounded-circle"/>
