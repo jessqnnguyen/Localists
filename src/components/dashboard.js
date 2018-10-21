@@ -25,8 +25,8 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       lists:[],
-      followedLists:{},
-      userUid: '',
+      followedLists: this.props.followedLists,
+      userUid: this.props.uid,
       avatarUrl: 'https://firebasestorage.googleapis.com/v0/b/list-66.appspot.com/o/images%2FHsEUxwCJYSMeHf010LSPXiPDKJt2.png?alt=media&token=7c0b5758-d8c4-43b6-a5f0-33d80ba87ec3',
       avatarUrls: {},
       loading:true
@@ -56,36 +56,41 @@ class Dashboard extends Component {
         firebase.database().ref("users/" + user.uid).on("value", snapshot => {
           if (snapshot.val()) {
             console.log("checking user table now..");
-            this.setState({ followedUsers: snapshot.val().followedUsers, followedLists: snapshot.val().followedLists });
+            this.setState({ followedLists: snapshot.val().followedLists });
             console.log(snapshot.val());
+            this.cacheProfileIcons();
           }
         });
-        this.cacheProfileIcons();
+        console.log("cache profile icons");
       }
     });
   }
 
   cacheProfileIcons() {
     const followedLists = this.state.followedLists;
-      for (let key in Object.keys(followedLists)) {
-        console.log("enter for loop " + key);
-        const list = this.state.followedLists[key];
-        let userId = list.userId;
-        firebase.database().ref("users/" + userId).once("value", snapshot => {
-          console.log("this ref worked");
-          if (snapshot.exists()) {
-              console.log("this snapshot exists in the ref");
-              const user = snapshot.val();
-              const avatarUrl = user.avatar;
-              this.setState({ avatarUrl: avatarUrl });
-              let newAvatarUrls = this.state.avatarUrls;
-              newAvatarUrls[userId] = avatarUrl;
-              this.setState({ avatarUrls: newAvatarUrls });
-              console.log('avatarUrl set to ' + avatarUrl);
-          } else {
-              console.log("no snapshot found for " + userId);
-          }
-        });
+    if (!followedLists) {
+      console.log("followedlists is null");
+    }
+    for (var key in followedLists) {
+      console.log("enter for loop " + key);
+      const list = followedLists[key];
+      console.log("list " + list);
+      let userId = list.userId;
+      firebase.database().ref("users/" + userId).once("value", snapshot => {
+        console.log("this ref worked");
+        if (snapshot.exists()) {
+            console.log("this snapshot exists in the ref");
+            const user = snapshot.val();
+            const avatarUrl = user.avatar;
+            this.setState({ avatarUrl: avatarUrl });
+            let newAvatarUrls = this.state.avatarUrls;
+            newAvatarUrls[userId] = avatarUrl;
+            this.setState({ avatarUrls: newAvatarUrls });
+            console.log('avatarUrl set to ' + avatarUrl);
+        } else {
+            console.log("no snapshot found for " + userId);
+        }
+      });
     } 
   }
 
