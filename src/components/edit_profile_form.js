@@ -129,10 +129,6 @@ class EditProfileForm extends Component {
                       onProgress={this.handleProgress}
                     />
                   </div>
-                  {/* <Input type="file" name="file" id="exampleFile" /> */}
-                  <FormText color="muted">
-                    Please upload a square image.
-                  </FormText>
                 </FormGroup>
                 <div class="editProfileSaveChangesButton">
                   <Button color="primary" size="lg" onClick={() => this.saveChanges()}>Save changes</Button>
