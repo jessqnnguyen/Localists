@@ -18,9 +18,12 @@ class EditProfileForm extends Component {
     this.state = {
       uid: '',
       name: '',
+      nameError: '',
       email: '',
+      emailError: '',
       avatarURL: '',
       password: '',
+      passwordError: '',
     };
 
     firebase.auth().onAuthStateChanged((user) => {
@@ -49,11 +52,30 @@ class EditProfileForm extends Component {
       if (user) {
         // Update user's name and email and avatar
         var db = firebase.database();
-        db.ref('users/' + user.uid).set({
-          name: this.state.name,
-          email: this.state.email,
-          avatar: this.state.avatarURL ? this.state.avatarURL : '',
-        });
+        if (!this.state.name || !this.state.email || !this.state.password) {
+          if (!this.state.name) {
+            this.setState({
+              nameError: "Please enter a valid name"
+            })
+          }
+          if (!this.state.email) {
+            this.setState({
+              emailError: "Please enter a valid email"
+            })
+          }
+          if (!this.state.password) {
+            this.setState({
+              passwordError: "Please enter a valid password"
+            })
+          }
+        } else {
+          db.ref('users/' + user.uid).set({
+            name: this.state.name,
+            email: this.state.email,
+            avatar: this.state.avatarURL ? this.state.avatarURL : '',
+          });
+          this.props.history.push(routes.HOME);
+        }
 
         // If the user has updated their password, the state should store the new password
         // Else if it is empty the user hasn't updated their password
@@ -69,7 +91,6 @@ class EditProfileForm extends Component {
         //   });
         // }
       }
-      this.props.history.push(routes.HOME);
     });
   }
 
@@ -104,14 +125,17 @@ class EditProfileForm extends Component {
                 <FormGroup id="editProfileNameField">
                   <Label for="nameField">Name</Label>
                   <Input type="name" name="name" id="name" placeholder={this.state.name} value={this.state.name} onChange={(event) => this.setState({ name: event.target.value })}/>
+                  <span style={{ color: "red" }}>{this.state.nameError}</span>
                 </FormGroup>
                 <FormGroup id="editProfileEmailField">
                   <Label for="exampleEmail">Email</Label>
                   <Input type="email" name="email" id="exampleEmail" placeholder={this.state.email} value={this.state.email} onChange={event => this.setState({ email: event.target.value })}/>
+                  <span style={{ color: "red" }}>{this.state.emailError}</span>
                 </FormGroup>
                 <FormGroup>
                   <Label for="examplePassword">Change password</Label>
                   <Input type="password" name="password" id="examplePassword" value={this.state.password} onChange={event => this.setState({ password: event.target.value })}/>
+                  <span style={{ color: "red" }}>{this.state.passwordError}</span>
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleFile">Upload a profile picture</Label>
