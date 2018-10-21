@@ -84,7 +84,7 @@ class ListPage extends Component {
     const listOwnerId = this.props.match.params.uid;
     const listId = this.props.match.params.id
     return (
-      <Button onClick={() => {
+      <Button color="success" onClick={() => {
         followedLists && followedLists[listId] 
           ? firebase.database().ref('users/' + uid + '/followedLists/' + listId).remove()
           : firebase.database().ref('users/' + uid + '/followedLists/' + listId).set({
