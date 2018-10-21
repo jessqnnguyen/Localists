@@ -7,7 +7,9 @@ import {
   ListGroupItem,
   ListGroup,
   ListGroupItemText,
-  ListGroupItemHeading
+  ListGroupItemHeading,
+  Jumbotron,
+  Container,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import '../styles/profile_page_styles.css';
@@ -143,6 +145,14 @@ class ProfilePage extends Component {
     );
   }
 
+  renderNoListsMessage() {
+    return (<Jumbotron>
+      <Container>
+        <p className="lead">This user has no lists yet :(</p>
+      </Container>
+    </Jumbotron>);
+  }
+
   render() {
     return (
       <div class="listPage">
@@ -152,7 +162,8 @@ class ProfilePage extends Component {
             <h1 class="display-4">My lists</h1>
           </div>
           <ListGroup>
-            {this.createListsTable()}
+            {this.state.lists.length > 0 ? this.createListsTable()
+              : this.renderNoListsMessage()}
           </ListGroup>
         </div>
       </div>
