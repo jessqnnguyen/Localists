@@ -47,6 +47,7 @@ class ListPage extends Component {
             const user = snapshot.val();
             avatarUrl = user.avatar;
             this.setState({avatarUrl: avatarUrl});
+            this.setState({ownerName: user.name});
             console.log('avatarUrl set to ' + avatarUrl);
         } else {
             console.log("no snapshot found for " + userId);
