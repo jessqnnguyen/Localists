@@ -70,7 +70,7 @@ class ListPage extends Component {
                   <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
                 </div>
                 <div class="listPageEditListButton">
-                    <Button color="success" onClick={() => this.props.history.push(routes.HOME)}>Edit list</Button>
+                  <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + this.props.match.params.uid + '/' + this.props.match.params.id)}>Edit list</Button>
                 </div>
               </div>
             </ListGroupItem>
