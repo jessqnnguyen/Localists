@@ -29,20 +29,6 @@ class ProfilePage extends Component {
       },
       lists: [],
     };
-    let avatarUrl = '';
-    const userId = this.state.uid;
-    firebase.database().ref("users/" + userId).once("value", snapshot => {
-        console.log("this ref worked");
-        if (snapshot.exists()) {
-            console.log("this snapshot exists in the ref");
-            const user = snapshot.val();
-            avatarUrl = user.avatar;
-            this.setState({avatarUrl: avatarUrl});
-            console.log('avatarUrl set to ' + avatarUrl);
-        } else {
-            console.log("no snapshot found for " + userId);
-        }
-    });
   }
 
   async componentDidMount() {
@@ -57,11 +43,11 @@ class ProfilePage extends Component {
       console.log("profile_page.js: u = " + JSON.stringify(u));
       this.setState({
         user: {
-          name: u.name
+          name: u.name,
+          avatarUrl: u.avatar,
         }
       });
     });
-
     // get user's lists
     const lists_ref = db.ref("lists/" + this.state.user.uid);
     lists_ref.once("value", (snapshot) => {
