@@ -60,76 +60,77 @@ class ListPage extends Component {
     }
   }
 
-  // TODO: render follow/unfollow button
-  createFollow() {
+  // TODO: hide edit list button if user doesn't own the list
+  createFollow(uid, followedLists) {
     const listOwnerId = this.props.match.params.uid;
     const listId = this.props.match.params.id
     return (
-      <AppConsumer>
-        {({uid, followedLists}) =>
-          <Button onClick={() => {
-            followedLists && followedLists[listId] 
-              ? firebase.database().ref('users/' + uid + '/followedLists/' + listId).remove()
-              : firebase.database().ref('users/' + uid + '/followedLists/' + listId).set({
-                  places: this.state.list.places,
-                  title: this.state.list.title,
-                  uid: listOwnerId,
-                });
-          }}>
-            {followedLists && followedLists[listId] ? 'Unfollow' : 'Follow'}
-          </Button>
-        }
-      </AppConsumer>
+      <Button onClick={() => {
+        followedLists && followedLists[listId] 
+          ? firebase.database().ref('users/' + uid + '/followedLists/' + listId).remove()
+          : firebase.database().ref('users/' + uid + '/followedLists/' + listId).set({
+              places: this.state.list.places,
+              title: this.state.list.title,
+              uid: listOwnerId,
+            });
+      }}>
+        {followedLists && followedLists[listId] ? 'Unfollow' : 'Follow'}
+      </Button>
     );
   }
 
   render() {
     const listPath = this.props.match.params.uid + '/' + this.props.match.params.id;
     return (
-      <div class="listPage">
-        <div class="listHeader">
-          <ListGroup>
-            <ListGroupItem active>
-              <div class="listPageHeaderSection">
-                <div class="listPageProfileIconName">
-                  {this.createProfileIcon("Jessica Nguyen")}
-                  <div class="listOwnerName">
-                    <ListGroupItemText>Jessica Nguyen</ListGroupItemText>
+
+      <AppConsumer>
+        {({uid, followedLists}) =>
+          <div class="listPage">
+            <div class="listHeader">
+              <ListGroup>
+                <ListGroupItem active>
+                  <div class="listPageHeaderSection">
+                    <div class="listPageProfileIconName">
+                      {this.createProfileIcon("Jessica Nguyen")}
+                      <div class="listOwnerName">
+                        <ListGroupItemText>Jessica Nguyen</ListGroupItemText>
+                      </div>
+                    </div>
+                    <div class="listPageListTitle">
+                      <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
+                    </div>
+                    <div class="listPageEditListButton">
+                      <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + listPath)}>Edit list</Button>
+                    </div>
+                    <div>
+                      {this.createFollow(uid, followedLists)}
+                    </div>
                   </div>
-                </div>
-                <div class="listPageListTitle">
-                  <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
-                </div>
-                <div class="listPageEditListButton">
-                  <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + listPath)}>Edit list</Button>
-                </div>
-                <div>
-                  {this.createFollow()}
-                </div>
-              </div>
-            </ListGroupItem>
-          </ListGroup>
-        </div>
-        <div class="listPageListItemsSection">
-          <ListGroup>
-            {this.state.list.places.map(place =>
-            <ListGroupItem>
-              <div class="listPageListItem">
-                <ListGroupItemHeading>{place.name}</ListGroupItemHeading>
-                <ListGroupItemText>{place.address}</ListGroupItemText>
-              </div>
-            </ListGroupItem>)}
-          </ListGroup>
-        </div>
-        <MyMapComponent
-          isMarkerShown
-          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBnlJi4Ij4k4zmrzEgSGqP8ntZjOk4hZY&v=3.exp&libraries=geometry,drawing,places"
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
-          places={this.state.list.places}
-        />
-      </div>
+                </ListGroupItem>
+              </ListGroup>
+            </div>
+            <div class="listPageListItemsSection">
+              <ListGroup>
+                {this.state.list.places.map(place =>
+                <ListGroupItem>
+                  <div class="listPageListItem">
+                    <ListGroupItemHeading>{place.name}</ListGroupItemHeading>
+                    <ListGroupItemText>{place.address}</ListGroupItemText>
+                  </div>
+                </ListGroupItem>)}
+              </ListGroup>
+            </div>
+            <MyMapComponent
+              isMarkerShown
+              googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBnlJi4Ij4k4zmrzEgSGqP8ntZjOk4hZY&v=3.exp&libraries=geometry,drawing,places"
+              loadingElement={<div style={{ height: `100%` }} />}
+              containerElement={<div style={{ height: `400px` }} />}
+              mapElement={<div style={{ height: `100%` }} />}
+              places={this.state.list.places}
+            />
+          </div>
+        }
+      </AppConsumer>
     );
   }
 }
