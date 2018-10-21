@@ -105,6 +105,7 @@ class CommentSection extends Component {
     return (
       <div>
         <h1 class="display-6">Comments</h1>
+        {this.state.userName && 
         <Form>
           <FormGroup>
             <Label for="comment">New Comment</Label>
@@ -112,6 +113,7 @@ class CommentSection extends Component {
           </FormGroup>
           <Button onClick={this.addComment}>Post</Button>
         </Form>
+        }
         <div class="listPageListItemsSection">
           <ListGroup>
             {this.state.comments.length ? this.state.comments.map(comment =>
