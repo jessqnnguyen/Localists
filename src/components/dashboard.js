@@ -174,6 +174,7 @@ class Dashboard extends Component {
   }
 
   render() {
+    const { followedLists } = this.state;
     return (
       <AppConsumer>
         {({uid, followedLists}) =>
