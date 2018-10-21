@@ -71,7 +71,7 @@ class DiscoverPage extends Component {
           let list = childSnapshot.val();
           list.id = childSnapshot.key;
           list.uid = parentSnapshot.key;
-          // TEMP: testing - exclude lists from users that are not in users database
+          // TEMP: exclude lists from users that are not in users database
           // more of a problem with our database, but this is a temporary fix
           db.ref("users/" + list.uid).once("value", snapshot => {
             if (snapshot.exists()) {
