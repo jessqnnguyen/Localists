@@ -27,12 +27,17 @@ class ListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: {title: '', places: []}
+      list: {
+        title: '', 
+        places: [],
+        uid: this.props.match.params.uid,
+        id: this.props.match.params.id
+      }
     };
   }
 
   componentDidMount(){
-    return firebase.database().ref('/lists/' + this.props.match.params.uid + '/' + this.props.match.params.id).once('value').then((snapshot) => {
+    return firebase.database().ref('/lists/' + this.state.list.uid + '/' + this.state.list.id).once('value').then((snapshot) => {
       this.setState({list: snapshot.val()});
     });
   }
@@ -53,6 +58,10 @@ class ListPage extends Component {
     }
   }
 
+  // createFollow() {
+
+  // }
+
   render() {
     return (
       <div class="listPage">
@@ -70,7 +79,10 @@ class ListPage extends Component {
                   <ListGroupItemHeading>{this.state.list.title}</ListGroupItemHeading>
                 </div>
                 <div class="listPageEditListButton">
-                  <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + this.props.match.params.uid + '/' + this.props.match.params.id)}>Edit list</Button>
+                  <Button color="success" onClick={() => this.props.history.push(routes.EDITLIST + '/' + this.state.list.uid + '/' + this.state.list.id)}>Edit list</Button>
+                </div>
+                <div>
+                  {/* {this.createFollow()} */}
                 </div>
               </div>
             </ListGroupItem>
