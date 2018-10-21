@@ -12,6 +12,7 @@ import '../styles/list_page_styles.css';
 import { AppConsumer } from '../AppContext';
 import firebase from 'firebase/app';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import { getUserAvatar } from './database_utils';
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
@@ -27,12 +28,28 @@ class ListPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userId: props.match.params.uid,
+      avatarUrl: '',
       ownerName: "",
       list: {
         title: "", 
         places: [],
       }
     };
+    let avatarUrl = '';
+    const userId = this.state.userId;
+    firebase.database().ref("users/" + userId).once("value", snapshot => {
+        console.log("this ref worked");
+        if (snapshot.exists()) {
+            console.log("this snapshot exists in the ref");
+            const user = snapshot.val();
+            avatarUrl = user.avatar;
+            this.setState({avatarUrl: avatarUrl});
+            console.log('avatarUrl set to ' + avatarUrl);
+        } else {
+            console.log("no snapshot found for " + userId);
+        }
+    });
   }
 
   async componentDidMount(){
@@ -63,21 +80,13 @@ class ListPage extends Component {
     });
   }
 
-  // TODO: profile icon should be based on user's profile image url
   createProfileIcon(owner) {
-    if (this.state.ownerName == "Jessica Nguyen") {
-      return (
-        <div class="profileIcon">
-          <img class="listProfileIcon" src="https://puu.sh/BF4oC/0a21e57d9d.png" class="rounded-circle"/>
-        </div>
-      );
-    } else {
-      return (
-        <div class="profileIcon">
-          <img class="listProfileIcon" src="https://puu.sh/BF4zA/2483e27981.png" class="rounded-circle"/>
-        </div>
-      );
-    }
+    return (
+      <div class="profileIcon">
+        <img class="listProfileIcon" src={this.state.avatarUrl ? this.state.avatarUrl : 'https://firebasestorage.googleapis.com/v0/b/list-66.appspot.com/o/images%2FHsEUxwCJYSMeHf010LSPXiPDKJt2.png?alt=media&token=7c0b5758-d8c4-43b6-a5f0-33d80ba87ec3'} class="rounded-circle"/>
+      </div>
+    );
+  
   }
 
   createFollow(uid, followedLists) {
