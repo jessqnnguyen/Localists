@@ -9,7 +9,7 @@ import GooglePlacesSuggest from "react-google-places-suggest"
 import { AppConsumer } from '../AppContext';
 import LoginForm from './login_form';
 import firebase from 'firebase/app';
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
@@ -202,6 +202,7 @@ class CreateListForm extends Component {
                   <Button color="primary" size="lg" onClick={() => this.saveList()}>Save changes</Button>
                 </div>
               </Form>
+              <div class="createListMap">
               <MyMapComponent
                 isMarkerShown
                 googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBnlJi4Ij4k4zmrzEgSGqP8ntZjOk4hZY&v=3.exp&libraries=geometry,drawing,places"
@@ -210,6 +211,7 @@ class CreateListForm extends Component {
                 mapElement={<div style={{ height: `100%` }} />}
                 places={this.state.places}
               />
+              </div>
             </div>
           : <LoginForm/>
         }

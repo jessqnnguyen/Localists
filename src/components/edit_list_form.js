@@ -10,6 +10,17 @@ import { AppConsumer } from '../AppContext';
 import LoginForm from './login_form';
 import firebase from 'firebase/app';
 import { List } from './create_list_form';
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
+
+const MyMapComponent = withScriptjs(withGoogleMap((props) =>
+  <GoogleMap
+    defaultZoom={10}
+    center={props.places[0].location}
+    position={props.places[0].location}
+  >
+    {props.places.map(place => <Marker position={place.location} />)}
+  </GoogleMap>
+));
 
 class EditListForm extends Component {
   constructor(props) {
@@ -172,6 +183,16 @@ class EditListForm extends Component {
                   <Button color="primary" size="lg" onClick={() => this.saveList()}>Save changes</Button>
                 </div>
                 <div class="saveChangesButton">
+                <div class="createListMap">
+                  <MyMapComponent
+                    isMarkerShown
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBnlJi4Ij4k4zmrzEgSGqP8ntZjOk4hZY&v=3.exp&libraries=geometry,drawing,places"
+                    loadingElement={<div style={{ height: `100%` }} />}
+                    containerElement={<div style={{ height: `400px` }} />}
+                    mapElement={<div style={{ height: `100%` }} />}
+                    places={this.state.places}
+                  />
+                </div>
                 </div>
               </Form>
             </div>
