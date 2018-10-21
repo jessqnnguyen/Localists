@@ -67,29 +67,37 @@ class DiscoverPage extends Component {
     db.ref('lists').on('value', snapshot => {
       snapshot.forEach(function(parentSnapshot) {
         parentSnapshot.forEach(function(childSnapshot) {
+          // each list in listResult will have: id, uid, and uname
           let list = childSnapshot.val();
           list.id = childSnapshot.key;
           list.uid = parentSnapshot.key;
-          const listTitle = list.title.toLowerCase();
-          if (listTitle.includes(query) || listTitle === query) {
-            listResults.push(list);
-            return;
-          }
-          if (list.places != null) {
-            for (let place of list.places) {
-              // Add list if one of its places has an address that contains the query
-              const name = place.name.toLowerCase();
-              if (name.includes(query) || name == query) {
+          // TEMP: testing - exclude lists from users that are not in users database
+          // more of a problem with our database, but this is a temporary fix
+          db.ref("users/" + list.uid).once("value", snapshot => {
+            if (snapshot.exists()) {
+              list.uname = snapshot.val().name;
+              const listTitle = list.title.toLowerCase();
+              if (listTitle.includes(query) || listTitle === query) {
                 listResults.push(list);
-                break;
+                return;
               }
-              const address = place.address.toLowerCase();
-              if (address.includes(query) || address == (query)) {
-                listResults.push(list);
-                break;
+              if (list.places != null) {
+                for (let place of list.places) {
+                  // Add list if one of its places has an address that contains the query
+                  const name = place.name.toLowerCase();
+                  if (name.includes(query) || name == query) {
+                    listResults.push(list);
+                    return;
+                  }
+                  const address = place.address.toLowerCase();
+                  if (address.includes(query) || address == (query)) {
+                    listResults.push(list);
+                    return;
+                  }
+                }
               }
             }
-          }
+          });
         });
       });
       this.setState(() => ({
@@ -163,6 +171,7 @@ class DiscoverPage extends Component {
           <Card class="card">
             <CardBody>
               <CardTitle>{list.title}</CardTitle>
+              <CardSubtitle>by {list.uname} AKA {list.uid} </CardSubtitle>
               <CardLink onClick={() => {
                 followedLists && followedLists[list.id] ? firebase.database().ref('users/' + uid + '/followedLists/' + list.id).remove()
                   : firebase.database().ref('users/' + uid + '/followedLists/' + list.id).set({
