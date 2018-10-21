@@ -12,6 +12,7 @@ import '../styles/list_page_styles.css';
 import { AppConsumer } from '../AppContext';
 import firebase from 'firebase/app';
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import CommentSection from './comment_section';
 
 const MyMapComponent = withScriptjs(withGoogleMap((props) =>
   <GoogleMap
@@ -152,6 +153,8 @@ class ListPage extends Component {
               mapElement={<div style={{ height: `100%` }} />}
               places={this.state.list.places}
             />
+            <br/>
+            <CommentSection uid={this.props.match.params.uid} id={this.props.match.params.id} ownerName={this.state.ownerName}/>
           </div>
         }
       </AppConsumer>
