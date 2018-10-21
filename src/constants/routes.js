@@ -9,4 +9,5 @@ export const PROFILEID = '/profile/:uid';
 export const MANAGELISTS = '/managelists';
 export const LISTPAGE = '/listPage';
 export const LISTPAGEID = '/listPage/:uid/:id';
-export const CREATELIST = '/createList'
+export const CREATELIST = '/createList';
+export const EDITPROFILE = '/editProfile';

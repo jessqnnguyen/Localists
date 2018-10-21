@@ -8,6 +8,7 @@ import DiscoverPage from './components/discover_page';
 import CreateListForm from './components/create_list_form';
 import ListPage from './components/list_page';
 import ProfilePage from './components/profile_page';
+import EditProfileForm from './components/edit_profile_form';
 // Route related
 import {Switch, Route} from 'react-router-dom';
 import * as routes from './constants/routes';
@@ -26,6 +27,7 @@ export default class App extends Component {
             <Route exact path={routes.CREATELIST} component={CreateListForm}></Route>
             <Route path={routes.LISTPAGEID} component={ListPage}></Route>
             <Route path={routes.PROFILEID} component={ProfilePage}></Route>
+            <Route exact path={routes.EDITPROFILE} component={EditProfileForm}></Route>
           </Switch>
         </div>
       </div>
