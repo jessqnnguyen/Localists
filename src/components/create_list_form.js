@@ -49,16 +49,12 @@ export class List {
 
   save() {
     var userLists = getUserLists();
+    
     // If the list has already been loaded i.e. if the list id is non-empty
     if (this.id !== "") {
-      userLists.child(this.id).once("value", function(snapshot) {
-        if (!snapshot.exists()) {
-          this.id = this.ref.push().key;
-        }
-        this.ref.child(this.id).set({
-          title: this.title,
-          places: this.places,
-        });
+      userLists.child(this.id).set({
+        title: this.title,
+        places: this.places,
       });
     } else {
       // The list is new so set the list id to the id returned
