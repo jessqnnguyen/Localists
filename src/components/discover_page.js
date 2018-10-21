@@ -70,6 +70,9 @@ class DiscoverPage extends Component {
           let list = childSnapshot.val();
           list.id = childSnapshot.key;
           list.uid = parentSnapshot.key;
+          if (list.title.includes(query) || list.title === query) {
+            listResults.push(list);
+          }
           if (list.places != null) {
             for (let place of list.places) {
               // Add list if one of its places has an address that contains the query
@@ -153,8 +156,6 @@ class DiscoverPage extends Component {
           <Card class="card">
             <CardBody>
               <CardTitle>{list.title}</CardTitle>
-              {/* TODO: Store a description field in the list table on the db or display here and delete this subtitle. */}
-              <CardSubtitle>List subtitle if exists</CardSubtitle>
               <CardLink onClick={() => {
                 followedLists && followedLists[list.id] ? firebase.database().ref('users/' + uid + '/followedLists/' + list.id).remove()
                   : firebase.database().ref('users/' + uid + '/followedLists/' + list.id).set({
