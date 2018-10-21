@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as routes from '../constants/routes';
+import * as images from '../constants/images';
 import { withRouter } from 'react-router-dom';
 import {
   Button,
@@ -83,7 +84,7 @@ class ListPage extends Component {
   createProfileIcon(owner) {
     return (
       <div class="profileIcon">
-        <img class="listProfileIcon" src={this.state.avatarUrl ? this.state.avatarUrl : 'https://firebasestorage.googleapis.com/v0/b/list-66.appspot.com/o/images%2FHsEUxwCJYSMeHf010LSPXiPDKJt2.png?alt=media&token=7c0b5758-d8c4-43b6-a5f0-33d80ba87ec3'} class="rounded-circle"/>
+        <img class="listProfileIcon" src={this.state.avatarUrl ? this.state.avatarUrl : images.DEFAULTPROFILEICON } class="rounded-circle"/>
       </div>
     );
   
