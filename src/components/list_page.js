@@ -70,7 +70,8 @@ class ListPage extends Component {
       const u = snapshot.val();
       console.log("list_page.js: u = " + JSON.stringify(u));
       this.setState({
-        ownerName: u.name
+        ownerName: u.name,
+        avatarUrl: u.avatar
       });
     });
 
