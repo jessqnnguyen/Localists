@@ -89,7 +89,7 @@ class Dashboard extends Component {
     return (<Jumbotron>
       <Container>
         <h1>You have no lists yet :(</h1>
-        <p className="lead">Click 'Create new list' to create your first list now</p>
+        <p className="lead">Click 'Create new list' to create your first list</p>
       </Container>
     </Jumbotron>);
   }
@@ -98,7 +98,7 @@ class Dashboard extends Component {
     return (<Jumbotron>
       <Container>
         <h1>You're not following any lists yet :(</h1>
-        <p className="lead">Click 'Discover' to find new lists to follow now</p>
+        <p className="lead">Click 'Discover' to find new lists to follow</p>
       </Container>
     </Jumbotron>);
   }
