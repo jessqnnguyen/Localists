@@ -25,8 +25,9 @@ class ProfilePage extends Component {
       user: {
         uid: props.match.params.uid,
         name: "",
-        avatarUrl: '',
       },
+      uid: props.match.params.uid,
+      avatarUrl: '',
       lists: [],
     };
   }
@@ -41,11 +42,12 @@ class ProfilePage extends Component {
       }
       const u = snapshot.val();
       console.log("profile_page.js: u = " + JSON.stringify(u));
+      console.log("avatar url in componentDidMount() " + u.avatar);
       this.setState({
         user: {
           name: u.name,
-          avatarUrl: u.avatar,
-        }
+        },
+        avatarUrl: u.avatar,
       });
     });
     // get user's lists
@@ -54,7 +56,7 @@ class ProfilePage extends Component {
       var l = [];
       if (snapshot.exists()) {
         snapshot.forEach((listSnapshot) => {
-          l.push({id:listSnapshot.key, title:listSnapshot.val().title, places:listSnapshot.val().places});
+          l.push({id:listSnapshot.key, uid:this.state.user.uid, title:listSnapshot.val().title, places:listSnapshot.val().places});
         });
         this.setState({
           lists: l
@@ -67,10 +69,10 @@ class ProfilePage extends Component {
     this.setState(() => ({ [event.target.name]: event.target.value }));
   }
 
-  createProfileIcon(owner) {
+  createProfileIcon() {
     return (
       <div class="profileIcon">
-        <img class="listProfileIcon" src={ this.state.avatarUrl ? this.state.avatarUrl : images.DEFAULTPROFILEICON } class="rounded-circle"/>
+        <img class="listProfileIcon" src={this.state.avatarUrl ? this.state.avatarUrl : images.DEFAULTPROFILEICON } class="rounded-circle"/>
       </div>
     );
   }
@@ -82,7 +84,7 @@ class ProfilePage extends Component {
           <ListGroupItem active>
             <div class="profileHeader">
               <div class="profileSection">
-                {this.createProfileIcon("Jessica Nguyen")}
+                {this.createProfileIcon()}
                 <div class="listOwnerName">
                   <ListGroupItemText>{this.state.user.name}</ListGroupItemText>
                 </div>
@@ -99,16 +101,17 @@ class ProfilePage extends Component {
     const lists = this.state.lists;
     let listElements = [];
     for (let i=0; i < lists.length; i++) {
-      listElements.push(this.createListElement(lists[i].title));
+      listElements.push(this.createListElement(lists[i].title, lists[i].uid, lists[i].id));
     }
     return listElements;
   }
 
-  createListElement(title) {
+  createListElement(title, uid, id) {
+    console.log("user id at createListElement()" + this.state.uid);
     return(
       <ListGroupItem>
         <ListGroupItemHeading>{title}</ListGroupItemHeading>
-        <ListGroupItemText><a class="text-primary" href="#"><Link to={routes.LISTPAGE}>View</Link></a></ListGroupItemText>
+        <ListGroupItemText><a class="text-primary" href="#"><Link to={routes.LISTPAGE + '/' + this.state.uid + '/' +  id}>View</Link></a></ListGroupItemText>
       </ListGroupItem>
     );
   }
