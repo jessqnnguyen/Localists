@@ -138,7 +138,7 @@ class Dashboard extends Component {
                       <div class="listLeft">
                         <ListGroupItemHeading>{followedLists[list].title}</ListGroupItemHeading>
                         <ListGroupItemText>
-                          <a class="text-primary"><Link to={routes.LISTPAGE}>View</Link></a>
+                          <a class="text-primary"><Link to={routes.LISTPAGE + '/' + followedLists[list].uid + '/' + list}>View</Link></a>
                         </ListGroupItemText>
                       </div>
                       <div class="listRight">
