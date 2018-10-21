@@ -148,8 +148,6 @@ class DiscoverPage extends Component {
             <CardBody>
               <CardTitle>{user.name || "No name! (shouldn't happen)"}</CardTitle>
               <CardSubtitle>{user.email}</CardSubtitle>
-              {/* TODO: Store user's location in db and display here or delete this subtitle. */}
-              <CardText>Insert user location here</CardText>
               {/* only show follow/unfollow button if the result user id is not the current user*/}
               {user.uid != uid && 
                 <CardLink onClick={() => {
