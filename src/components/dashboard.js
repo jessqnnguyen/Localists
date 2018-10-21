@@ -203,11 +203,12 @@ class Dashboard extends Component {
                   <img id="listsHeaderIcon" src={ListIcon}/>
                   <div class="followinglistsHeading"><h1>Lists you're following</h1></div>
                 </div>
-                {this.state.loading
+                { this.state.loading
                   ? this.renderLoadingSpinner()
                   : !followedLists || followedLists.length == 0
                       ? <div class="noListsMessage">{this.renderNoFollowingListsMessage()}</div>
-                      :  <ListGroup>
+                      :  
+                      <ListGroup>
                           {followedLists && Object.keys(followedLists).map(list =>
                             <ListGroupItem>
                               <div class="listItem">
@@ -224,9 +225,10 @@ class Dashboard extends Component {
                                   </div>
                                 </div>
                               </div>
-                        </ListGroupItem>
-                      )}
-                    </ListGroup> }
+                            </ListGroupItem>
+                          )}
+                    </ListGroup> 
+                }
               </div>
           </div>
         : <LoginForm/>
