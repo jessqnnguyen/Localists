@@ -171,13 +171,7 @@ class DiscoverPage extends Component {
           <Card class="card">
             <CardBody>
               <CardTitle>{list.title}</CardTitle>
-              <CardSubtitle>by {list.uname} AKA {list.uid} </CardSubtitle>
-              <CardLink onClick={() => {
-                followedLists && followedLists[list.id] ? firebase.database().ref('users/' + uid + '/followedLists/' + list.id).remove()
-                  : firebase.database().ref('users/' + uid + '/followedLists/' + list.id).set({
-                  places: list.places, title: list.title, uid: list.uid
-                });
-              }}>{followedLists && followedLists[list.id] ? 'Unfollow' : 'Follow'}</CardLink>
+              <CardSubtitle>by <Link to={`/profile/${list.uid}`}> {list.uname || list.uid} </Link></CardSubtitle>
               <CardLink href="#"><Link to={routes.LISTPAGE + '/' + list.uid + '/' + list.id}>View</Link></CardLink>
             </CardBody>
           </Card>
