@@ -17,6 +17,7 @@ class EditListForm extends Component {
     this.state = {
       list: {},
       title: '',
+      titleError: '',
       places: [{
 
       }],
@@ -39,6 +40,13 @@ class EditListForm extends Component {
 
   // TODO(chris): Save this list to the firebase database.
   saveList() {
+    if (!this.state.title) {
+      this.setState({
+        titleError: "Please enter a valid title"
+      });
+      return;
+    }
+
     // Stuff to send to the database.
     const { title, places } = this.state;
     var list = new List(title, places);
@@ -91,6 +99,7 @@ class EditListForm extends Component {
                 <FormGroup id="titleField">
                   <Label for="nameField">Title</Label>
                   <Input type="name" name="name" id="name" placeholder={this.state.title} value={this.state.title} onChange={(event) => this.setState({ title: event.target.value })} />
+                  <span style={{ color: "red" }}>{this.state.titleError}</span>
                 </FormGroup>
                 {this.state.places.map((place, index) => (
                   <div key={index} class="placeGroup">
