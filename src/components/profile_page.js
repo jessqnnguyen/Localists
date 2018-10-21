@@ -92,7 +92,7 @@ class ProfilePage extends Component {
                 <div class="listOwnerName">
                   <ListGroupItemText>{this.state.user.name}</ListGroupItemText>
                 </div>
-                <Button color="success" onClick={() => {}}>Edit profile</Button>
+                <Button color="success" onClick={() => this.props.history.push(routes.EDITPROFILE)}>Edit profile</Button>
               </div>
             </div>
           </ListGroupItem>

@@ -42,6 +42,7 @@ class EditListForm extends Component {
     // Stuff to send to the database.
     const { title, places } = this.state;
     var list = new List(title, places);
+    list.id = this.props.match.params.id;
     list.save();
     this.props.history.push(routes.HOME)
   }
